@@ -12,11 +12,24 @@ export default function RegistrationForm() {
         spacing={1}
       >
         <Grid item>
-          <TextField label="Contact Number" variant="filled" required />
+          <TextField
+            label="Contact Number"
+            variant="filled"
+            fullWidth
+            required
+            inputProps={{ maxlength: '15' }}
+          />
         </Grid>
 
         <Grid item>
-          <TextField multiline label="Bio" variant="filled" />
+          <TextField
+            multiline
+            label="Bio"
+            variant="filled"
+            fullWidth
+            inputProps={{ maxlength: '140' }}
+
+          />
         </Grid>
 
         <Grid item>

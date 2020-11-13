@@ -12,9 +12,16 @@ export default function Registration() {
       style={{ marginTop: '200px' }}
     >
       <h3> Hi, Juan Cruz! Complete your details to finish sign-up. </h3>
-      <Paper>
-        <RegistrationForm />
-      </Paper>
+      <Grid
+        item
+      >
+        <Paper
+          style={{ padding: '20px' }}
+        >
+          <RegistrationForm />
+          <p style={{ fontSize: '8px' }}> You may still edit these later. </p>
+        </Paper>
+      </Grid>
     </Grid>
   );
 }
