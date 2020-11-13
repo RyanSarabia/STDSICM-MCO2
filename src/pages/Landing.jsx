@@ -3,31 +3,12 @@ import GoogleLogin from 'react-google-login';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
 
 const responseGoogle = (response) => {
   console.log('hellooo ddd');
   console.log(response);
   console.log(response.profileObj);
 };
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#278B8D',
-      main: '#173D36',
-      dark: '#278B8D',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#ff7961',
-      main: '#f44336',
-      dark: '#ba000d',
-      contrastText: '#000',
-    },
-  },
-});
 
 export default function Landing() {
   return (
