@@ -31,15 +31,21 @@ const theme = createMuiTheme({
 
 export default function Landing() {
   return (
-    <ThemeProvider theme={theme}>
-      <Container>
+    <Container>
+      <Grid
+        container
+        spacing={3}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: '100vh' }}
+      >
         <Grid
-          container
-          spacing={3}
+          item
           direction="column"
           alignItems="center"
           justify="center"
-          style={{ minHeight: '100vh' }}
+          style={{ textAlign: 'center' }}
         >
           <Grid
             item
@@ -74,7 +80,7 @@ export default function Landing() {
             />
           </Grid>
         </Grid>
-      </Container>
-    </ThemeProvider>
+      </Grid>
+    </Container>
   );
 }
