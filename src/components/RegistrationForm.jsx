@@ -27,6 +27,8 @@ export default function RegistrationForm() {
             label="Bio"
             variant="filled"
             fullWidth
+            rows={3}
+            rowsMax={6}
             inputProps={{ maxlength: '140' }}
 
           />

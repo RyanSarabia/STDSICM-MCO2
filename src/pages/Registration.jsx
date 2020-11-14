@@ -9,19 +9,15 @@ export default function Registration() {
       container
       direction="column"
       alignItems="center"
-      style={{ marginTop: '200px' }}
+      style={{ marginTop: '20vh' }}
     >
       <h3> Hi, Juan Cruz! Complete your details to finish sign-up. </h3>
-      <Grid
-        item
+      <Paper
+        style={{ padding: '20px', minWidth: '35vh' }}
       >
-        <Paper
-          style={{ padding: '20px' }}
-        >
-          <RegistrationForm />
-          <p style={{ fontSize: '8px' }}> You may still edit these later. </p>
-        </Paper>
-      </Grid>
+        <RegistrationForm />
+        <p style={{ fontSize: '8px' }}> You may still edit these later. </p>
+      </Paper>
     </Grid>
   );
 }
