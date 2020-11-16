@@ -9,8 +9,11 @@ import ExploreIcon from '@material-ui/icons/Explore';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CreateIcon from '@material-ui/icons/Create';
 import FaceIcon from '@material-ui/icons/Face';
+import { useRouteMatch } from 'react-router-dom';
 
 export default function NavigationBar() {
+  const { path } = useRouteMatch();
+
   return (
     <AppBar color="inherit" position="sticky">
       <Toolbar>
@@ -22,7 +25,7 @@ export default function NavigationBar() {
 
           <Grid item>
             <Tooltip title="Explore">
-              <IconButton aria-label="explore">
+              <IconButton aria-label="explore" href={`${path}/explore`}>
                 <ExploreIcon />
               </IconButton>
             </Tooltip>
