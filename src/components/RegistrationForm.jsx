@@ -12,6 +12,8 @@ export default function RegistrationForm() {
     handleSubmit,
     formState,
   } = useForm({ criteriaMode: 'all', mode: 'onChange' });
+
+  // Place DB save call in this function
   const onSubmit = (data) => console.log(data);
 
   return (

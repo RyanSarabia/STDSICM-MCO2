@@ -5,6 +5,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import Landing from './pages/Landing';
 import Registration from './pages/Registration';
+import Explore from './pages/Explore';
 
 const theme = createMuiTheme({
   palette: {
@@ -31,6 +32,7 @@ function App() {
       <Router>
         <Route path="/" exact component={Landing} />
         <Route path="/register" component={Registration} />
+        <Route path="/explore" component={Explore} />
       </Router>
     </ThemeProvider>
   );
