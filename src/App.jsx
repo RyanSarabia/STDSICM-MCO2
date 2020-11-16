@@ -10,7 +10,7 @@ import Explore from './pages/Explore';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#278B8D',
+      light: '#fff',
       main: '#173D36',
       dark: '#2C989B',
       contrastText: '#fff',
