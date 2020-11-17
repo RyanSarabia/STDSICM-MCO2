@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('../../node_modules/mongoose');
 const { databaseURL } = require('../config.js');
 
 const options = {
@@ -8,14 +8,13 @@ const options = {
 };
 
 mongoose.connect(databaseURL, options);
-connect(databaseURL, options);
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true },
   contactNum: { type: Number, required: true },
-  isverified:{ type: Boolean, default: false }
+  bio: { type: String, required: true },
 });
 
-export default model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);

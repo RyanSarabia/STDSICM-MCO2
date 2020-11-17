@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import Landing from './pages/Landing';
@@ -29,8 +29,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Route path="/" exact component={Landing} />
-        <Route path="/register" component={Registration} />
+        <Switch>
+          <Route path="/" exact component={Landing} />
+          <Route path="/register" component={Registration} />
+        </Switch>
       </Router>
     </ThemeProvider>
   );
