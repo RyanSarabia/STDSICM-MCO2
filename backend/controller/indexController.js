@@ -9,7 +9,7 @@ exports.signin = passport.authenticate('google', {
 });
 
 exports.callback = passport.authenticate('google', {
-  failureRedirect: '/',
+  failureRedirect: '/login',
 });
 
 exports.callbackSuccess = async function callbackSuccess(req, res) {
@@ -19,75 +19,40 @@ exports.callbackSuccess = async function callbackSuccess(req, res) {
     { email: req.session.passport.user.profile.emails[0].value },
     { dpURL: req.session.passport.user.profile.photos[0].value },
   );
-  res.redirect('/verified');
+  const { token } = req.user;
+  res.redirect(`http://localhost:3000?token=${token}`);
 };
 
 exports.getRegister = async function getRegister(req, res) {
-  console.log(req.session.passport.user.profile.photos[0].value);
+  console.log(req.session.passport.user.profile.emails[0].value);
   const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
   if (user == null) {
-    res.render('register', {
-      title: 'Register',
+    const newUser = {
       email: req.session.passport.user.profile.emails[0].value,
       firstName: req.session.passport.user.profile.name.givenName,
-      lastName: req.session.passport.user.profile.name.familyName,
-    });
+      lastName: req.session.passprt.user.profile.name.familyName,
+      dpURL: req.session.passport.user.profile.photos[0].value,
+    };
+
+    res.send(newUser);
   } else {
-    res.redirect('/verified');
+    res.redirect('/login');
   }
 };
 
-// exports.register_post = async function (req, res) {
-//   try {
-//     let errors = validationResult(req);
+exports.postRegister = async function postRegister(req, res) {
+  console.log('post register');
+  // add if-else for contact validation
+  const newUser = new User({
+    email: req.session.passport.user.profile.emails[0].value,
+    firstName: req.session.passport.user.profile.name.givenName,
+    lastName: req.session.passport.user.profile.name.familyName,
+    dpURL: req.session.passport.user.profile.photos[0].value,
+    contactNum: req.body.contactNum,
+    bio: req.body.bio,
+  });
 
-//     if (errors.isEmpty()) {
-//       console.log('insde error.isEmpty()');
-//       const sameContactNum = await User.countDocuments({ contactNum: req.body.phone });
-//       if (sameContactNum === 0) {
-//         let user = new User({
-//           firstName: req.session.passport.user.profile.name.givenName,
-//           lastName: req.session.passport.user.profile.name.familyName,
-//           email: req.session.passport.user.profile.emails[0].value,
-//           contactNum: req.body.phone,
-//           dpURL: req.session.passport.user.profile.photos[0].value,
-//         });
-
-//         user = await user.save();
-
-//         req.session.idNum = user.idNum;
-//         req.session.isAdmin = user.isAdmin;
-//         req.session.verified = user.verified;
-//         req.session.isMonitoringAttendance = false;
-
-//         res.redirect('/member');
-//       } else {
-//         if (sameIDNum > 0) errorLabels.idNumError = 'ID number already taken.';
-//         if (sameContactNum > 0) errorLabels.phoneError = 'Phone number already taken.';
-//         res.render('register', {
-//           title: 'Register',
-//           errLabels: errorLabels,
-//           email: req.session.passport.user.profile.emails[0].value,
-//           firstName: req.session.passport.user.profile.name.givenName,
-//           lastName: req.session.passport.user.profile.name.familyName,
-//         });
-//       }
-//     } else {
-//       errors = errors.errors;
-//       console.log(errors);
-//       var errorLabels = {};
-//       for (i = 0; i < errors.length; i++) errorLabels[`${errors[i].param}Error`] = errors[i].msg;
-
-//       res.render('register', {
-//         title: 'Register',
-//         errLabels: errorLabels,
-//         email: req.session.passport.user.profile.emails[0].value,
-//         firstName: req.session.passport.user.profile.name.givenName,
-//         lastName: req.session.passport.user.profile.name.familyName,
-//       });
-//     }
-//   } catch (err) {
-//     console.log(`Error writing to db: ${err}`);
-//     res.redirect('/member');
-//   }
-// };
+  await newUser.save()
+    .then(() => res.json('User added!'))
+    .catch((err) => res.status(400).json(`Error: ${err}`));
+};

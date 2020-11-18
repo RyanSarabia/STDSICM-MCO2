@@ -6,13 +6,14 @@ module.exports.userIsLoggedIn = function userIsLoggedIn(req, res, next) {
 };
 
 module.exports.userIsNew = function userIsNew(req, res, next) {
+  console.log('userAuth.userIsNew');
   try {
     User.findOne({ email: req.session.passport.user.profile.emails[0].value }, (err, user) => {
       if (err) throw err;
       if (user) {
         next();
       } else {
-        res.redirect('/register');
+        res.redirect('/login');
       }
     });
   } catch (error) {

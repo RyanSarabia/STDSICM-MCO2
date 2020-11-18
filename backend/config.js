@@ -1,3 +1,3 @@
 module.exports = {
-  databaseURL: process.env.MONGODB_URL,
+  databaseURL: process.env.ATLAS_URI,
 };

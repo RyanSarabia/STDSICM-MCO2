@@ -1,15 +1,17 @@
 import React from 'react';
-// import GoogleLogin from 'react-google-login';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-// import axios from 'axios';
-
-// const responseGoogle = (response) => {
-//   axios.get('http://localhost:5000/auth/google', response.profileObj);
-// };
 
 export default function Landing() {
+  // useEffect(() => {
+  //   const query = queryString.parse(props.location.search);
+  //   if (query.token) {
+  //     window.localStorage.setItem('jwt', query.token);
+  //     props.history.push('/');
+  //   }
+  // });
+
   return (
     <Container>
       <Grid

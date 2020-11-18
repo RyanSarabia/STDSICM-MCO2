@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import axios from '../../node_modules/axios';
 
 export default function RegistrationForm() {
   const {
@@ -12,7 +13,17 @@ export default function RegistrationForm() {
     handleSubmit,
     formState,
   } = useForm({ criteriaMode: 'all', mode: 'onChange' });
-  const onSubmit = (data) => console.log(data);
+
+  // Place DB save call in this function
+  const onSubmit = (data) => {
+    axios.post('/registration', data);
+  };
+
+  useEffect(() => {
+    axios.get('/registration').then((res) => {
+      console.log(res);
+    });
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
