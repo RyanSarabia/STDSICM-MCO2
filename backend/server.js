@@ -1,6 +1,7 @@
 const mongoose = require('../node_modules/mongoose');
 const express = require('../node_modules/express');
 const passport = require('../node_modules/passport');
+// const { createProxyMiddleware } = require('../node_modules/http-proxy-middleware');
 require('../node_modules/dotenv').config();
 
 const cors = require('../node_modules/cors');
@@ -34,7 +35,14 @@ app.use(express.static('client/build'));
 
 app.use('/', index);
 app.use('/register', UserAuth.userIsLoggedIn, index);
-
+// app.use(
+//   '/api',
+//   createProxyMiddleware({
+//     target: 'https://localhost:5000',
+//     secure: false,
+//     changeOrigin: true,
+//   }),
+// );
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 

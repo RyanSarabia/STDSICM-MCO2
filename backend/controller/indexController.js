@@ -30,7 +30,7 @@ exports.getRegister = async function getRegister(req, res) {
     const newUser = {
       email: req.session.passport.user.profile.emails[0].value,
       firstName: req.session.passport.user.profile.name.givenName,
-      lastName: req.session.passprt.user.profile.name.familyName,
+      lastName: req.session.passport.user.profile.name.familyName,
       dpURL: req.session.passport.user.profile.photos[0].value,
     };
 
@@ -41,14 +41,13 @@ exports.getRegister = async function getRegister(req, res) {
 };
 
 exports.postRegister = async function postRegister(req, res) {
-  console.log('post register');
   // add if-else for contact validation
   const newUser = new User({
-    email: req.session.passport.user.profile.emails[0].value,
-    firstName: req.session.passport.user.profile.name.givenName,
-    lastName: req.session.passport.user.profile.name.familyName,
-    dpURL: req.session.passport.user.profile.photos[0].value,
-    contactNum: req.body.contactNum,
+    email: req.body.email,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    dpURL: req.body.dpURL,
+    contactNum: req.body.contact,
     bio: req.body.bio,
   });
 
