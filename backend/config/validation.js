@@ -2,7 +2,7 @@ const User = require('../model/user.model');
 
 module.exports.userIsLoggedIn = function userIsLoggedIn(req, res, next) {
   if (req.session.token) next();
-  else res.redirect('/login');
+  else res.redirect('/');
 };
 
 module.exports.userIsNew = function userIsNew(req, res, next) {
@@ -13,7 +13,7 @@ module.exports.userIsNew = function userIsNew(req, res, next) {
       if (user) {
         next();
       } else {
-        res.redirect('/login');
+        res.redirect('/');
       }
     });
   } catch (error) {
