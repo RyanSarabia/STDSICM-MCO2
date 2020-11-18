@@ -30,9 +30,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Route path="/" exact component={Landing} />
+        <Route path="/login" exact component={Landing} />
         <Route path="/register" component={Registration} />
-        <Route path="/main" component={MainPage} />
+        <Route path="/" component={MainPage} />
       </Router>
     </ThemeProvider>
   );
