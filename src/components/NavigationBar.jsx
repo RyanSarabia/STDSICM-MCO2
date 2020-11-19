@@ -30,7 +30,7 @@ export default function NavigationBar() {
               </IconButton>
             </Tooltip>
             <Tooltip title="Create">
-              <IconButton aria-label="create">
+              <IconButton aria-label="create" href={`${path}create`}>
                 <CreateIcon />
               </IconButton>
             </Tooltip>
