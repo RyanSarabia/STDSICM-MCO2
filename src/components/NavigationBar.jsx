@@ -18,9 +18,10 @@ export default function NavigationBar() {
     <AppBar color="inherit" position="sticky">
       <Toolbar>
         <Grid container justify="space-between" alignItems="center">
-
           <Grid item>
-            <Typography variant="h6" style={{ fontWeight: 'bold' }}> Lasell++ </Typography>
+            <Typography variant="h6" style={{ fontWeight: 'bold' }}>
+              Lasell++
+            </Typography>
           </Grid>
 
           <Grid item>
@@ -45,7 +46,6 @@ export default function NavigationBar() {
               </IconButton>
             </Tooltip>
           </Grid>
-
         </Grid>
       </Toolbar>
     </AppBar>

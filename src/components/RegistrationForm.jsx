@@ -7,12 +7,10 @@ import TextField from '@material-ui/core/TextField';
 import axios from '../../node_modules/axios';
 
 export default function RegistrationForm() {
-  const {
-    register,
-    errors,
-    handleSubmit,
-    formState,
-  } = useForm({ criteriaMode: 'all', mode: 'onChange' });
+  const { register, errors, handleSubmit, formState } = useForm({
+    criteriaMode: 'all',
+    mode: 'onChange',
+  });
 
   // Place DB save call in this function
   const onSubmit = (data) => {
@@ -21,11 +19,7 @@ export default function RegistrationForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid
-        container
-        direction="column"
-        spacing={1}
-      >
+      <Grid container direction="column" spacing={1}>
         <Grid item>
           <TextField
             label="Contact Number"
@@ -34,7 +28,10 @@ export default function RegistrationForm() {
             fullWidth
             required
             inputProps={{ maxLength: '15' }}
-            inputRef={register({ required: 'This field is required.', pattern: { value: /^[0-9+]+$/, message: 'Only 0-9 and + symbols allowed.' } })}
+            inputRef={register({
+              required: 'This field is required.',
+              pattern: { value: /^[0-9+]+$/, message: 'Only 0-9 and + symbols allowed.' },
+            })}
             helperText={<ErrorMessage errors={errors} name="contact" />}
           />
         </Grid>
@@ -49,12 +46,13 @@ export default function RegistrationForm() {
             rowsMax={6}
             inputProps={{ maxLength: '140' }}
             inputRef={register}
-
           />
         </Grid>
 
         <Grid item>
-          <Button color="primary" variant="contained" disabled={!formState.isValid} type="submit"> Confirm </Button>
+          <Button color="primary" variant="contained" disabled={!formState.isValid} type="submit">
+            Confirm
+          </Button>
         </Grid>
       </Grid>
     </form>
