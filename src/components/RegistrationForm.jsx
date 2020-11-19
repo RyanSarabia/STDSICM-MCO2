@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React /* , { useEffect } */from 'react';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import Button from '@material-ui/core/Button';
@@ -31,11 +31,11 @@ export default function RegistrationForm() {
     });
   };
 
-  useEffect(() => {
-    axios.get('/register').then((res) => {
-      console.log(res);
-    });
-  });
+  // useEffect(() => {
+  //   axios.get('/register').then((res) => {
+  //     console.log(res);
+  //   });
+  // });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
