@@ -2,8 +2,10 @@ const User = require('../model/user.model');
 const passport = require('../../node_modules/passport');
 
 exports.signin = passport.authenticate('google', {
-  scope: ['https://www.googleapis.com/auth/userinfo.profile',
-    'https://www.googleapis.com/auth/userinfo.email'],
+  scope: [
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email',
+  ],
   hostedDomain: 'dlsu.edu.ph',
 });
 
@@ -63,7 +65,8 @@ exports.postRegister = async function postRegister(req, res) {
         contactNum: req.body.contact,
         bio: req.body.bio,
       });
-      await newUser.save()
+      await newUser
+        .save()
         .then(() => res.json('User Added!'))
         .catch((err) => res.status(400).json(`Error: ${err}`));
     } else res.redirect('/register');

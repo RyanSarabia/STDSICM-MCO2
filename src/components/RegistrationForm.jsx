@@ -1,4 +1,4 @@
-import React /* , { useEffect } */from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import Button from '@material-ui/core/Button';
@@ -7,12 +7,10 @@ import TextField from '@material-ui/core/TextField';
 import axios from '../../node_modules/axios';
 
 export default function RegistrationForm() {
-  const {
-    register,
-    errors,
-    handleSubmit,
-    formState,
-  } = useForm({ criteriaMode: 'all', mode: 'onChange' });
+  const { register, errors, handleSubmit, formState } = useForm({
+    criteriaMode: 'all',
+    mode: 'onChange',
+  });
 
   // Place DB save call in this function
   const onSubmit = (data) => {
@@ -26,24 +24,13 @@ export default function RegistrationForm() {
         contact: data.contact,
         bio: data.bio,
       };
-      axios.post('/register', newUser)
-        .then((res2) => console.log(res2.data));
+      axios.post('/register', newUser).then((res2) => console.log(res2.data));
     });
   };
 
-  // useEffect(() => {
-  //   axios.get('/register').then((res) => {
-  //     console.log(res);
-  //   });
-  // });
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid
-        container
-        direction="column"
-        spacing={1}
-      >
+      <Grid container direction="column" spacing={1}>
         <Grid item>
           <TextField
             label="Contact Number"
@@ -52,7 +39,10 @@ export default function RegistrationForm() {
             fullWidth
             required
             inputProps={{ maxLength: '15' }}
-            inputRef={register({ required: 'This field is required.', pattern: { value: /^[0-9+]+$/, message: 'Only 0-9 and + symbols allowed.' } })}
+            inputRef={register({
+              required: 'This field is required.',
+              pattern: { value: /^[0-9+]+$/, message: 'Only 0-9 and + symbols allowed.' },
+            })}
             helperText={<ErrorMessage errors={errors} name="contact" />}
           />
         </Grid>
@@ -67,12 +57,19 @@ export default function RegistrationForm() {
             rowsMax={6}
             inputProps={{ maxLength: '140' }}
             inputRef={register}
-
           />
         </Grid>
 
         <Grid item>
-          <Button onClick={onSubmit} color="primary" variant="contained" disabled={!formState.isValid} type="submit"> Confirm </Button>
+          <Button
+            onClick={onSubmit}
+            color="primary"
+            variant="contained"
+            disabled={!formState.isValid}
+            type="submit"
+          >
+            Confirm
+          </Button>
         </Grid>
       </Grid>
     </form>

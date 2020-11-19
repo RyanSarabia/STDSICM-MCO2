@@ -1,16 +1,18 @@
 {
-    "extends": "airbnb",
+    "extends": ["airbnb", "prettier"],
     "rules": {
         "linebreak-style": 0,
         "react/jsx-filename-extension": [0],
         "import/no-named-as-default": 0,
         "import/no-named-as-default-member": 0,
-        "no-console": 0
+        "no-console": 0,
+        "prettier/prettier": ["error"]
     },
     "plugins": [
         "react",
         "jsx-a11y",
-        "import"
+        "import",
+        "prettier"
     ],
     "env": {
         "browser": true,

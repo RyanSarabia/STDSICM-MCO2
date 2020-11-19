@@ -28,10 +28,12 @@ app.use(express.static('client/build'));
 const cookieParser = require('../node_modules/cookie-parser');
 const cookieSession = require('../node_modules/cookie-session');
 
-app.use(cookieSession({
-  name: 'session',
-  keys: ['lasell'],
-}));
+app.use(
+  cookieSession({
+    name: 'session',
+    keys: ['lasell'],
+  })
+);
 app.use(cookieParser());
 
 // path tracker middleware
