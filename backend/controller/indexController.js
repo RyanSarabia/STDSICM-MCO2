@@ -30,7 +30,7 @@ exports.getRegister = async function getRegister(req, res) {
     const newUser = {
       email: req.session.passport.user.profile.emails[0].value,
       firstName: req.session.passport.user.profile.name.givenName,
-      lastName: req.session.passprt.user.profile.name.familyName,
+      lastName: req.session.passport.user.profile.name.familyName,
       dpURL: req.session.passport.user.profile.photos[0].value,
     };
 

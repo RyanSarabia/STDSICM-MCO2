@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import RegistrationForm from '../components/RegistrationForm';
 
 export default function Registration() {
+  useEffect(() => {
+    axios.get('/register').then((res) => {
+      console.log(res);
+    });
+  });
+
   return (
     <Grid
       container

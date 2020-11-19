@@ -25,7 +25,7 @@ export default function NavigationBar() {
 
           <Grid item>
             <Tooltip title="Explore">
-              <IconButton aria-label="explore" href={`${path}/explore`}>
+              <IconButton aria-label="explore" href={`${path}explore`}>
                 <ExploreIcon />
               </IconButton>
             </Tooltip>
