@@ -1,6 +1,5 @@
 const User = require('../model/user.model');
 const passport = require('../../node_modules/passport');
-// const mongoose = require('../../node_modules/mongoose');
 
 exports.signin = passport.authenticate('google', {
   scope: ['https://www.googleapis.com/auth/userinfo.profile',
@@ -13,45 +12,71 @@ exports.callback = passport.authenticate('google', {
 });
 
 exports.callbackSuccess = async function callbackSuccess(req, res) {
-  req.session.token = req.user.token;
-
-  await User.findOneAndUpdate(
-    { email: req.session.passport.user.profile.emails[0].value },
-    { dpURL: req.session.passport.user.profile.photos[0].value },
-  );
-  const { token } = req.user;
-  res.redirect(`http://localhost:3000?token=${token}`);
+  try {
+    console.log('callback success');
+    req.session.token = req.user.token;
+    const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
+    console.log(req.session.passport.user.profile.emails[0].value);
+    if (user) {
+      res.redirect('http://localhost:3000/');
+    } else {
+      const { token } = req.user;
+      res.redirect(`http://localhost:3000/register?token=${token}`);
+    }
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 exports.getRegister = async function getRegister(req, res) {
   console.log(req.session.passport.user.profile.emails[0].value);
-  const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
-  if (user == null) {
-    const newUser = {
-      email: req.session.passport.user.profile.emails[0].value,
-      firstName: req.session.passport.user.profile.name.givenName,
-      lastName: req.session.passport.user.profile.name.familyName,
-      dpURL: req.session.passport.user.profile.photos[0].value,
-    };
+  try {
+    const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
+    if (user == null) {
+      const newUser = {
+        email: req.session.passport.user.profile.emails[0].value,
+        firstName: req.session.passport.user.profile.name.givenName,
+        lastName: req.session.passport.user.profile.name.familyName,
+        dpURL: req.session.passport.user.profile.photos[0].value,
+      };
 
-    res.send(newUser);
-  } else {
-    res.redirect('/login');
+      res.send(newUser);
+    } else {
+      res.redirect('/login');
+    }
+  } catch (e) {
+    console.log(e);
   }
 };
 
 exports.postRegister = async function postRegister(req, res) {
-  // add if-else for contact validation
-  const newUser = new User({
-    email: req.body.email,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    dpURL: req.body.dpURL,
-    contactNum: req.body.contact,
-    bio: req.body.bio,
-  });
+  const sameContact = await User.countDocuments({ contactNum: req.body.contact });
+  console.log('post register');
+  try {
+    if (sameContact === 0) {
+      console.log('no same contact');
+      const newUser = new User({
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        dpURL: req.body.dpURL,
+        contactNum: req.body.contact,
+        bio: req.body.bio,
+      });
+      await newUser.save()
+        .then(() => res.json('User Added!'))
+        .catch((err) => res.status(400).json(`Error: ${err}`));
+    } else res.redirect('/register');
+  } catch (e) {
+    console.log(e);
+  }
+};
 
-  await newUser.save()
-    .then(() => res.json('User added!'))
-    .catch((err) => res.status(400).json(`Error: ${err}`));
+exports.logout = function logout(req, res) {
+  if (req.session.token) {
+    console.log('logout');
+    req.logout();
+    req.session = null;
+  }
+  res.redirect('/login');
 };

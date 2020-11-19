@@ -10,10 +10,16 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CreateIcon from '@material-ui/icons/Create';
 import FaceIcon from '@material-ui/icons/Face';
 import { useRouteMatch } from 'react-router-dom';
+import axios from '../../node_modules/axios';
 
 export default function NavigationBar() {
   const { path } = useRouteMatch();
 
+  const logout = () => {
+    axios.get('/logout').then((res) => {
+      console.log(res);
+    });
+  };
   return (
     <AppBar color="inherit" position="sticky">
       <Toolbar>
@@ -40,7 +46,7 @@ export default function NavigationBar() {
               </IconButton>
             </Tooltip>
             <Tooltip title="Logout">
-              <IconButton aria-label="logout">
+              <IconButton onClick={logout} aria-label="logout">
                 <ExitToAppIcon />
               </IconButton>
             </Tooltip>
