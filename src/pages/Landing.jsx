@@ -35,15 +35,14 @@ export default function Landing() {
           </h5>
         </Grid>
         <Grid item>
-          <a href="http://localhost:5000/auth/google">
-            <Button
-              variant="contained"
-              color="primary"
-              className={{ textTransform: 'uppercase' }}
-            >
-              Sign In With Google
-            </Button>
-          </a>
+          <Button
+            variant="contained"
+            color="primary"
+            className={{ textTransform: 'uppercase' }}
+            href="http://localhost:5000/auth/google"
+          >
+            Sign In With Google
+          </Button>
         </Grid>
       </Grid>
     </Container>
