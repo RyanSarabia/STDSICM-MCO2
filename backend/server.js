@@ -17,10 +17,12 @@ const index = require('./routes/index');
 const cookieParser = require('../node_modules/cookie-parser');
 const cookieSession = require('../node_modules/cookie-session');
 
-app.use(cookieSession({
-  name: 'session',
-  keys: ['lasell2'],
-}));
+app.use(
+  cookieSession({
+    name: 'session',
+    keys: ['lasell2'],
+  })
+);
 app.use(cookieParser());
 
 app.use(cors());

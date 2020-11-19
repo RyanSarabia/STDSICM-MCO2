@@ -3,8 +3,10 @@ const passport = require('../../node_modules/passport');
 // const mongoose = require('../../node_modules/mongoose');
 
 exports.signin = passport.authenticate('google', {
-  scope: ['https://www.googleapis.com/auth/userinfo.profile',
-    'https://www.googleapis.com/auth/userinfo.email'],
+  scope: [
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email',
+  ],
   hostedDomain: 'dlsu.edu.ph',
 });
 
@@ -17,7 +19,7 @@ exports.callbackSuccess = async function callbackSuccess(req, res) {
 
   await User.findOneAndUpdate(
     { email: req.session.passport.user.profile.emails[0].value },
-    { dpURL: req.session.passport.user.profile.photos[0].value },
+    { dpURL: req.session.passport.user.profile.photos[0].value }
   );
   const { token } = req.user;
   res.redirect(`http://localhost:3000?token=${token}`);
@@ -52,7 +54,8 @@ exports.postRegister = async function postRegister(req, res) {
     bio: req.body.bio,
   });
 
-  await newUser.save()
+  await newUser
+    .save()
     .then(() => res.json('User added!'))
     .catch((err) => res.status(400).json(`Error: ${err}`));
 };

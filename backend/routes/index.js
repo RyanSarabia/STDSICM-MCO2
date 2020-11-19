@@ -9,7 +9,7 @@ router.get(
   (req, res) => {
     const { token } = req.user;
     res.redirect(`http://localhost:3000/register?token=${token}`);
-  },
+  }
 );
 router.get('/register', indexController.getRegister);
 // router.post('/register', indexController.postRegister);
