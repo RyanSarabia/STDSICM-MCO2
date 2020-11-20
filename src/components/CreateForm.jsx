@@ -33,7 +33,7 @@ export default function CreateForm() {
           justify="space-evenly"
           alignItems="flex-start"
           spacing={2}
-          style={{ marginTop: '15vh', padding: '3vh' }}
+          style={{ padding: '3vh' }}
         >
           <Grid container item xs={7} direction="column" spacing={2}>
             <Grid item>
