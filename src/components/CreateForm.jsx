@@ -30,12 +30,12 @@ export default function CreateForm() {
         <Grid
           container
           direction="row"
-          justify="space-between"
-          alignItems="center"
-          spacing={3}
+          justify="space-evenly"
+          alignItems="flex-start"
+          spacing={2}
           style={{ marginTop: '15vh', padding: '3vh' }}
         >
-          <Grid container item xs={6} direction="column" spacing={2}>
+          <Grid container item xs={7} direction="column" spacing={2}>
             <Grid item>
               <TextField
                 label="Title"
@@ -57,10 +57,12 @@ export default function CreateForm() {
                 label="Description"
                 name="description"
                 variant="filled"
+                rows={3}
+                rowsMax={12}
                 fullWidth
                 required
                 multiline
-                inputProps={{ maxLength: '500' }}
+                inputProps={{ maxLength: '500', style: { fontSize: 'small' } }}
                 inputRef={register({
                   required: 'This field is required.',
                 })}
@@ -89,7 +91,7 @@ export default function CreateForm() {
             </Grid>
           </Grid>
 
-          <Grid container item xs={6} direction="column" spacing={2}>
+          <Grid container item xs={5} direction="column" spacing={2}>
             <Grid item>
               <TextField
                 label="Starting Price"
@@ -168,7 +170,7 @@ export default function CreateForm() {
             </Grid>
           </Grid>
 
-          <Grid container item xs={3} alignItems="flex-start">
+          <Grid container item xs={12} alignItems="center" style={{ marginTop: '2vh' }}>
             <Button
               onClick={onSubmit}
               color="primary"
