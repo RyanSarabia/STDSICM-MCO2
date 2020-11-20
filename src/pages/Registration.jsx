@@ -1,23 +1,47 @@
-import React, { useEffect } from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-one-expression-per-line */
+import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
+import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import RegistrationForm from '../components/RegistrationForm';
 
-export default function Registration() {
-  useEffect(() => {
-    axios.get('/register').then((res) => {
-      console.log(res);
-    });
-  });
+export default class Registration extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: '',
+    };
+  }
 
-  return (
-    <Grid container direction="column" alignItems="center" style={{ marginTop: '20vh' }}>
-      <h3> Hi, Juan Cruz! Complete your details to finish sign-up. </h3>
-      <Paper style={{ padding: '20px', minWidth: '35vh' }}>
-        <RegistrationForm />
-        <p style={{ fontSize: '8px' }}> You may still edit these later. </p>
-      </Paper>
-    </Grid>
-  );
+  componentDidMount() {
+    axios.get('/register').then((res) => {
+      this.setState({ user: res.data });
+    });
+  }
+
+  render() {
+    const { user } = this.state;
+    return (
+      <Grid container direction="column" alignItems="center" style={{ marginTop: '20vh' }}>
+        <Typography variant="h5" style={{ fontWeight: 'bold' }}>
+          <Grid container direction="row" alignItems="center">
+            Welcome,
+            <Avatar
+              alt={user.firstName + user.lastName}
+              src={user.dpURL}
+              style={{ margin: '0.75vh' }}
+            />
+            {user.firstName} {user.lastName}! Complete your details to sign-up.
+          </Grid>
+        </Typography>
+        <Paper style={{ padding: '20px', minWidth: '35vh' }}>
+          <RegistrationForm />
+          <p style={{ fontSize: '8px' }}> You may still edit these later. </p>
+        </Paper>
+      </Grid>
+    );
+  }
 }
