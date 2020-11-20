@@ -3,6 +3,9 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+
 import Landing from './pages/Landing';
 import Registration from './pages/Registration';
 import MainPage from './pages/MainPage';
@@ -29,13 +32,15 @@ require('./App.css');
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Router>
-        <Switch>
-          <Route path="/login" exact component={Landing} />
-          <Route path="/register" component={Registration} />
-          <Route path="/" component={MainPage} />
-        </Switch>
-      </Router>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Router>
+          <Switch>
+            <Route path="/login" exact component={Landing} />
+            <Route path="/register" component={Registration} />
+            <Route path="/" component={MainPage} />
+          </Switch>
+        </Router>
+      </MuiPickersUtilsProvider>
     </ThemeProvider>
   );
 }
