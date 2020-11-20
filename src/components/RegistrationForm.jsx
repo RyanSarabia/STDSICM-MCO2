@@ -14,7 +14,18 @@ export default function RegistrationForm() {
 
   // Place DB save call in this function
   const onSubmit = (data) => {
-    axios.post('/registration', data);
+    let newUser;
+    axios.get('/register').then((res) => {
+      newUser = {
+        email: res.data.email,
+        firstName: res.data.firstName,
+        lastName: res.data.lastName,
+        dpURL: res.data.dpURL,
+        contact: data.contact,
+        bio: data.bio,
+      };
+      axios.post('/register', newUser).then((res2) => console.log(res2.data));
+    });
   };
 
   return (
@@ -50,7 +61,13 @@ export default function RegistrationForm() {
         </Grid>
 
         <Grid item>
-          <Button color="primary" variant="contained" disabled={!formState.isValid} type="submit">
+          <Button
+            onClick={onSubmit}
+            color="primary"
+            variant="contained"
+            disabled={!formState.isValid}
+            type="submit"
+          >
             Confirm
           </Button>
         </Grid>
