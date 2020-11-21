@@ -75,6 +75,17 @@ exports.postRegister = async function postRegister(req, res) {
   }
 };
 
+exports.userIsLoggedIn = function userIsLoggedIn(req, res) {
+  console.log('userIsLoggedIn');
+  if (req.session.token) {
+    console.log('session');
+    res.send('Has Session');
+  } else {
+    console.log('no session');
+    res.send('No Session');
+  }
+};
+
 exports.logout = function logout(req, res) {
   if (req.session.token) {
     console.log('logout');

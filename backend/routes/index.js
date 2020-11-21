@@ -5,6 +5,7 @@ router.get('/auth/google', indexController.signin);
 router.get('/auth/google/callback', indexController.callback, indexController.callbackSuccess);
 router.get('/register', indexController.getRegister);
 router.post('/register', indexController.postRegister);
+router.get('/validate', indexController.userIsLoggedIn);
 
 router.get('/logout', indexController.logout);
 module.exports = router;

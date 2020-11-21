@@ -7,7 +7,7 @@ module.exports.userIsLoggedIn = function userIsLoggedIn(req, res, next) {
     next();
   } else {
     console.log('no session');
-    res.redirect('/');
+    res.redirect('/login');
   }
 };
 
