@@ -9,6 +9,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Landing from './pages/Landing';
 import Registration from './pages/Registration';
 import MainPage from './pages/MainPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const theme = createMuiTheme({
   palette: {
@@ -36,8 +37,8 @@ function App() {
         <Router>
           <Switch>
             <Route path="/login" exact component={Landing} />
-            <Route path="/register" component={Registration} />
-            <Route path="/" component={MainPage} />
+            <ProtectedRoute path="/register" component={Registration} />
+            <ProtectedRoute path="/" component={MainPage} />
           </Switch>
         </Router>
       </MuiPickersUtilsProvider>
