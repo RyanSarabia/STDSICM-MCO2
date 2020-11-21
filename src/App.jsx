@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
@@ -30,20 +31,39 @@ const theme = createMuiTheme({
 
 require('./App.css');
 
-function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Router>
-          <Switch>
-            <Route path="/login" exact component={Landing} />
-            <ProtectedRoute path="/register" component={Registration} />
-            <ProtectedRoute path="/" component={MainPage} />
-          </Switch>
-        </Router>
-      </MuiPickersUtilsProvider>
-    </ThemeProvider>
-  );
-}
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: false,
+    };
+  }
 
-export default App;
+  componentDidMount() {
+    axios.get('/validate').then((res) => {
+      console.log('check session');
+      if (res.data === 'Has Session') {
+        this.setState({ user: true });
+      } else {
+        this.setState({ user: false });
+      }
+    });
+  }
+
+  render() {
+    const { user } = this.state;
+    return (
+      <ThemeProvider theme={theme}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Router>
+            <Switch>
+              <Route path="/login" exact component={Landing} />
+              <ProtectedRoute path="/register" user={user} component={Registration} />
+              <ProtectedRoute path="/" user={user} component={MainPage} />
+            </Switch>
+          </Router>
+        </MuiPickersUtilsProvider>
+      </ThemeProvider>
+    );
+  }
+}
