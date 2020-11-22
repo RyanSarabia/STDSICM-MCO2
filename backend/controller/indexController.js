@@ -20,7 +20,7 @@ exports.callbackSuccess = async function callbackSuccess(req, res) {
     const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
     console.log(req.session.passport.user.profile.emails[0].value);
     if (user) {
-      res.redirect('http://localhost:3000/');
+      res.redirect('http://localhost:3000/explore');
     } else {
       const { token } = req.user;
       res.redirect(`http://localhost:3000/register?token=${token}`);
@@ -91,6 +91,7 @@ exports.logout = function logout(req, res) {
     console.log('logout');
     req.logout();
     req.session = null;
+    res.send('success');
   }
   res.redirect('/login');
 };

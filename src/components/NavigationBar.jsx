@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/prop-types */
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,25 +10,11 @@ import ExploreIcon from '@material-ui/icons/Explore';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CreateIcon from '@material-ui/icons/Create';
 import FaceIcon from '@material-ui/icons/Face';
-import { Redirect, useRouteMatch } from 'react-router-dom';
-import axios from '../../node_modules/axios';
+import { useRouteMatch } from 'react-router-dom';
 
-export default function NavigationBar() {
+export default function NavigationBar({ logout, userID }) {
   const { path } = useRouteMatch();
-  const [userID, setUserID] = useState();
 
-  useEffect(() => {
-    axios.get('/getID').then((res) => {
-      setUserID(res.data.user_id);
-    });
-  });
-
-  const logout = () => {
-    axios.get('/logout').then((res) => {
-      console.log(res);
-      return <Redirect to="/login" />;
-    });
-  };
   return (
     <AppBar color="inherit" position="sticky">
       <Toolbar>
