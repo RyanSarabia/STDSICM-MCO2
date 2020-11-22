@@ -27,12 +27,12 @@ export default class Registration extends Component {
     return (
       <Grid container direction="column" alignItems="center" style={{ marginTop: '20vh' }}>
         <Typography variant="h5" style={{ fontWeight: 'bold' }}>
-          <Grid container direction="row" alignItems="center">
+          <Grid container direction="row" alignItems="center" justify="center">
             Welcome,
             <Avatar
               alt={user.firstName + user.lastName}
               src={user.dpURL}
-              style={{ margin: '0.75vh' }}
+              style={{ margin: '0.5vh' }}
             />
             {user.firstName} {user.lastName}! Complete your details to sign-up.
           </Grid>
