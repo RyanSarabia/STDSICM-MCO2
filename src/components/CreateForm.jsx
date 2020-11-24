@@ -165,7 +165,7 @@ export default function CreateForm() {
               {/* IDK PANO MAGUPLOAD NG FILE */}
               <Button variant="contained" component="label">
                 Upload File
-                <input type="file" hidden />
+                <input type="file" name="image" hidden />
               </Button>
             </Grid>
           </Grid>

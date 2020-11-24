@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import axios from '../../node_modules/axios';
 
@@ -48,10 +49,17 @@ export default function RegistrationForm() {
                 variant="filled"
                 fullWidth
                 required
-                inputProps={{ maxLength: '15' }}
+                inputProps={{ maxLength: '10' }}
+                // eslint-disable-next-line react/jsx-no-duplicate-props
+                InputProps={{
+                  startAdornment: <InputAdornment position="start"> +63 </InputAdornment>,
+                }}
                 inputRef={register({
                   required: 'This field is required.',
-                  pattern: { value: /^[0-9+]+$/, message: 'Only 0-9 and + symbols allowed.' },
+                  pattern: {
+                    value: /^9[0-9]{9}$/,
+                    message: 'Invalid contact number format.',
+                  },
                 })}
                 helperText={<ErrorMessage errors={errors} name="contact" />}
               />
