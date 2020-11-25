@@ -6,6 +6,6 @@ router.get('/auth/google/callback', indexController.callback, indexController.ca
 router.get('/register', indexController.getRegister);
 router.post('/register', indexController.postRegister);
 router.get('/validate', indexController.userIsLoggedIn);
-
+router.get('/getID', indexController.getID);
 router.get('/logout', indexController.logout);
 module.exports = router;

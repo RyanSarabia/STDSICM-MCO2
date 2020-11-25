@@ -95,3 +95,16 @@ exports.logout = function logout(req, res) {
   }
   res.redirect('/login');
 };
+
+exports.getID = async function getID(req, res) {
+  try {
+    const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
+
+    if (user) {
+      // eslint-disable-next-line no-underscore-dangle
+      res.send(user._id);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};

@@ -1,7 +1,7 @@
 const mongoose = require('../node_modules/mongoose');
 const express = require('../node_modules/express');
 const passport = require('../node_modules/passport');
-// const { createProxyMiddleware } = require('../node_modules/http-proxy-middleware');
+const bodyParser = require('../node_modules/body-parser');
 require('../node_modules/dotenv').config();
 
 const cors = require('../node_modules/cors');
@@ -13,9 +13,20 @@ const UserAuth = require('./config/validation');
 
 // routes
 const indexRoute = require('./routes/index');
+const userRoute = require('./routes/user');
+
+// cloudinary
+const cloudinary = require('../node_modules/cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // passport
 app.use(passport.initialize());
@@ -44,6 +55,7 @@ app.use((req, res, next) => {
 
 app.use('/', indexRoute);
 app.use('/register', UserAuth.userIsLoggedIn, UserAuth.userIsNew, indexRoute);
+app.use('/upload', userRoute);
 // app.use(
 //   '/api',
 //   createProxyMiddleware({
