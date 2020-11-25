@@ -7,18 +7,67 @@ import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
 
 export default function CreateForm() {
   const [cutoff, setCutoff] = useState(new Date());
+
+  const [image, setImage] = useState({});
+
+  const [setRedirect] = useState(false);
+
+  const [auctionDetails, setAuctionDetails] = useState({
+    title: '',
+    description: '',
+    startPrice: '',
+    incprice: '',
+    stealPrice: '',
+  });
 
   const { register, errors, handleSubmit, formState } = useForm({
     criteriaMode: 'all',
     mode: 'onChange',
   });
 
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setAuctionDetails((prevDetails) => {
+      return {
+        ...prevDetails,
+        [name]: value,
+      };
+    });
+  }
+  const handleImageUpload = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    setImage(file);
+  };
+
   // Put here DB stuff to save input
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = (e) => {
+    // const newAuction = {
+    //   file: image,
+    //   title: data.title,
+    //   description: data.description,
+    //   startPrice: data.startPrice,
+    //   incprice: data.increment,
+    //   stealPrice: data.stealPrice,
+    // };
+    // console.log(newAuction);
+    e.preventDefault();
+    const form = new FormData();
+    form.append('file', image);
+    form.append('title', auctionDetails.title);
+    form.append('description', auctionDetails.description);
+    form.append('startPrice', auctionDetails.startPrice);
+    form.append('incPrice', auctionDetails.increment);
+    form.append('stealPrice', auctionDetails.stealPrice);
+    console.log(form);
+    axios.post('/upload', form).then((res2) => {
+      console.log(res2.data);
+      setRedirect(true);
+    });
   };
 
   // Trying to register cutoff date. Not working...
@@ -41,6 +90,8 @@ export default function CreateForm() {
                 label="Title"
                 name="title"
                 variant="filled"
+                value={auctionDetails.title}
+                onChange={handleChange}
                 fullWidth
                 required
                 inputProps={{ maxLength: '30' }}
@@ -57,6 +108,8 @@ export default function CreateForm() {
                 label="Description"
                 name="description"
                 variant="filled"
+                onChange={handleChange}
+                value={auctionDetails.description}
                 rows={3}
                 rowsMax={12}
                 fullWidth
@@ -74,14 +127,14 @@ export default function CreateForm() {
             <Grid item>
               {/* FIX THIS PART DI NAGRREGISTER SA REACT HOOK FORM */}
               <KeyboardDateTimePicker
-                name="cutoff"
+                name="cutoffdate"
+                onChange={setCutoff}
+                value={cutoff}
                 required
                 variant="inline"
                 inputVariant="filled"
                 fullWidth
                 ampm={false}
-                value={cutoff}
-                onChange={setCutoff}
                 label="Cut-off Date and Time"
                 format="yyyy/MM/dd HH:mm"
                 disablePast
@@ -97,6 +150,8 @@ export default function CreateForm() {
                 label="Starting Price"
                 name="startPrice"
                 variant="filled"
+                onChange={handleChange}
+                value={auctionDetails.startPrice}
                 fullWidth
                 required
                 // eslint-disable-next-line react/jsx-no-duplicate-props
@@ -120,6 +175,8 @@ export default function CreateForm() {
                 label="Increment"
                 name="increment"
                 variant="filled"
+                onChange={handleChange}
+                value={auctionDetails.increment}
                 fullWidth
                 required
                 // eslint-disable-next-line react/jsx-no-duplicate-props
@@ -143,6 +200,8 @@ export default function CreateForm() {
                 label="Steal Price"
                 name="stealPrice"
                 variant="filled"
+                onChange={handleChange}
+                value={auctionDetails.stealPrice}
                 fullWidth
                 required
                 // eslint-disable-next-line react/jsx-no-duplicate-props
@@ -163,10 +222,14 @@ export default function CreateForm() {
 
             <Grid item>
               {/* IDK PANO MAGUPLOAD NG FILE */}
-              <Button variant="contained" component="label">
-                Upload File
-                <input type="file" name="image" hidden />
-              </Button>
+              Upload File
+              <input
+                type="file"
+                name="image"
+                onChange={handleImageUpload}
+                accept="image/*"
+                required
+              />
             </Grid>
           </Grid>
 
