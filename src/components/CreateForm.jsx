@@ -14,30 +14,13 @@ export default function CreateForm() {
 
   const [image, setImage] = useState({});
 
-  const [setRedirect] = useState(false);
-
-  const [auctionDetails, setAuctionDetails] = useState({
-    title: '',
-    description: '',
-    startPrice: '',
-    incprice: '',
-    stealPrice: '',
-  });
+  // const [setRedirect] = useState(false);
 
   const { register, errors, handleSubmit, formState } = useForm({
     criteriaMode: 'all',
     mode: 'onChange',
   });
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setAuctionDetails((prevDetails) => {
-      return {
-        ...prevDetails,
-        [name]: value,
-      };
-    });
-  }
   const handleImageUpload = (e) => {
     e.preventDefault();
     const file = e.target.files[0];
@@ -45,28 +28,18 @@ export default function CreateForm() {
   };
 
   // Put here DB stuff to save input
-  const onSubmit = (e) => {
-    // const newAuction = {
-    //   file: image,
-    //   title: data.title,
-    //   description: data.description,
-    //   startPrice: data.startPrice,
-    //   incprice: data.increment,
-    //   stealPrice: data.stealPrice,
-    // };
-    // console.log(newAuction);
-    e.preventDefault();
+  const onSubmit = (data) => {
     const form = new FormData();
     form.append('file', image);
-    form.append('title', auctionDetails.title);
-    form.append('description', auctionDetails.description);
-    form.append('startPrice', auctionDetails.startPrice);
-    form.append('incPrice', auctionDetails.increment);
-    form.append('stealPrice', auctionDetails.stealPrice);
+    form.append('title', data.title);
+    form.append('description', data.description);
+    form.append('startPrice', data.startPrice);
+    form.append('incPrice', data.increment);
+    form.append('stealPrice', data.stealPrice);
+    console.log(data);
     console.log(form);
     axios.post('/upload', form).then((res2) => {
       console.log(res2.data);
-      setRedirect(true);
     });
   };
 
@@ -90,8 +63,8 @@ export default function CreateForm() {
                 label="Title"
                 name="title"
                 variant="filled"
-                value={auctionDetails.title}
-                onChange={handleChange}
+                // value={auctionDetails.title}
+                // onChange={handleChange}
                 fullWidth
                 required
                 inputProps={{ maxLength: '30' }}
@@ -108,8 +81,8 @@ export default function CreateForm() {
                 label="Description"
                 name="description"
                 variant="filled"
-                onChange={handleChange}
-                value={auctionDetails.description}
+                // onChange={handleChange}
+                // value={auctionDetails.description}
                 rows={3}
                 rowsMax={12}
                 fullWidth
@@ -150,8 +123,8 @@ export default function CreateForm() {
                 label="Starting Price"
                 name="startPrice"
                 variant="filled"
-                onChange={handleChange}
-                value={auctionDetails.startPrice}
+                // onChange={handleChange}
+                // value={auctionDetails.startPrice}
                 fullWidth
                 required
                 // eslint-disable-next-line react/jsx-no-duplicate-props
@@ -175,8 +148,8 @@ export default function CreateForm() {
                 label="Increment"
                 name="increment"
                 variant="filled"
-                onChange={handleChange}
-                value={auctionDetails.increment}
+                // onChange={handleChange}
+                // value={auctionDetails.increment}
                 fullWidth
                 required
                 // eslint-disable-next-line react/jsx-no-duplicate-props
@@ -200,8 +173,8 @@ export default function CreateForm() {
                 label="Steal Price"
                 name="stealPrice"
                 variant="filled"
-                onChange={handleChange}
-                value={auctionDetails.stealPrice}
+                // onChange={handleChange}
+                // value={auctionDetails.stealPrice}
                 fullWidth
                 required
                 // eslint-disable-next-line react/jsx-no-duplicate-props
@@ -234,13 +207,7 @@ export default function CreateForm() {
           </Grid>
 
           <Grid container item xs={12} alignItems="center" style={{ marginTop: '2vh' }}>
-            <Button
-              onClick={onSubmit}
-              color="primary"
-              variant="contained"
-              disabled={!formState.isValid}
-              type="submit"
-            >
+            <Button color="primary" variant="contained" disabled={!formState.isValid} type="submit">
               Post
             </Button>
           </Grid>
