@@ -17,6 +17,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+router.get('/getAuction', userController.getAuction);
+router.get('/getAllAuction', userController.getAllAuction);
+router.get('/getID', userController.getID);
+
 router.post('/', upload.single('file'), (req, res) => {
   const checkPrice = (req.body.stealPrice - req.body.startPrice) % req.body.incPrice;
   // add validation for date
@@ -32,7 +36,7 @@ router.post('/', upload.single('file'), (req, res) => {
           const newAuction = new Auction({
             title: req.body.title,
             description: req.body.description,
-            cutoffdate: req.body.cutoffdate,
+            cutoffdate: new Date(req.body.cutoffdate),
             startPrice: req.body.startPrice,
             incPrice: req.body.incPrice,
             stealPrice: req.body.stealPrice,
@@ -51,7 +55,5 @@ router.post('/', upload.single('file'), (req, res) => {
     res.redirect('/create');
   }
 });
-
-router.get('/getID', userController.getID);
 
 module.exports = router;
