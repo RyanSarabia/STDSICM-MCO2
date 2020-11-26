@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   contactNum: { type: Number, required: true },
   bio: { type: String, required: false, default: '' },
   dpURL: { type: String, required: true },
-  auctions: { type: mongoose.Schema.Types.ObjectId, ref: 'Auction', default: null },
+  auctions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Auction', default: null }],
 });
 
 module.exports = mongoose.model('User', userSchema);
