@@ -17,15 +17,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post('/', upload.single('file'), (req) => {
+router.post('/', upload.single('file'), (req, res) => {
   const checkPrice = (req.body.stealPrice - req.body.startPrice) % req.body.incPrice;
   // add validation for date
-  if (req.body.startPrice > req.body.stealPrice && checkPrice === 0) {
+  if (req.body.startPrice < req.body.stealPrice && checkPrice === 0) {
     User.findOne({ email: req.session.passport.user.profile.emails[0].value })
       .populate('auctions')
       .exec(async function userAuction(err, user) {
-        await cloudinary.uploader.upload(req.file.path, async (e, result) => {
-          if (e) throw e;
+        await cloudinary.uploader.upload(req.file.path, async (err1, result) => {
+          if (err1) throw err1;
           const urlCreated = result.secure_url;
 
           console.log(urlCreated);
@@ -41,9 +41,14 @@ router.post('/', upload.single('file'), (req) => {
           console.log(user);
           user.auctions.push(newAuction);
           await newAuction.save();
-          await user.save();
+          await user
+            .save()
+            .then(() => res.json('Auction Added!'))
+            .catch((err2) => res.status(400).json(`Error: ${err2}`));
         });
       });
+  } else {
+    res.redirect('/create');
   }
 });
 

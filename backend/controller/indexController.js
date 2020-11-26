@@ -52,10 +52,10 @@ exports.getRegister = async function getRegister(req, res) {
 };
 
 exports.postRegister = async function postRegister(req, res) {
-  const sameContact = await User.countDocuments({ contactNum: req.body.contact });
+  const sameEmail = await User.countDocuments({ contactNum: req.body.email });
   console.log('post register');
   try {
-    if (sameContact === 0) {
+    if (sameEmail === 0) {
       console.log('no same contact');
       const newUser = new User({
         email: req.body.email,

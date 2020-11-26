@@ -14,7 +14,7 @@ export default function CreateForm() {
 
   const [image, setImage] = useState({});
 
-  const [setRedirect] = useState(false);
+  // const [setRedirect] = useState(false);
 
   const { register, errors, handleSubmit, formState } = useForm({
     criteriaMode: 'all',
@@ -40,7 +40,6 @@ export default function CreateForm() {
     console.log(form);
     axios.post('/upload', form).then((res2) => {
       console.log(res2.data);
-      setRedirect(true);
     });
   };
 
