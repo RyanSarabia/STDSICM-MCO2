@@ -6,7 +6,7 @@ import CreateForm from './CreateForm';
 export default function Create() {
   return (
     <Grid container direction="column" alignItems="center" justify="center">
-      <Grid item xs={12} style={{ marginTop: '15vh' }}>
+      <Grid item xs={12} style={{ marginTop: '10vh' }}>
         <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '2vh' }}>
           Create Auction
         </Typography>

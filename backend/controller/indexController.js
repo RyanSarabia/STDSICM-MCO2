@@ -52,7 +52,7 @@ exports.getRegister = async function getRegister(req, res) {
 };
 
 exports.postRegister = async function postRegister(req, res) {
-  const sameEmail = await User.countDocuments({ contactNum: req.body.email });
+  const sameEmail = await User.countDocuments({ email: req.body.email });
   console.log('post register');
   try {
     if (sameEmail === 0) {
