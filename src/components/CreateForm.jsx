@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { DateTimePicker } from '@material-ui/pickers';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
@@ -16,15 +17,25 @@ const datefns = new DateFnsUtils();
 export default function CreateForm() {
   const [redirect, setRedirect] = useState(false);
   const [image, setImage] = useState({});
+  const [previewSource, setPreviewSource] = useState();
 
   const { register, errors, handleSubmit, formState, control, getValues, trigger } = useForm({
     criteriaMode: 'all',
     mode: 'onChange',
   });
 
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
+  };
+
   const handleImageUpload = (e) => {
     e.preventDefault();
     const file = e.target.files[0];
+    previewFile(file);
     setImage(file);
   };
 
@@ -62,14 +73,15 @@ export default function CreateForm() {
   // Does not work with floating point, javascript problem
   const validateStealPrice = (stealPrice) => {
     const values = getValues(['startPrice', 'increment']);
-    if (stealPrice < values.startPrice) {
-      return stealPrice > values.startPrice || 'Must be greater than start price.';
+    const nSteal = parseInt(stealPrice, 10);
+    const nStart = parseInt(values.startPrice, 10);
+    const nIncrement = parseInt(values.increment, 10);
+
+    if (nSteal < nStart) {
+      return nSteal > nStart || 'Must be greater than start price.';
     }
 
-    return (
-      (stealPrice - values.startPrice) % values.increment === 0 ||
-      'Must be consistent with increment'
-    );
+    return (nSteal - nStart) % nIncrement === 0 || 'Must be consistent with increment';
   };
 
   return (
@@ -154,7 +166,7 @@ export default function CreateForm() {
                 </Grid>
               </Grid>
 
-              <Grid container item xs={5} direction="column" spacing={2}>
+              <Grid container item xs={5} direction="column" spacing={2} alignItems="flex-start">
                 <Grid item>
                   <TextField
                     label="Starting Price"
@@ -169,7 +181,8 @@ export default function CreateForm() {
                     inputRef={register({
                       required: 'This field is required.',
                       pattern: {
-                        value: /^[0-9]+([.][0-9]{1,2})?$/,
+                        // value: /^[0-9]+([.][0-9]{1,2})?$/,
+                        value: /^[0-9]+$/,
                         message: 'Input a valid currency value.',
                       },
                     })}
@@ -193,7 +206,8 @@ export default function CreateForm() {
                     inputRef={register({
                       required: 'This field is required.',
                       pattern: {
-                        value: /^[0-9]+([.][0-9]{1,2})?$/,
+                        // value: /^[0-9]+([.][0-9]{1,2})?$/,
+                        value: /^[0-9]+$/,
                         message: 'Input a valid currency value.',
                       },
                     })}
@@ -216,7 +230,8 @@ export default function CreateForm() {
                     inputRef={register({
                       required: 'This field is required.',
                       pattern: {
-                        value: /^[0-9]+([.][0-9]{1,2})?$/,
+                        // value: /^[0-9]+([.][0-9]{1,2})?$/,
+                        value: /^[0-9]+$/,
                         message: 'Input a valid currency value.',
                       },
                       validate: validateStealPrice,
@@ -227,7 +242,6 @@ export default function CreateForm() {
                 </Grid>
 
                 <Grid item>
-                  {/* IDK PANO MAGUPLOAD NG FILE */}
                   <Button variant="contained" component="label">
                     Upload File
                     <input
@@ -236,8 +250,17 @@ export default function CreateForm() {
                       onChange={handleImageUpload}
                       accept="image/*"
                       required
+                      hidden
                     />
                   </Button>
+                </Grid>
+
+                <Grid item>
+                  <Container>
+                    {previewSource && (
+                      <img src={previewSource} alt="Item" style={{ maxWidth: '20vh' }} />
+                    )}
+                  </Container>
                 </Grid>
               </Grid>
 
