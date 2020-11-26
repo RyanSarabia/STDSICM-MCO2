@@ -16,7 +16,7 @@ const auctionSchema = new mongoose.Schema({
   startPrice: { type: Number, required: true },
   incPrice: { type: Number, required: true },
   stealPrice: { type: Number, required: true },
-  photos: { type: String },
+  photo: { type: String },
 });
 
 module.exports = mongoose.model('Auction', auctionSchema);
