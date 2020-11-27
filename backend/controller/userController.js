@@ -12,8 +12,10 @@ exports.getAuction = async function getAuction(req, res) {
           description: auction.description,
           startprice: auction.startPrice,
           cutoff: auction.cutoffdate,
+          postdate: auction.postdate,
           startPrice: auction.startPrice,
           increment: auction.incPrice,
+          currentPrice: auction.currentPrice,
           stealPrice: auction.stealPrice,
           imageurl: auction.photo,
         };
