@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -8,7 +9,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-export default function ExploreCard() {
+export default function ExploreCard({ auction }) {
+  // const cutoff = new Date(auction.cutoff);
+
   return (
     <Container>
       <Paper elevation={5} style={{ height: '50vh', width: '50vw' }}>
@@ -21,20 +24,16 @@ export default function ExploreCard() {
           <Grid item container direction="column" xs={5} spacing={1}>
             <Grid item>
               <Typography variant="h4" style={{ fontWeight: 'bold' }}>
-                Item Name
+                {auction.title}
               </Typography>
             </Grid>
 
             <Grid item>
-              <Typography variant="h7">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed repellat delectus nemo
-                nisi architecto. Quis accusamus eveniet velit animi, officia odit earum doloribus,
-                laboriosam sit adipisci, ab officiis nisi at!
-              </Typography>
+              <Typography variant="h7">{auction.description}</Typography>
             </Grid>
 
             <Grid item>
-              <Chip label="Tier" />
+              <Chip label={auction.cutoffdate} />
             </Grid>
             <Grid item>
               <Button color="primary" variant="contained">
@@ -50,7 +49,12 @@ export default function ExploreCard() {
                   <Typography variant="h5"> Current</Typography>
                 </Grid>
                 <Grid item>
-                  <Chip label="Php 5.00" />
+                  <Chip
+                    label={new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: 'PHP',
+                    }).format(auction.currentPrice)}
+                  />
                 </Grid>
               </Grid>
               <Grid item container direction="column" xs={6} alignItems="center">
@@ -58,7 +62,12 @@ export default function ExploreCard() {
                   <Typography variant="h5"> Steal </Typography>
                 </Grid>
                 <Grid item>
-                  <Chip label="Php 10.00" />
+                  <Chip
+                    label={new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: 'PHP',
+                    }).format(auction.stealPrice)}
+                  />
                 </Grid>
               </Grid>
             </Grid>
@@ -68,12 +77,12 @@ export default function ExploreCard() {
                 <CardMedia
                   component="image"
                   style={{ height: 200, width: 200 }}
-                  image="logo512.png"
+                  image={auction.photo}
                 />
               </Card>
             </Grid>
             <Grid item>
-              <Chip label="Post Date" size="small" variant="outlined" />
+              <Chip label={auction.postdate} size="small" variant="outlined" />
             </Grid>
           </Grid>
         </Grid>
@@ -81,3 +90,9 @@ export default function ExploreCard() {
     </Container>
   );
 }
+// {
+//   new Intl.NumberFormat('en-US', {
+//     style: 'currency',
+//     currency: 'PHP',
+//   })
+// }

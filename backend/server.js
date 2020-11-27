@@ -55,7 +55,7 @@ app.use((req, res, next) => {
 
 app.use('/', indexRoute);
 app.use('/register', UserAuth.userIsLoggedIn, UserAuth.userIsNew, indexRoute);
-app.use('/upload', userRoute);
+app.use('/user', userRoute);
 // app.use(
 //   '/api',
 //   createProxyMiddleware({

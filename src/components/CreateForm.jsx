@@ -53,7 +53,7 @@ export default function CreateForm() {
         form.append('stealPrice', data.stealPrice);
         console.log(data);
         console.log(form);
-        axios.post('/upload', form).then((res2) => {
+        axios.post('/user/upload', form).then((res2) => {
           console.log(res2.data);
           setRedirect(true);
         });
