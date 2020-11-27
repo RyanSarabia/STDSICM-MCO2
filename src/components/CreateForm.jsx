@@ -44,6 +44,15 @@ export default function CreateForm() {
     trigger().then((res) => {
       // Returns true if no errors
       if (res) {
+        // const form = {
+        //   file: image,
+        //   title: data.title,
+        //   description: data.description,
+        //   startPrice: data.startPrice,
+        //   incPrice: data.increment,
+        //   stealPrice: data.stealPrice,
+        //   postDate: datefns.date(),
+        // };
         const form = new FormData();
         form.append('file', image);
         form.append('title', data.title);
@@ -51,6 +60,8 @@ export default function CreateForm() {
         form.append('startPrice', data.startPrice);
         form.append('incPrice', data.increment);
         form.append('stealPrice', data.stealPrice);
+        form.append('cutoffdate', data.cutoff);
+        form.append('postDate', datefns.date());
         console.log(data);
         console.log(form);
         axios.post('/user/upload', form).then((res2) => {

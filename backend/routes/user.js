@@ -41,6 +41,8 @@ router.post('/upload', upload.single('file'), (req, res) => {
             incPrice: req.body.incPrice,
             stealPrice: req.body.stealPrice,
             photos: urlCreated,
+            postDate: new Date(req.body.postDate),
+            currentPrice: req.body.startPrice,
           });
           console.log(user);
           user.auctions.push(newAuction);
