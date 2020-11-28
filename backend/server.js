@@ -55,7 +55,6 @@ app.use((req, res, next) => {
 
 app.use('/', indexRoute);
 app.use('/register', UserAuth.userIsLoggedIn, UserAuth.userIsNew, indexRoute);
-app.use('/user', userRoute);
 app.use('/explore', userRoute);
 app.use('/upload', userRoute);
 app.use('/create', userRoute);
