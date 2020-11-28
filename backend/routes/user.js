@@ -21,7 +21,7 @@ router.get('/getAuction', userController.getAuction);
 router.get('/getAllAuction', userController.getAllAuction);
 router.get('/getID', userController.getID);
 
-router.post('/upload', upload.single('file'), (req, res) => {
+router.post('/', upload.single('file'), (req, res) => {
   const checkPrice = (req.body.stealPrice - req.body.startPrice) % req.body.incPrice;
   // add validation for date
   if (req.body.startPrice < req.body.stealPrice && checkPrice === 0) {
@@ -36,9 +36,11 @@ router.post('/upload', upload.single('file'), (req, res) => {
           const newAuction = new Auction({
             title: req.body.title,
             description: req.body.description,
-            cutoffdate: new Date(req.body.cutoffdate),
+            cutoffdate: req.body.cutoffdate,
+            postdate: req.body.postdate,
             startPrice: req.body.startPrice,
             incPrice: req.body.incPrice,
+            currentPrice: req.body.startPrice,
             stealPrice: req.body.stealPrice,
             photos: urlCreated,
             postDate: new Date(req.body.postDate),
