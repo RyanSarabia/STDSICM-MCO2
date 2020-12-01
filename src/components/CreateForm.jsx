@@ -25,11 +25,7 @@ export default function CreateForm() {
   });
 
   const previewFile = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setPreviewSource(reader.result);
-    };
+    setPreviewSource(URL.createObjectURL(file));
   };
 
   const handleImageUpload = (e) => {
@@ -88,7 +84,7 @@ export default function CreateForm() {
     const nStart = parseInt(values.startPrice, 10);
     const nIncrement = parseInt(values.increment, 10);
 
-    if (nSteal < nStart) {
+    if (nSteal <= nStart) {
       return nSteal > nStart || 'Must be greater than start price.';
     }
 

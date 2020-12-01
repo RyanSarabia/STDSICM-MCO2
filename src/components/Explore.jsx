@@ -7,7 +7,7 @@ export default function Explore() {
   const [auctions, setAuctions] = useState('');
 
   useEffect(() => {
-    axios.get('/user/getAllAuction').then((res) => {
+    axios.get('/explore/getAllAuction').then((res) => {
       setAuctions(res.data);
       console.log(res.data);
     });
