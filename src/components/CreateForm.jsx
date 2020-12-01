@@ -64,7 +64,7 @@ export default function CreateForm() {
         form.append('postDate', datefns.date());
         console.log(data);
         console.log(form);
-        axios.post('/user/upload', form).then((res2) => {
+        axios.post('/upload', form).then((res2) => {
           console.log(res2.data);
           setRedirect(true);
         });
@@ -258,8 +258,8 @@ export default function CreateForm() {
                     <input
                       type="file"
                       name="image"
-                      onChange={handleImageUpload}
                       accept="image/*"
+                      onChange={handleImageUpload}
                       required
                       hidden
                     />

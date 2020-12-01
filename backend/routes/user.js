@@ -21,11 +21,11 @@ router.get('/getAuction', userController.getAuction);
 router.get('/getAllAuction', userController.getAllAuction);
 router.get('/getID', userController.getID);
 
-router.post('/', upload.single('file'), (req, res) => {
+router.post('/', upload.single('file'), async (req, res) => {
   const checkPrice = (req.body.stealPrice - req.body.startPrice) % req.body.incPrice;
   // add validation for date
   if (req.body.startPrice < req.body.stealPrice && checkPrice === 0) {
-    User.findOne({ email: req.session.passport.user.profile.emails[0].value })
+    await User.findOne({ email: req.session.passport.user.profile.emails[0].value })
       .populate('auctions')
       .exec(async function userAuction(err, user) {
         await cloudinary.uploader.upload(req.file.path, async (err1, result) => {
@@ -42,11 +42,9 @@ router.post('/', upload.single('file'), (req, res) => {
             incPrice: req.body.incPrice,
             currentPrice: req.body.startPrice,
             stealPrice: req.body.stealPrice,
-            photos: urlCreated,
-            postDate: new Date(req.body.postDate),
-            currentPrice: req.body.startPrice,
+            photo: urlCreated,
+            postDate: req.body.postDate,
           });
-          console.log(user);
           user.auctions.push(newAuction);
           await newAuction.save();
           await user
