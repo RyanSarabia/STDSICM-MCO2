@@ -38,19 +38,20 @@ router.post('/', upload.single('file'), async (req, res) => {
         await cloudinary.uploader.upload(file, async (err1, result) => {
           if (err1) throw err1;
           const urlCreated = result.secure_url;
+          const postdate = new Date(req.body.postDate);
+          const cutoffdate = new Date(req.body.cutoffdate);
 
           console.log(urlCreated);
           const newAuction = new Auction({
             title: req.body.title,
             description: req.body.description,
-            cutoffdate: req.body.cutoffdate,
-            postdate: req.body.postdate,
+            cutoffdate,
+            postdate,
             startPrice: req.body.startPrice,
             incPrice: req.body.incPrice,
             currentPrice: req.body.startPrice,
             stealPrice: req.body.stealPrice,
             photo: urlCreated,
-            postDate: req.body.postDate,
           });
           user.auctions.push(newAuction);
           await newAuction.save();
