@@ -32,7 +32,7 @@ exports.getAllAuction = async function getAllAuction(req, res) {
     const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
     if (user) {
       await Auction.find({})
-        .sort({ cutoffdate: -1 })
+        .sort({ postdate: -1 })
         .exec(function allAuction(err, results) {
           if (err) throw err;
 
