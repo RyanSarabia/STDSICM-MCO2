@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import ExploreCard from './ExploreCard';
+import Search from './Search';
 
 export default function Explore() {
   const [auctions, setAuctions] = useState('');
@@ -16,7 +17,17 @@ export default function Explore() {
   return (
     <div>
       <p> Explore page </p>
-      <Grid container direction="column" xs={12} alignItems="center" justify="center" spacing={5}>
+      <Grid
+        item
+        container
+        xs={12}
+        alignItems="center"
+        justify="center"
+        style={{ marginBottom: '5vh' }}
+      >
+        <Search />
+      </Grid>
+      <Grid container direction="column" alignItems="center" justify="center" spacing={5}>
         {auctions &&
           auctions.map((auction) => {
             return (
