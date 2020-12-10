@@ -10,14 +10,14 @@ const userController = require('../controller/userController');
 
 const parser = new DatauriParser();
 
-// const storage = multer.diskStorage({
-//   destination(req, file, callback) {
-//     callback(null, './files');
-//   },
-//   filename(req, file, callback) {
-//     callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
-//   },
-// });
+function convertTZ(date) {
+  return new Date(
+    (typeof date === 'string' ? new Date(date) : date).toLocaleString('en-US', {
+      timeZone: 'Asia/Manila',
+    })
+  );
+}
+
 const storage = multer.memoryStorage();
 
 const upload = multer({ storage });
@@ -30,39 +30,43 @@ router.post('/', upload.single('file'), async (req, res) => {
   const checkPrice = (req.body.stealPrice - req.body.startPrice) % req.body.incPrice;
   const file = parser.format(path.extname(req.file.originalname).toString(), req.file.buffer)
     .content;
-  // add validation for date
-  if (req.body.startPrice < req.body.stealPrice && checkPrice === 0) {
-    await User.findOne({ email: req.session.passport.user.profile.emails[0].value })
-      .populate('auctions')
-      .exec(async function userAuction(err, user) {
-        await cloudinary.uploader.upload(file, async (err1, result) => {
-          if (err1) throw err1;
-          const urlCreated = result.secure_url;
-          const postdate = new Date(req.body.postDate);
-          const cutoffdate = new Date(req.body.cutoffdate);
+  const postdate = convertTZ(new Date(req.body.postDate));
+  const cutoffdate = convertTZ(new Date(req.body.cutoffdate));
 
-          console.log(urlCreated);
-          const newAuction = new Auction({
-            title: req.body.title,
-            description: req.body.description,
-            cutoffdate,
-            postdate,
-            startPrice: req.body.startPrice,
-            incPrice: req.body.incPrice,
-            currentPrice: req.body.startPrice,
-            stealPrice: req.body.stealPrice,
-            photo: urlCreated,
+  try {
+    if (checkPrice === 0) {
+      await User.findOne({ email: req.session.passport.user.profile.emails[0].value })
+        .populate('auctions')
+        .exec(async function userAuction(err, user) {
+          await cloudinary.uploader.upload(file, async (err1, result) => {
+            if (err1) throw err1;
+            const urlCreated = result.secure_url;
+
+            console.log(urlCreated);
+            const newAuction = new Auction({
+              title: req.body.title,
+              description: req.body.description,
+              cutoffdate,
+              postdate,
+              startPrice: req.body.startPrice,
+              incPrice: req.body.incPrice,
+              currentPrice: req.body.startPrice,
+              stealPrice: req.body.stealPrice,
+              photo: urlCreated,
+            });
+            user.auctions.push(newAuction);
+            await newAuction.save();
+            await user
+              .save()
+              .then(() => res.json('Auction Added!'))
+              .catch((err2) => res.status(400).json(`Error: ${err2}`));
           });
-          user.auctions.push(newAuction);
-          await newAuction.save();
-          await user
-            .save()
-            .then(() => res.json('Auction Added!'))
-            .catch((err2) => res.status(400).json(`Error: ${err2}`));
         });
-      });
-  } else {
-    res.redirect('/create');
+    } else {
+      res.redirect('/create');
+    }
+  } catch (e) {
+    console.log(e);
   }
 });
 
