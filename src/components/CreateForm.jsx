@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import DateFnsUtils from '@date-io/date-fns';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const datefns = new DateFnsUtils();
 
@@ -18,6 +19,7 @@ export default function CreateForm() {
   const [redirect, setRedirect] = useState(false);
   const [image, setImage] = useState({});
   const [previewSource, setPreviewSource] = useState();
+  const [loading, setLoading] = useState(false);
 
   const { register, errors, handleSubmit, formState, control, getValues, trigger } = useForm({
     criteriaMode: 'all',
@@ -37,6 +39,7 @@ export default function CreateForm() {
 
   // Put here DB stuff to save input
   const onSubmit = (data) => {
+    setLoading(true);
     trigger().then((res) => {
       // Returns true if no errors
       if (res) {
@@ -282,11 +285,16 @@ export default function CreateForm() {
                   onClick={onSubmit}
                   color="primary"
                   variant="contained"
-                  disabled={!formState.isValid}
+                  disabled={!formState.isValid || loading}
                   type="submit"
                 >
                   Post
                 </Button>
+                <LinearProgress
+                  color="primary"
+                  style={{ marginTop: '20px', width: '100%' }}
+                  hidden={!loading}
+                />
               </Grid>
             </Grid>
           </form>
