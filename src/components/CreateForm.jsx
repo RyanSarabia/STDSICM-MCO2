@@ -77,10 +77,14 @@ export default function CreateForm() {
     );
   };
 
+  const triggerValidate = () => {
+    trigger('stealPrice');
+  };
+
   // Does not work with floating point, javascript problem
-  const validateStealPrice = (stealPrice) => {
-    const values = getValues(['startPrice', 'increment']);
-    const nSteal = parseInt(stealPrice, 10);
+  const validateStealPrice = () => {
+    const values = getValues(['stealPrice', 'startPrice', 'increment']);
+    const nSteal = parseInt(values.stealPrice, 10);
     const nStart = parseInt(values.startPrice, 10);
     const nIncrement = parseInt(values.increment, 10);
 
@@ -181,6 +185,7 @@ export default function CreateForm() {
                     variant="filled"
                     fullWidth
                     required
+                    onBlur={triggerValidate}
                     // eslint-disable-next-line react/jsx-no-duplicate-props
                     InputProps={{
                       startAdornment: <InputAdornment position="start"> Php </InputAdornment>,
@@ -206,6 +211,7 @@ export default function CreateForm() {
                     fullWidth
                     required
                     defaultValue={1}
+                    onBlur={triggerValidate}
                     // eslint-disable-next-line react/jsx-no-duplicate-props
                     InputProps={{
                       startAdornment: <InputAdornment position="start"> Php </InputAdornment>,
