@@ -59,17 +59,17 @@ exports.getID = async function getID(req, res) {
 
 exports.getSearch = async function getSearch(req, res) {
   const input = req.query.search;
-
   try {
-    Auction.find({ $text: { $search: input } })
+    Auction.find({ title: { $regex: input } })
       .sort({ postdate: -1 })
-      .exec(function (err, results) {
+      .exec(function findAuction(err, results) {
         if (err) throw err;
 
         if (results) {
-          console.log(results);
           res.send(results);
-        } else res.send('No results');
+        } else {
+          res.send('No results');
+        }
       });
   } catch (e) {
     console.log(e);
