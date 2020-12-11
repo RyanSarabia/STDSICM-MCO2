@@ -56,3 +56,22 @@ exports.getID = async function getID(req, res) {
     console.log(e);
   }
 };
+
+exports.getSearch = async function getSearch(req, res) {
+  const input = req.query.search;
+
+  try {
+    Auction.find({ $text: { $search: input } })
+      .sort({ postdate: -1 })
+      .exec(function (err, results) {
+        if (err) throw err;
+
+        if (results) {
+          console.log(results);
+          res.send(results);
+        } else res.send('No results');
+      });
+  } catch (e) {
+    console.log(e);
+  }
+};
