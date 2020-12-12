@@ -9,6 +9,39 @@ export default function Explore() {
 
   useEffect(() => {
     axios.get('/explore/getAllAuction').then((res) => {
+      let i;
+
+      for (i = 0; i < res.data.length; i += 1) {
+        const oldpostdate = new Date(res.data[i].postdate);
+        let newpostdate = oldpostdate.getMonth();
+        newpostdate += '/';
+        newpostdate += oldpostdate.getDay();
+        newpostdate += '/';
+        newpostdate += oldpostdate.getFullYear();
+        newpostdate += ' ';
+        newpostdate += oldpostdate.getHours();
+        newpostdate += ':';
+        newpostdate += oldpostdate.getMinutes();
+        newpostdate += ':';
+        newpostdate += oldpostdate.getSeconds();
+
+        const oldcutoffdate = new Date(res.data[i].cutoffdate);
+        let newcutoffdate = oldcutoffdate.getMonth();
+        newcutoffdate += '/';
+        newcutoffdate += oldcutoffdate.getDay();
+        newcutoffdate += '/';
+        newcutoffdate += oldcutoffdate.getFullYear();
+        newcutoffdate += ' ';
+        newcutoffdate += oldcutoffdate.getHours();
+        newcutoffdate += ':';
+        newcutoffdate += oldcutoffdate.getMinutes();
+        newcutoffdate += ':';
+        newcutoffdate += oldcutoffdate.getSeconds();
+
+        res.data[i].cutoffdate = newcutoffdate;
+        res.data[i].postdate = newpostdate;
+      }
+
       setAuctions(res.data);
       console.log(res.data);
     });
