@@ -39,8 +39,8 @@ export default function CreateForm() {
 
   // Put here DB stuff to save input
   const onSubmit = (data) => {
-    setLoading(true);
     trigger().then((res) => {
+      setLoading(true);
       // Returns true if no errors
       if (res) {
         // const form = {
@@ -52,6 +52,7 @@ export default function CreateForm() {
         //   stealPrice: data.stealPrice,
         //   postDate: datefns.date(),
         // };
+        console.log(data.title);
         const form = new FormData();
         form.append('file', image);
         form.append('title', data.title);
