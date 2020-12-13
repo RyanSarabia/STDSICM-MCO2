@@ -8,6 +8,7 @@ const options = {
 };
 
 mongoose.connect(databaseURL, options);
+mongoose.set('useCreateIndex', true);
 
 const auctionSchema = new mongoose.Schema({
   title: { type: String, required: true },
