@@ -21,4 +21,5 @@ const auctionSchema = new mongoose.Schema({
   photo: { type: String },
 });
 
+auctionSchema.index({ title: 'text' });
 module.exports = mongoose.model('Auction', auctionSchema);

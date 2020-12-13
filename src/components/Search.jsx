@@ -5,6 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import axios from 'axios';
 
 export default function Search() {
   const [searchInput, setSearch] = useState('');
@@ -16,7 +17,9 @@ export default function Search() {
   const handleSubmit = () => {
     if (searchInput !== '') {
       console.log(searchInput);
-      // code here for results page
+      axios.get(`/explore/getAllAuction?search=${searchInput}`).then((res) => {
+        console.log(res.data);
+      });
     }
   };
 

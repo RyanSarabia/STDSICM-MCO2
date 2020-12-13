@@ -28,19 +28,42 @@ exports.getAuction = async function getAuction(req, res) {
 };
 
 exports.getAllAuction = async function getAllAuction(req, res) {
-  try {
-    const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
-    if (user) {
-      await Auction.find({})
-        .sort({ postdate: -1 })
-        .exec(function allAuction(err, results) {
-          if (err) throw err;
+  const input = req.query.search;
+  console.log(input);
+  if (input) {
+    try {
+      const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
+      if (user) {
+        Auction.find({ title: { $regex: input } })
+          .sort({ postdate: -1 })
+          .exec(function findAuction(err, results) {
+            if (err) throw err;
 
-          res.send(results);
-        });
-    } else res.redirect('/explore');
-  } catch (e) {
-    console.log(e);
+            if (results) {
+              res.send(results);
+            } else {
+              res.send('No results');
+            }
+          });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  } else {
+    try {
+      const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
+      if (user) {
+        await Auction.find({})
+          .sort({ postdate: -1 })
+          .exec(function allAuction(err, results) {
+            if (err) throw err;
+
+            res.send(results);
+          });
+      } else res.redirect('/explore');
+    } catch (e) {
+      console.log(e);
+    }
   }
 };
 
@@ -59,17 +82,17 @@ exports.getID = async function getID(req, res) {
 
 exports.getSearch = async function getSearch(req, res) {
   const input = req.query.search;
-
   try {
-    Auction.find({ $text: { $search: input } })
+    Auction.find({ title: { $regex: input } })
       .sort({ postdate: -1 })
-      .exec(function (err, results) {
+      .exec(function findAuction(err, results) {
         if (err) throw err;
 
         if (results) {
-          console.log(results);
           res.send(results);
-        } else res.send('No results');
+        } else {
+          res.send('No results');
+        }
       });
   } catch (e) {
     console.log(e);
