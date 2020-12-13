@@ -52,7 +52,6 @@ export default function CreateForm() {
         //   stealPrice: data.stealPrice,
         //   postDate: datefns.date(),
         // };
-        console.log(data.title);
         const form = new FormData();
         form.append('file', image);
         form.append('title', data.title);
@@ -283,7 +282,6 @@ export default function CreateForm() {
 
               <Grid container item xs={12} alignItems="center" style={{ marginTop: '2vh' }}>
                 <Button
-                  onClick={onSubmit}
                   color="primary"
                   variant="contained"
                   disabled={!formState.isValid || loading}
