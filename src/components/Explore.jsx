@@ -3,6 +3,7 @@ import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import ExploreCard from './ExploreCard';
 import Search from './Search';
+import PaginationBar from './PaginationBar';
 
 export default function Explore() {
   const [auctions, setAuctions] = useState('');
@@ -27,7 +28,7 @@ export default function Explore() {
       >
         <Search />
       </Grid>
-      <Grid container direction="column" alignItems="center" justify="center" spacing={5}>
+      <Grid container direction="column" xs={12} alignItems="center" justify="center" spacing={5}>
         {auctions &&
           auctions.map((auction) => {
             return (
@@ -37,6 +38,7 @@ export default function Explore() {
             );
           })}
       </Grid>
+      <PaginationBar />
     </div>
   );
 }
