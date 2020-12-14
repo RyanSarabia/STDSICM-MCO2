@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -8,6 +9,8 @@ import SearchIcon from '@material-ui/icons/Search';
 
 export default function Search() {
   const [searchInput, setSearch] = useState('');
+  const location = useLocation();
+  const history = useHistory();
 
   const handleChange = (e) => {
     setSearch(e.target.value);
@@ -15,8 +18,10 @@ export default function Search() {
 
   const handleSubmit = () => {
     if (searchInput !== '') {
-      console.log(searchInput);
-      // code here for results page
+      const query = new URLSearchParams(location.search);
+      query.set('search', searchInput);
+      history.push(`/explore?${query}`);
+      window.location.reload();
     }
   };
 

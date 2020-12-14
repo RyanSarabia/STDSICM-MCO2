@@ -8,6 +8,7 @@ const options = {
 };
 
 mongoose.connect(databaseURL, options);
+mongoose.set('useCreateIndex', true);
 
 const auctionSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -21,4 +22,5 @@ const auctionSchema = new mongoose.Schema({
   photo: { type: String },
 });
 
+auctionSchema.index({ title: 'text' });
 module.exports = mongoose.model('Auction', auctionSchema);

@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import DateFnsUtils from '@date-io/date-fns';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const datefns = new DateFnsUtils();
 
@@ -18,6 +19,7 @@ export default function CreateForm() {
   const [redirect, setRedirect] = useState(false);
   const [image, setImage] = useState({});
   const [previewSource, setPreviewSource] = useState();
+  const [loading, setLoading] = useState(false);
 
   const { register, errors, handleSubmit, formState, control, getValues, trigger } = useForm({
     criteriaMode: 'all',
@@ -38,6 +40,7 @@ export default function CreateForm() {
   // Put here DB stuff to save input
   const onSubmit = (data) => {
     trigger().then((res) => {
+      setLoading(true);
       // Returns true if no errors
       if (res) {
         // const form = {
@@ -77,10 +80,14 @@ export default function CreateForm() {
     );
   };
 
+  const triggerValidate = () => {
+    trigger('stealPrice');
+  };
+
   // Does not work with floating point, javascript problem
-  const validateStealPrice = (stealPrice) => {
-    const values = getValues(['startPrice', 'increment']);
-    const nSteal = parseInt(stealPrice, 10);
+  const validateStealPrice = () => {
+    const values = getValues(['stealPrice', 'startPrice', 'increment']);
+    const nSteal = parseInt(values.stealPrice, 10);
     const nStart = parseInt(values.startPrice, 10);
     const nIncrement = parseInt(values.increment, 10);
 
@@ -181,6 +188,7 @@ export default function CreateForm() {
                     variant="filled"
                     fullWidth
                     required
+                    onBlur={triggerValidate}
                     // eslint-disable-next-line react/jsx-no-duplicate-props
                     InputProps={{
                       startAdornment: <InputAdornment position="start"> Php </InputAdornment>,
@@ -206,6 +214,7 @@ export default function CreateForm() {
                     fullWidth
                     required
                     defaultValue={1}
+                    onBlur={triggerValidate}
                     // eslint-disable-next-line react/jsx-no-duplicate-props
                     InputProps={{
                       startAdornment: <InputAdornment position="start"> Php </InputAdornment>,
@@ -273,14 +282,18 @@ export default function CreateForm() {
 
               <Grid container item xs={12} alignItems="center" style={{ marginTop: '2vh' }}>
                 <Button
-                  onClick={onSubmit}
                   color="primary"
                   variant="contained"
-                  disabled={!formState.isValid}
+                  disabled={!formState.isValid || loading}
                   type="submit"
                 >
                   Post
                 </Button>
+                <LinearProgress
+                  color="primary"
+                  style={{ marginTop: '20px', width: '100%' }}
+                  hidden={!loading}
+                />
               </Grid>
             </Grid>
           </form>
