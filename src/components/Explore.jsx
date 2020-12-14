@@ -39,9 +39,15 @@ export default function Explore() {
 
       for (i = 0; i < res.data.length; i += 1) {
         const oldpostdate = new Date(res.data[i].postdate);
-        let newpostdate = oldpostdate.getMonth();
+        /** console.log('Old post date: ');
+        console.log(oldpostdate);
+        console.log('Post month: ');
+        console.log(oldpostdate.getMonth()); */
+        console.log('Old post date: ');
+        console.log(oldpostdate);
+        let newpostdate = oldpostdate.getMonth() + 1;
         newpostdate += '/';
-        newpostdate += oldpostdate.getDay();
+        newpostdate += oldpostdate.getDate();
         newpostdate += '/';
         newpostdate += oldpostdate.getFullYear();
         newpostdate += ' ';
@@ -50,11 +56,15 @@ export default function Explore() {
         newpostdate += oldpostdate.getMinutes();
         newpostdate += ':';
         newpostdate += oldpostdate.getSeconds();
+        console.log('New post date: ');
+        console.log(newpostdate);
 
         const oldcutoffdate = new Date(res.data[i].cutoffdate);
-        let newcutoffdate = oldcutoffdate.getMonth();
+        console.log('Old cut off date: ');
+        console.log(oldcutoffdate);
+        let newcutoffdate = oldcutoffdate.getMonth() + 1;
         newcutoffdate += '/';
-        newcutoffdate += oldcutoffdate.getDay();
+        newcutoffdate += oldcutoffdate.getDate();
         newcutoffdate += '/';
         newcutoffdate += oldcutoffdate.getFullYear();
         newcutoffdate += ' ';
@@ -63,6 +73,9 @@ export default function Explore() {
         newcutoffdate += oldcutoffdate.getMinutes();
         newcutoffdate += ':';
         newcutoffdate += oldcutoffdate.getSeconds();
+
+        console.log('New post date: ');
+        console.log(newcutoffdate);
 
         res.data[i].cutoffdate = newcutoffdate;
         res.data[i].postdate = newpostdate;
