@@ -24,6 +24,7 @@ function formatDate(oldDate) {
 
 export default function Explore() {
   const [auctions, setAuctions] = useState('');
+  const [auctionCount, setCount] = useState('');
   const location = useLocation();
   // const query = new URLSearchParams(location.search);
 
@@ -62,7 +63,8 @@ export default function Explore() {
         res.data[i].cutoffdate = formatDate(cutoffdate);
       }
 
-      setAuctions(res.data);
+      setAuctions(res.data.auctions);
+      setCount(res.data.count);
       console.log(res.data);
       window.scrollTo(0, 0);
     });
@@ -91,7 +93,19 @@ export default function Explore() {
             );
           })}
       </Grid>
-      <PaginationBar />
+
+      {auctionCount > 10 && (
+        <Grid
+          container
+          xs={12}
+          alignItems="center"
+          justify="center"
+          style={{ marginTop: '4vh', marginBottom: '4vh' }}
+        >
+          <PaginationBar pageCount={Math.ceil(auctionCount / 10, 10)} />
+        </Grid>
+      )}
+      {/* {console.log(Math.ceil(auctionCount / 10, 10))} */}
     </div>
   );
 }

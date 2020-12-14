@@ -3,16 +3,21 @@ import { Route, Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 
-export default function PaginationBar() {
+// eslint-disable-next-line react/prop-types
+export default function PaginationBar({ pageCount }) {
   return (
     <Route>
       {({ location }) => {
         const query = new URLSearchParams(location.search);
         const page = parseInt(query.get('page') || '1', 10);
+        console.log('PAGE COUNT', pageCount);
         return (
           <Pagination
             page={page}
-            count={10}
+            count={pageCount}
+            color="primary"
+            size="large"
+            variant="outlined"
             renderItem={(item) => (
               <PaginationItem
                 component={Link}
