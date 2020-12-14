@@ -5,6 +5,22 @@ import { useLocation } from 'react-router-dom';
 import ExploreCard from './ExploreCard';
 import Search from './Search';
 
+function formatDate(oldDate) {
+  let newDate = oldDate.getMonth() + 1;
+  newDate += '/';
+  newDate += oldDate.getDate();
+  newDate += '/';
+  newDate += oldDate.getFullYear();
+  newDate += ' ';
+  newDate += oldDate.getHours();
+  newDate += ':';
+  newDate += oldDate.getMinutes();
+  newDate += ':';
+  newDate += oldDate.getSeconds();
+
+  return newDate;
+}
+
 export default function Explore() {
   const [auctions, setAuctions] = useState('');
   const location = useLocation();
@@ -38,47 +54,11 @@ export default function Explore() {
       let i;
 
       for (i = 0; i < res.data.length; i += 1) {
-        const oldpostdate = new Date(res.data[i].postdate);
-        /** console.log('Old post date: ');
-        console.log(oldpostdate);
-        console.log('Post month: ');
-        console.log(oldpostdate.getMonth()); */
-        console.log('Old post date: ');
-        console.log(oldpostdate);
-        let newpostdate = oldpostdate.getMonth() + 1;
-        newpostdate += '/';
-        newpostdate += oldpostdate.getDate();
-        newpostdate += '/';
-        newpostdate += oldpostdate.getFullYear();
-        newpostdate += ' ';
-        newpostdate += oldpostdate.getHours();
-        newpostdate += ':';
-        newpostdate += oldpostdate.getMinutes();
-        newpostdate += ':';
-        newpostdate += oldpostdate.getSeconds();
-        console.log('New post date: ');
-        console.log(newpostdate);
+        const postdate = new Date(res.data[i].postdate);
+        const cutoffdate = new Date(res.data[i].cutoffdate);
 
-        const oldcutoffdate = new Date(res.data[i].cutoffdate);
-        console.log('Old cut off date: ');
-        console.log(oldcutoffdate);
-        let newcutoffdate = oldcutoffdate.getMonth() + 1;
-        newcutoffdate += '/';
-        newcutoffdate += oldcutoffdate.getDate();
-        newcutoffdate += '/';
-        newcutoffdate += oldcutoffdate.getFullYear();
-        newcutoffdate += ' ';
-        newcutoffdate += oldcutoffdate.getHours();
-        newcutoffdate += ':';
-        newcutoffdate += oldcutoffdate.getMinutes();
-        newcutoffdate += ':';
-        newcutoffdate += oldcutoffdate.getSeconds();
-
-        console.log('New post date: ');
-        console.log(newcutoffdate);
-
-        res.data[i].cutoffdate = newcutoffdate;
-        res.data[i].postdate = newpostdate;
+        res.data[i].postdate = formatDate(postdate);
+        res.data[i].cutoffdate = formatDate(cutoffdate);
       }
 
       setAuctions(res.data);
