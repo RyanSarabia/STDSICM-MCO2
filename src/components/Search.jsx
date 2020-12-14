@@ -21,7 +21,6 @@ export default function Search() {
       const query = new URLSearchParams(location.search);
       query.set('search', searchInput);
       history.push(`/explore?${query}`);
-      window.location.reload();
     }
   };
 
