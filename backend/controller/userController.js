@@ -29,13 +29,17 @@ exports.getAuction = async function getAuction(req, res) {
 
 exports.getAllAuction = async function getAllAuction(req, res) {
   const input = req.query.search;
-  console.log(input);
+  const pageNum = req.query.page;
+  const itemsPerPage = 10;
+
   if (input) {
     try {
       const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
       if (user) {
         Auction.find({ title: { $regex: input, $options: 'i' } })
           .sort({ postdate: -1 })
+          .skip((pageNum - 1) * itemsPerPage)
+          .limit(itemsPerPage)
           .exec(function findAuction(err, results) {
             if (err) throw err;
 
@@ -55,6 +59,8 @@ exports.getAllAuction = async function getAllAuction(req, res) {
       if (user) {
         await Auction.find({})
           .sort({ postdate: -1 })
+          .skip((pageNum - 1) * itemsPerPage)
+          .limit(itemsPerPage)
           .exec(function allAuction(err, results) {
             if (err) throw err;
 
