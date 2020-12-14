@@ -64,8 +64,9 @@ export default function Explore() {
 
       setAuctions(res.data);
       console.log(res.data);
+      window.scrollTo(0, 0);
     });
-  }, []);
+  }, [location]);
 
   return (
     <div>
