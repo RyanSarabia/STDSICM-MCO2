@@ -16,7 +16,9 @@ export default function PaginationBar() {
             renderItem={(item) => (
               <PaginationItem
                 component={Link}
-                to={`/explore${item.page === 1 ? '' : `?page=${item.page}`}`}
+                to={`/explore${item.page === 1 ? '' : `?page=${item.page}`}${
+                  query.get('search') === null ? '' : `?search=${query.get('search')}`
+                }`}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...item}
               />
