@@ -36,6 +36,9 @@ exports.getAllAuction = async function getAllAuction(req, res) {
     try {
       const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
       if (user) {
+        const count = await Auction.find({
+          title: { $regex: input, $options: 'i' },
+        }).countDocuments();
         Auction.find({ title: { $regex: input, $options: 'i' } })
           .sort({ postdate: -1 })
           .skip((pageNum - 1) * itemsPerPage)
@@ -44,7 +47,12 @@ exports.getAllAuction = async function getAllAuction(req, res) {
             if (err) throw err;
 
             if (results) {
-              res.send(results);
+              const result = {
+                count,
+                auctions: results,
+              };
+              console.log(count);
+              res.send(result);
             } else {
               res.send('No results');
             }
@@ -57,14 +65,19 @@ exports.getAllAuction = async function getAllAuction(req, res) {
     try {
       const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
       if (user) {
+        const count = await Auction.find({}).countDocuments();
         await Auction.find({})
           .sort({ postdate: -1 })
           .skip((pageNum - 1) * itemsPerPage)
           .limit(itemsPerPage)
           .exec(function allAuction(err, results) {
             if (err) throw err;
-
-            res.send(results);
+            const result = {
+              count,
+              auctions: results,
+            };
+            console.log(count);
+            res.send(result);
           });
       } else res.redirect('/explore');
     } catch (e) {
