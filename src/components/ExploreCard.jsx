@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -8,6 +8,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import ImagePopup from './ImagePopup';
 
 function FormatDescription(props) {
   const { desc } = props;
@@ -31,6 +32,17 @@ function FormatDescription(props) {
 
 export default function ExploreCard({ auction }) {
   // const cutoff = new Date(auction.cutoff);
+
+  const [isModalOpen, setModal] = useState(false);
+
+  const handleImageClick = () => {
+    setModal(true);
+  };
+
+  const handlePopupClose = () => {
+    console.log('closing');
+    setModal(false);
+  };
 
   return (
     <Container>
@@ -100,7 +112,7 @@ export default function ExploreCard({ auction }) {
             </Grid>
 
             <Grid item>
-              <Card>
+              <Card onClick={handleImageClick}>
                 <CardMedia
                   component="image"
                   style={{ height: 200, width: 200 }}
@@ -114,6 +126,12 @@ export default function ExploreCard({ auction }) {
           </Grid>
         </Grid>
       </Paper>
+      <ImagePopup
+        open={isModalOpen}
+        onClose={handlePopupClose}
+        image={auction.photo}
+        caption={auction.title}
+      />
     </Container>
   );
 }
