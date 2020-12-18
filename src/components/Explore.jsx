@@ -12,7 +12,7 @@ function formatDate(oldDate) {
   newDate += oldDate.getDate();
   newDate += '/';
   newDate += oldDate.getFullYear();
-  newDate += ' ';
+  newDate += ' | ';
   newDate += oldDate.getHours();
   newDate += ':';
   newDate += oldDate.getMinutes();
@@ -30,13 +30,14 @@ export default function Explore() {
   useEffect(() => {
     axios.get(`/explore/getAllAuction${location.search}`).then((res) => {
       let i;
+      const tempdata = res.data.auctions;
 
-      for (i = 0; i < res.data.length; i += 1) {
-        const postdate = new Date(res.data[i].postdate);
-        const cutoffdate = new Date(res.data[i].cutoffdate);
+      for (i = 0; i < auctions.length; i += 1) {
+        const postdate = new Date(tempdata[i].postdate);
+        const cutoffdate = new Date(tempdata[i].cutoffdate);
 
-        res.data[i].postdate = formatDate(postdate);
-        res.data[i].cutoffdate = formatDate(cutoffdate);
+        tempdata[i].postdate = formatDate(postdate);
+        tempdata[i].cutoffdate = formatDate(cutoffdate);
       }
 
       setAuctions(res.data.auctions);
