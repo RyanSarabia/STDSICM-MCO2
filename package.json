@@ -42,7 +42,7 @@
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"cd backend && node server.js\"",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --color",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
