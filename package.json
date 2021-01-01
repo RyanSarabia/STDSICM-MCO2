@@ -42,7 +42,7 @@
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"cd backend && node server.js\"",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --color",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -68,6 +68,7 @@
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.6.3",
     "prettier": "^2.1.2"
   },
   "proxy": "http://localhost:5000/"
