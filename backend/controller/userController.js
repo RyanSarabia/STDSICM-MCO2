@@ -4,8 +4,8 @@ const Auction = require('../model/auction.model');
 exports.getAuction = async function getAuction(req, res) {
   try {
     const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
-    if (user && req.query.id) {
-      const auction = await Auction.findOne({ _id: req.query.id });
+    if (user && req.params.auctionid) {
+      const auction = await Auction.findOne({ _id: req.params.auctionid });
       if (auction) {
         const foundAuction = {
           title: auction.title,
