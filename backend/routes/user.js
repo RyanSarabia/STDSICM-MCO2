@@ -22,7 +22,7 @@ const storage = multer.memoryStorage();
 
 const upload = multer({ storage });
 
-router.get('/getAuction/:auctionid:', userController.getAuction);
+router.get('/getAuction/:auctionid', userController.getAuction);
 router.get('/getAllAuction', userController.getAllAuction);
 router.get('/getSearch', userController.getSearch);
 router.get('/getID', userController.getID);
