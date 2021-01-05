@@ -59,6 +59,7 @@ app.use('/explore', userRoute);
 app.use('/upload', userRoute);
 app.use('/create', userRoute);
 app.use('/profile', userRoute);
+app.use('/auction', userRoute);
 // app.use(
 //   '/api',
 //   createProxyMiddleware({
