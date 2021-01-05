@@ -90,7 +90,7 @@ exports.getAllAuction = async function getAllAuction(req, res) {
   }
 };
 
-exports.getAction = async function getAuctionAction(req, res) {
+exports.getAuctionAction = async function getAuctionAction(req, res) {
   try {
     const { action } = req.params;
     const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
