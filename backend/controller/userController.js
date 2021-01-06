@@ -93,6 +93,8 @@ exports.getAllAuction = async function getAllAuction(req, res) {
 exports.getAuctionAction = async function getAuctionAction(req, res) {
   try {
     const { action } = req.params;
+    const bidPrice = req.query.bid;
+
     const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
     if (user) {
       Auction.findOneAndUpdate({ _id: req.params.auctionid })
@@ -102,13 +104,17 @@ exports.getAuctionAction = async function getAuctionAction(req, res) {
 
           if (result) {
             if (action === 'bid') {
-              result.currentPrice =
-                result.currentPrice + result.incPrice >= result.stealPrice
-                  ? result.stealPrice
-                  : result.currentPrice + result.incPrice;
+              if (bidPrice % result.incPrice === 0) {
+                result.currentPrice =
+                  result.currentPrice + bidPrice >= result.stealPrice
+                    ? result.stealPrice
+                    : result.currentPrice + bidPrice;
+              }
             } else if (action === 'steal') {
               result.currentPrice = result.stealPrice;
             }
+
+            result.highestbidder = req.user;
 
             await result
               .save()
