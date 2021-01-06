@@ -53,6 +53,7 @@ router.post('/', upload.single('file'), async (req, res) => {
               startPrice: req.body.startPrice,
               incPrice: req.body.incPrice,
               currentPrice: req.body.startPrice,
+              highestbidder: null,
               stealPrice: req.body.stealPrice,
               photo: urlCreated,
             });
