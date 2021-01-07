@@ -15,4 +15,11 @@ const formatDate = (refDate) => {
   return newDate;
 };
 
+const diffMinutes = (dt2, dt1) => {
+  let diff = (dt2.getTime() - dt1.getTime()) / 1000;
+  diff /= 60;
+  return Math.abs(Math.round(diff));
+};
+
 exports.formatDate = formatDate;
+exports.diffMinutes = diffMinutes;
