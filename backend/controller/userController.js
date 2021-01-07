@@ -2,6 +2,17 @@
 const User = require('../model/user.model');
 const Auction = require('../model/auction.model');
 
+exports.getOwner = async function getOwner(req, res) {
+  try {
+    const auction = req.params.auctionid;
+    const user = await User.findOne({ auctions: auction });
+    if (user) {
+      res.send(user);
+    } else res.redirect('/explore');
+  } catch (e) {
+    console.log(e);
+  }
+};
 exports.getAuction = async function getAuction(req, res) {
   try {
     const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
