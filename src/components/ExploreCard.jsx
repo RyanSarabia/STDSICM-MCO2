@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
@@ -14,6 +15,7 @@ function FormatDescription(props) {
   const { desc, _id } = props;
   if (desc.length > 250) {
     const truncDesc = `${desc.substring(0, 250)}... `;
+    console.log(_id);
     const toAuction = `/auction/${_id}`;
     return (
       <div>
@@ -38,7 +40,6 @@ export default function ExploreCard({ auction }) {
   // const cutoff = new Date(auction.cutoff);
 
   const [isModalOpen, setModal] = useState(false);
-  // eslint-disable-next-line no-underscore-dangle
   const toAuction = `/auction/${auction._id}`;
 
   const handleImageClick = () => {
@@ -76,7 +77,7 @@ export default function ExploreCard({ auction }) {
             </Grid>
 
             <Grid item style={{ maxWidth: '100%' }}>
-              <FormatDescription desc={auction.description} />
+              <FormatDescription desc={auction.description} _id={auction._id} />
             </Grid>
 
             <Grid item style={{ maxWidth: '100%' }}>
