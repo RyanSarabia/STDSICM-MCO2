@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 // import Badge from '@material-ui/core/Badge';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -26,20 +27,29 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   shape: {
-    backgroundColor: 'green',
     width: '17px',
     height: '17px',
   },
   shapeCircle: {
     borderRadius: '50%',
   },
+  green: {
+    backgroundColor: 'green',
+  },
+  gray: {
+    backgroundColor: 'gray',
+  },
 }));
 
 export default function Auction() {
   const classes = useStyles();
-  const circle = <div className={clsx(classes.shape, classes.shapeCircle)} />;
+  const greenCircle = <div className={clsx(classes.shape, classes.shapeCircle, classes.green)} />;
+  const grayCircle = <div className={clsx(classes.shape, classes.shapeCircle, classes.gray)} />;
   const [auction, setAuction] = useState('');
   const [bidAmount, setBidAmount] = useState(0);
+  const [isClosed, setClosed] = useState(false);
+  const [status, setStatus] = useState('OPEN');
+  const [statusIcon, setStatusIcon] = useState(greenCircle);
   const auctionId = useParams().auction;
 
   console.log(auctionId);
@@ -49,6 +59,15 @@ export default function Auction() {
     axios.get(`/auction/getAuction/${auctionId}`).then((res) => {
       const tempdata = res.data;
       console.log(tempdata);
+
+      const curDate = new Date();
+      const cutoffDate = new Date(tempdata.cutoff);
+      if (curDate > cutoffDate || tempdata.currentPrice === tempdata.stealPrice) {
+        console.log('buboi');
+        setStatus('CLOSED');
+        setStatusIcon(grayCircle);
+        setClosed(true);
+      }
 
       tempdata.postdate = formatDate(tempdata.postdate);
       tempdata.cutoff = formatDate(tempdata.cutoff);
@@ -87,16 +106,7 @@ export default function Auction() {
         <Grid container="true">
           <Grid item container="true" justify="space-between">
             <Typography variant="h4">{auction.title}</Typography>
-            <Grid
-              item
-              container="true"
-              justify="flex-end"
-              alignItems="center"
-              style={{ width: '10vw' }}
-            >
-              {circle}
-              <Typography style={{ margin: '5px' }}>Status</Typography>
-            </Grid>
+            <Chip icon={statusIcon} label={status} variant="outlined" elevation={3} />
           </Grid>
           <Grid item container="true">
             <Chip label={auction.postdate} size="small" variant="outlined" />
@@ -106,10 +116,10 @@ export default function Auction() {
           </Grid>
           <Grid item direction="column" container="true">
             <Typography variant="caption" style={{ fontWeight: 'bold' }}>
-              Cut-off
+              CUT-OFF
             </Typography>
             <Chip
-              label={auction.postdate}
+              label={auction.cutoff}
               variant="outlined"
               color="primary"
               style={{ maxWidth: '160px' }}
@@ -202,18 +212,23 @@ export default function Auction() {
                       alignItems="center"
                       style={{ marginLeft: '10px' }}
                     >
-                      <Button style={{ padding: 0 }}>
+                      <IconButton
+                        centerRipple
+                        focusRipple
+                        disabled={isClosed}
+                        style={{ padding: 0 }}
+                      >
                         <KeyboardArrowUpIcon
                           onClick={HandleIncrement}
                           style={{ fontSize: '20px' }}
                         />
-                      </Button>
-                      <Button style={{ padding: 0 }}>
+                      </IconButton>
+                      <IconButton centerRipple disabled={isClosed} style={{ padding: 0 }}>
                         <KeyboardArrowDownIcon
                           onClick={HandleDecrement}
                           style={{ fontSize: '20px' }}
                         />
-                      </Button>
+                      </IconButton>
                     </Grid>
                   </InputAdornment>
                 ),
@@ -223,7 +238,12 @@ export default function Auction() {
               }}
               style={{ width: '50%' }}
             />
-            <Button variant="contained" color="primary" style={{ width: '20%', marginLeft: '1vw' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={isClosed}
+              style={{ width: '20%', marginLeft: '1vw' }}
+            >
               Bid
             </Button>
           </Grid>
@@ -242,7 +262,12 @@ export default function Auction() {
               }}
               style={{ width: '50%' }}
             />
-            <Button variant="contained" color="primary" style={{ width: '20%', marginLeft: '1vw' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={isClosed}
+              style={{ width: '20%', marginLeft: '1vw' }}
+            >
               Steal
             </Button>
           </Grid>
