@@ -5,22 +5,7 @@ import { useLocation } from 'react-router-dom';
 import ExploreCard from './ExploreCard';
 import Search from './Search';
 import PaginationBar from './PaginationBar';
-
-function formatDate(oldDate) {
-  let newDate = oldDate.getMonth() + 1;
-  newDate += '/';
-  newDate += oldDate.getDate();
-  newDate += '/';
-  newDate += oldDate.getFullYear();
-  newDate += ' | ';
-  newDate += oldDate.getHours();
-  newDate += ':';
-  newDate += oldDate.getMinutes();
-  newDate += ':';
-  newDate += oldDate.getSeconds();
-
-  return newDate;
-}
+import { formatDate } from '../myFunctions';
 
 export default function Explore() {
   const [auctions, setAuctions] = useState('');
@@ -29,18 +14,14 @@ export default function Explore() {
 
   useEffect(() => {
     axios.get(`/explore/getAllAuction${location.search}`).then((res) => {
-      let i;
       const tempdata = res.data.auctions;
 
-      for (i = 0; i < auctions.length; i += 1) {
-        const postdate = new Date(tempdata[i].postdate);
-        const cutoffdate = new Date(tempdata[i].cutoffdate);
-
-        tempdata[i].postdate = formatDate(postdate);
-        tempdata[i].cutoffdate = formatDate(cutoffdate);
+      for (let i = 0; i < tempdata.length; i += 1) {
+        tempdata[i].postdate = formatDate(tempdata[i].postdate);
+        tempdata[i].cutoffdate = formatDate(tempdata[i].cutoffdate);
       }
 
-      setAuctions(res.data.auctions);
+      setAuctions(tempdata);
       setCount(res.data.count);
       window.scrollTo(0, 0);
     });

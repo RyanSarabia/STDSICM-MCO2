@@ -72,7 +72,7 @@ export default function Auction() {
         setClosed(true);
       }
 
-      if (tempdata.currentPrice > tempdata.startPrice) {
+      if (tempdata.currentPrice >= tempdata.startPrice) {
         setHasBid(true);
       }
 
