@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -36,11 +36,54 @@ function FormatDescription(props) {
   return <Typography style={{ wordWrap: 'break-word', fontSize: '12px' }}>{desc}</Typography>;
 }
 
+function BidPrice(props) {
+  const { hasBid, startBid, curBid } = props;
+  if (hasBid) {
+    return (
+      <Grid item container direction="column" xs={6} alignItems="center">
+        <Grid item>
+          <Typography variant="h5"> Current</Typography>
+        </Grid>
+        <Grid item>
+          <Chip
+            label={new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'PHP',
+            }).format(curBid)}
+          />
+        </Grid>
+      </Grid>
+    );
+  }
+  return (
+    <Grid item container direction="column" xs={6} alignItems="center">
+      <Grid item>
+        <Typography variant="h5"> Starting</Typography>
+      </Grid>
+      <Grid item>
+        <Chip
+          label={new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'PHP',
+          }).format(startBid)}
+        />
+      </Grid>
+    </Grid>
+  );
+}
+
 export default function ExploreCard({ auction }) {
   // const cutoff = new Date(auction.cutoff);
 
   const [isModalOpen, setModal] = useState(false);
+  const [hasBid, setHasBid] = useState(false);
   const toAuction = `/auction/${auction._id}`;
+
+  useEffect(() => {
+    if (auction.currentPrice >= auction.startPrice) {
+      setHasBid(true);
+    }
+  });
 
   const handleImageClick = () => {
     setModal(true);
@@ -92,7 +135,12 @@ export default function ExploreCard({ auction }) {
 
           <Grid item container direction="column" xs={7} alignItems="center">
             <Grid item container justify="space-around">
-              <Grid item container direction="column" xs={6} alignItems="center">
+              <BidPrice
+                hasBid={hasBid}
+                curBid={auction.currentPrice}
+                startBid={auction.startPrice}
+              />
+              {/* <Grid item container direction="column" xs={6} alignItems="center">
                 <Grid item>
                   <Typography variant="h5"> Current</Typography>
                 </Grid>
@@ -104,7 +152,7 @@ export default function ExploreCard({ auction }) {
                     }).format(auction.currentPrice)}
                   />
                 </Grid>
-              </Grid>
+              </Grid> */}
               <Grid item container direction="column" xs={6} alignItems="center">
                 <Grid item>
                   <Typography variant="h5"> Steal </Typography>
