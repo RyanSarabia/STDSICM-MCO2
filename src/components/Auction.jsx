@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 // import Badge from '@material-ui/core/Badge';
 import FaceIcon from '@material-ui/icons/Face';
@@ -20,6 +19,7 @@ import { useParams } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { formatDate, diffMinutes } from '../myFunctions';
+import DialogButton from './DialogButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -274,14 +274,14 @@ export default function Auction() {
               }}
               style={{ width: '50%' }}
             />
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={isClosed}
-              style={{ width: '20%', marginLeft: '1vw' }}
-            >
-              Bid
-            </Button>
+            <DialogButton
+              isDisabled={isClosed}
+              dialogMessage="Are you sure you want to bid? This action cannot be undone."
+              dialogTitle={`Bid on ${auction.title}?`}
+              confirmText="Yes, bid!"
+              cancelText="Cancel"
+              buttonText="Bid"
+            />
           </Grid>
           <Grid item>
             <TextField
@@ -298,14 +298,14 @@ export default function Auction() {
               }}
               style={{ width: '50%' }}
             />
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={isClosed}
-              style={{ width: '20%', marginLeft: '1vw' }}
-            >
-              Steal
-            </Button>
+            <DialogButton
+              isDisabled={isClosed}
+              dialogMessage="Are you sure you want to steal? This action cannot be undone."
+              dialogTitle={`Steal ${auction.title}?`}
+              confirmText="Yes, steal!"
+              cancelText="Cancel"
+              buttonText="Steal"
+            />
           </Grid>
         </Grid>
       </Card>
