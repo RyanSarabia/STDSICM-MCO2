@@ -19,6 +19,7 @@ import TextField from '@material-ui/core/TextField';
 import { useParams } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import ImagePopup from './ImagePopup';
 import { formatDate, diffMinutes } from '../myFunctions';
 
 const useStyles = makeStyles((theme) => ({
@@ -54,6 +55,7 @@ export default function Auction() {
   const [hasBid, setHasBid] = useState(false);
   const [owner, setOwner] = useState('Johnny Doe');
   const auctionId = useParams().auction;
+  const [isModalOpen, setModal] = useState(false);
 
   console.log(auctionId);
   console.log(auction);
@@ -98,6 +100,15 @@ export default function Auction() {
     });
     setOwner('Johnny Boy');
   }, []);
+
+  const handleImageClick = () => {
+    setModal(true);
+  };
+
+  const handlePopupClose = () => {
+    console.log('closing');
+    setModal(false);
+  };
 
   function HandleIncrement() {
     const bid = parseInt(bidAmount, 10);
@@ -157,6 +168,7 @@ export default function Auction() {
           </Grid>
           <Grid item container justify="center">
             <CardMedia
+              onClick={handleImageClick}
               style={{
                 width: '100%',
                 height: '25vw',
@@ -309,6 +321,14 @@ export default function Auction() {
           </Grid>
         </Grid>
       </Card>
+      <div className="modal">
+        <ImagePopup
+          open={isModalOpen}
+          onClose={handlePopupClose}
+          image={auction.imageurl}
+          caption={auction.title}
+        />
+      </div>
       <script type="text/javascript" src="../myfunctions.js" />
     </Grid>
   );
