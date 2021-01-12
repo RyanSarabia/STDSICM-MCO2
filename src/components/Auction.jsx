@@ -258,6 +258,7 @@ export default function Auction() {
               onKeyDown={(event) => {
                 event.preventDefault();
               }}
+              value={bidAmount}
               InputProps={{
                 startAdornment: <InputAdornment position="start">P</InputAdornment>,
                 endAdornment: (
@@ -286,9 +287,6 @@ export default function Auction() {
                     </Grid>
                   </InputAdornment>
                 ),
-                inputProps: {
-                  value: bidAmount,
-                },
               }}
               style={{ width: '50%' }}
             />
