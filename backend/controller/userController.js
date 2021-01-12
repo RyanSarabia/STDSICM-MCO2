@@ -180,3 +180,17 @@ exports.getID = async function getID(req, res) {
     console.log(e);
   }
 };
+
+exports.getUser = async function getUser(req, res) {
+  try {
+    const user = await User.findOne({ _id: req.params.userid });
+
+    if (user) {
+      res.send(user);
+    } else {
+      res.send('No Results');
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
