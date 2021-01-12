@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 const User = require('../model/user.model');
 const Auction = require('../model/auction.model');
 
@@ -101,41 +100,36 @@ exports.getAllAuction = async function getAllAuction(req, res) {
   }
 };
 
-exports.getAuctionAction = async function getAuctionAction(req, res) {
+exports.postAuctionAction = async function postAuctionAction(req, res) {
   try {
     const { action } = req.params;
     const bidPrice = req.query.bid;
 
     const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
     if (user) {
-      Auction.findOneAndUpdate({ _id: req.params.auctionid })
-        .populate('highestbidder')
-        .exec(async function getAction(err, result) {
-          if (err) throw err;
+      const auction = Auction.findOne({ _id: req.params.auctionid });
 
-          if (result) {
-            if (action === 'bid') {
-              if (bidPrice % result.incPrice === 0) {
-                result.currentPrice =
-                  result.currentPrice + bidPrice >= result.stealPrice
-                    ? result.stealPrice
-                    : result.currentPrice + bidPrice;
-              }
-            } else if (action === 'steal') {
-              result.currentPrice = result.stealPrice;
-            }
-
-            result.highestbidder = req.user;
-
-            await result
-              .save()
-              .then(() => res.json('Auction Updated!'))
-              .catch((err1) => res.status(400).json(`Error: ${err1}`));
-            res.send(result);
-          } else {
-            res.send('No action');
+      if (auction) {
+        if (action === 'bid') {
+          if (bidPrice % auction.incPrice === 0) {
+            auction.currentPrice =
+              auction.currentPrice + bidPrice >= auction.stealPrice
+                ? auction.stealPrice
+                : auction.currentPrice + bidPrice;
           }
-        });
+        } else if (action === 'steal') {
+          auction.currentPrice = auction.stealPrice;
+        }
+
+        auction.highestbidder = req.user;
+
+        await auction
+          .save()
+          .then(() => res.json('Auction Updated!'))
+          .catch((err1) => res.status(400).json(`Error: ${err1}`));
+      } else {
+        res.send('No action');
+      }
     }
   } catch (e) {
     console.log(e);
@@ -169,6 +163,19 @@ exports.getSearch = async function getSearch(req, res) {
           res.send('No results');
         }
       });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+exports.getID = async function getID(req, res) {
+  try {
+    const auction = await Auction.findOne({ _id: req.query.id });
+
+    if (auction) {
+      // eslint-disable-next-line no-underscore-dangle
+      res.send(auction._id);
+    }
   } catch (e) {
     console.log(e);
   }
