@@ -22,12 +22,13 @@ const storage = multer.memoryStorage();
 
 const upload = multer({ storage });
 
+router.get('/getUser/:userid', userController.getUser);
 router.get('/getAuction/:auctionid', userController.getAuction);
 router.get('/getOwner/:auctionid', userController.getOwner);
 router.get('/getAllAuction', userController.getAllAuction);
 router.get('/getSearch', userController.getSearch);
 router.get('/getID', userController.getID);
-router.post('/getAuction/:auctionid/:action', userController.getAuctionAction);
+router.post('/getAuction/:auctionid/:action', userController.postAuctionAction);
 
 router.post('/', upload.single('file'), async (req, res) => {
   const checkPrice = (req.body.stealPrice - req.body.startPrice) % req.body.incPrice;
