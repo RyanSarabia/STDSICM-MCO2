@@ -127,6 +127,12 @@ export default function Auction() {
     if (bid - inc > min) setBidAmount(bid - inc);
   }
 
+  const handleBid = () => {
+    axios.post(`/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
+      console.log(res);
+    });
+  };
+
   return (
     <Grid container direction="row" justify="space-between">
       <Card
@@ -293,6 +299,7 @@ export default function Auction() {
               confirmText="Yes, bid!"
               cancelText="Cancel"
               buttonText="Bid"
+              confirmAction={handleBid}
             />
           </Grid>
           <Grid item>

@@ -15,6 +15,7 @@ export default function DialogButton({
   confirmText,
   cancelText,
   buttonText,
+  confirmAction,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -24,6 +25,11 @@ export default function DialogButton({
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    confirmAction();
+    handleClose();
   };
 
   return (
@@ -51,7 +57,7 @@ export default function DialogButton({
           <Button onClick={handleClose} color="primary">
             {cancelText}
           </Button>
-          <Button onClick={handleClose} color="primary" variant="contained" autoFocus>
+          <Button onClick={handleConfirm} color="primary" variant="contained" autoFocus>
             {confirmText}
           </Button>
         </DialogActions>
