@@ -114,26 +114,34 @@ exports.getAllAuction = async function getAllAuction(req, res) {
 
 exports.postAuctionAction = async function postAuctionAction(req, res) {
   try {
-    const { action } = req.params;
-    const bidPrice = req.query.bid;
+    const postaction = req.params.action;
+    const postid = req.params.auctionid;
+    // eslint-disable-next-line radix
+    const bidPrice = parseInt(req.query.bid);
 
     const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
     if (user) {
-      const auction = Auction.findOne({ _id: req.params.auctionid });
+      const auction = await Auction.findOne({ _id: postid });
 
       if (auction) {
-        if (action === 'bid') {
+        if (postaction === 'bid') {
           if (bidPrice % auction.incPrice === 0) {
-            auction.currentPrice =
-              auction.currentPrice + bidPrice >= auction.stealPrice
-                ? auction.stealPrice
-                : auction.currentPrice + bidPrice;
+            console.log('bid!!!');
+            const tempCurrPrice = bidPrice;
+
+            if (tempCurrPrice < auction.stealPrice) {
+              auction.currentPrice = tempCurrPrice;
+            } else if (tempCurrPrice >= auction.stealPrice) {
+              auction.currentPrice = auction.stealPrice;
+            }
           }
-        } else if (action === 'steal') {
+        } else if (postaction === 'steal') {
           auction.currentPrice = auction.stealPrice;
         }
 
-        auction.highestbidder = req.user;
+        auction.highestbidder = user;
+        console.log(auction.highestbidder);
+        console.log(auction.currentPrice);
 
         await auction
           .save()

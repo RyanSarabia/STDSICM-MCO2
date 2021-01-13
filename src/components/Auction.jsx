@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 // import Badge from '@material-ui/core/Badge';
 import FaceIcon from '@material-ui/icons/Face';
@@ -21,6 +20,7 @@ import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ImagePopup from './ImagePopup';
 import { formatDate, diffMinutes } from '../myFunctions';
+import DialogButton from './DialogButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,13 +49,14 @@ export default function Auction() {
   const grayCircle = <div className={clsx(classes.shape, classes.shapeCircle, classes.gray)} />;
   const [auction, setAuction] = useState('');
   const [bidAmount, setBidAmount] = useState(0);
-  const [isClosed, setClosed] = useState(false);
+  const [isDisabled, setDisable] = useState(false);
   const [status, setStatus] = useState('OPEN');
   const [statusIcon, setStatusIcon] = useState(greenCircle);
   const [hasBid, setHasBid] = useState(false);
   const [owner, setOwner] = useState('Johnny Doe');
   const auctionId = useParams().auction;
   const [isModalOpen, setModal] = useState(false);
+  const [loadTrigger, setTrigger] = useState(false);
 
   console.log(auctionId);
   console.log(auction);
@@ -71,11 +72,20 @@ export default function Auction() {
         console.log('buboi');
         setStatus('CLOSED');
         setStatusIcon(grayCircle);
-        setClosed(true);
+        setDisable(true);
       }
+
+      axios.get(`/auction/getOwner/${auctionId}`).then((res2) => {
+        if (res2.data.isCurr) {
+          setDisable(true);
+        }
+      });
 
       if (tempdata.currentPrice >= tempdata.startPrice) {
         setHasBid(true);
+        setBidAmount(parseInt(tempdata.currentPrice, 10) + parseInt(tempdata.increment, 10));
+      } else {
+        setBidAmount(parseInt(tempdata.startPrice, 10));
       }
 
       const postdate = new Date(tempdata.postdate);
@@ -92,14 +102,9 @@ export default function Auction() {
       tempdata.cutoff = formatDate(tempdata.cutoff);
 
       setAuction(tempdata);
-      if (hasBid) {
-        setBidAmount(parseInt(tempdata.currentPrice, 10) + parseInt(tempdata.increment, 10));
-      } else {
-        setBidAmount(parseInt(tempdata.startPrice, 10));
-      }
     });
     setOwner('Johnny Boy');
-  }, []);
+  }, [loadTrigger]);
 
   const handleImageClick = () => {
     setModal(true);
@@ -126,6 +131,20 @@ export default function Auction() {
     }
     if (bid - inc > min) setBidAmount(bid - inc);
   }
+
+  const handleBid = () => {
+    axios.post(`/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
+      console.log(res);
+      setTrigger(!loadTrigger);
+    });
+  };
+
+  const handleSteal = () => {
+    axios.post(`/auction/postAuction/${auctionId}/steal`).then((res) => {
+      console.log(res);
+      setTrigger(!loadTrigger);
+    });
+  };
 
   return (
     <Grid container direction="row" justify="space-between">
@@ -252,6 +271,7 @@ export default function Auction() {
               onKeyDown={(event) => {
                 event.preventDefault();
               }}
+              value={bidAmount}
               InputProps={{
                 startAdornment: <InputAdornment position="start">P</InputAdornment>,
                 endAdornment: (
@@ -265,14 +285,14 @@ export default function Auction() {
                     >
                       <IconButton
                         onClick={HandleIncrement}
-                        disabled={isClosed}
+                        disabled={isDisabled}
                         style={{ padding: 0 }}
                       >
                         <KeyboardArrowUpIcon style={{ fontSize: '20px' }} />
                       </IconButton>
                       <IconButton
                         onClick={HandleDecrement}
-                        disabled={isClosed}
+                        disabled={isDisabled}
                         style={{ padding: 0 }}
                       >
                         <KeyboardArrowDownIcon style={{ fontSize: '20px' }} />
@@ -280,20 +300,18 @@ export default function Auction() {
                     </Grid>
                   </InputAdornment>
                 ),
-                inputProps: {
-                  value: bidAmount,
-                },
               }}
               style={{ width: '50%' }}
             />
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={isClosed}
-              style={{ width: '20%', marginLeft: '1vw' }}
-            >
-              Bid
-            </Button>
+            <DialogButton
+              isDisabled={isDisabled}
+              dialogMessage="Are you sure you want to bid? This action cannot be undone."
+              dialogTitle={`Bid on ${auction.title}?`}
+              confirmText="Yes, bid!"
+              cancelText="Cancel"
+              buttonText="Bid"
+              confirmAction={handleBid}
+            />
           </Grid>
           <Grid item>
             <TextField
@@ -310,14 +328,15 @@ export default function Auction() {
               }}
               style={{ width: '50%' }}
             />
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={isClosed}
-              style={{ width: '20%', marginLeft: '1vw' }}
-            >
-              Steal
-            </Button>
+            <DialogButton
+              isDisabled={isDisabled}
+              dialogMessage="Are you sure you want to steal? This action cannot be undone."
+              dialogTitle={`Steal ${auction.title}?`}
+              confirmText="Yes, steal!"
+              cancelText="Cancel"
+              buttonText="Steal"
+              confirmAction={handleSteal}
+            />
           </Grid>
         </Grid>
       </Card>
