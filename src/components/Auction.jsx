@@ -49,7 +49,7 @@ export default function Auction() {
   const grayCircle = <div className={clsx(classes.shape, classes.shapeCircle, classes.gray)} />;
   const [auction, setAuction] = useState('');
   const [bidAmount, setBidAmount] = useState(0);
-  const [isClosed, setClosed] = useState(false);
+  const [isDisabled, setDisable] = useState(false);
   const [status, setStatus] = useState('OPEN');
   const [statusIcon, setStatusIcon] = useState(greenCircle);
   const [hasBid, setHasBid] = useState(false);
@@ -72,8 +72,17 @@ export default function Auction() {
         console.log('buboi');
         setStatus('CLOSED');
         setStatusIcon(grayCircle);
-        setClosed(true);
+        setDisable(true);
       }
+
+      axios.get(`/auction/getOwner/${auctionId}`).then((res2) => {
+        console.log(res2.data);
+        axios.get(`/auction/getUser/${res2.data.id}`).then((res3) => {
+          if (res3.data.isCurrUser) {
+            setDisable(true);
+          }
+        });
+      });
 
       if (tempdata.currentPrice >= tempdata.startPrice) {
         setHasBid(true);
@@ -279,14 +288,14 @@ export default function Auction() {
                     >
                       <IconButton
                         onClick={HandleIncrement}
-                        disabled={isClosed}
+                        disabled={isDisabled}
                         style={{ padding: 0 }}
                       >
                         <KeyboardArrowUpIcon style={{ fontSize: '20px' }} />
                       </IconButton>
                       <IconButton
                         onClick={HandleDecrement}
-                        disabled={isClosed}
+                        disabled={isDisabled}
                         style={{ padding: 0 }}
                       >
                         <KeyboardArrowDownIcon style={{ fontSize: '20px' }} />
@@ -298,7 +307,7 @@ export default function Auction() {
               style={{ width: '50%' }}
             />
             <DialogButton
-              isDisabled={isClosed}
+              isDisabled={isDisabled}
               dialogMessage="Are you sure you want to bid? This action cannot be undone."
               dialogTitle={`Bid on ${auction.title}?`}
               confirmText="Yes, bid!"
@@ -323,7 +332,7 @@ export default function Auction() {
               style={{ width: '50%' }}
             />
             <DialogButton
-              isDisabled={isClosed}
+              isDisabled={isDisabled}
               dialogMessage="Are you sure you want to steal? This action cannot be undone."
               dialogTitle={`Steal ${auction.title}?`}
               confirmText="Yes, steal!"
