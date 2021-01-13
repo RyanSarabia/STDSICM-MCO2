@@ -56,6 +56,7 @@ export default function Auction() {
   const [owner, setOwner] = useState('Johnny Doe');
   const auctionId = useParams().auction;
   const [isModalOpen, setModal] = useState(false);
+  const [loadTrigger, setTrigger] = useState(false);
 
   console.log(auctionId);
   console.log(auction);
@@ -76,6 +77,9 @@ export default function Auction() {
 
       if (tempdata.currentPrice >= tempdata.startPrice) {
         setHasBid(true);
+        setBidAmount(parseInt(tempdata.currentPrice, 10) + parseInt(tempdata.increment, 10));
+      } else {
+        setBidAmount(parseInt(tempdata.startPrice, 10));
       }
 
       const postdate = new Date(tempdata.postdate);
@@ -92,14 +96,9 @@ export default function Auction() {
       tempdata.cutoff = formatDate(tempdata.cutoff);
 
       setAuction(tempdata);
-      if (hasBid) {
-        setBidAmount(parseInt(tempdata.currentPrice, 10) + parseInt(tempdata.increment, 10));
-      } else {
-        setBidAmount(parseInt(tempdata.startPrice, 10));
-      }
     });
     setOwner('Johnny Boy');
-  }, []);
+  }, [loadTrigger]);
 
   const handleImageClick = () => {
     setModal(true);
@@ -130,6 +129,14 @@ export default function Auction() {
   const handleBid = () => {
     axios.post(`/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
       console.log(res);
+      setTrigger(!loadTrigger);
+    });
+  };
+
+  const handleSteal = () => {
+    axios.post(`/auction/postAuction/${auctionId}/steal`).then((res) => {
+      console.log(res);
+      setTrigger(!loadTrigger);
     });
   };
 
@@ -322,6 +329,7 @@ export default function Auction() {
               confirmText="Yes, steal!"
               cancelText="Cancel"
               buttonText="Steal"
+              confirmAction={handleSteal}
             />
           </Grid>
         </Grid>

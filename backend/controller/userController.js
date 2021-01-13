@@ -115,7 +115,6 @@ exports.postAuctionAction = async function postAuctionAction(req, res) {
         if (postaction === 'bid') {
           if (bidPrice % auction.incPrice === 0) {
             console.log('bid!!!');
-            // const tempCurrPrice = auction.currentPrice + bidPrice;
             const tempCurrPrice = bidPrice;
 
             if (tempCurrPrice < auction.stealPrice) {
