@@ -189,8 +189,7 @@ exports.getUser = async function getUser(req, res) {
     });
     let isCurrUser = 0;
     if (user) {
-      if (user === currUser) isCurrUser = 1;
-
+      if (user.email === currUser.email) isCurrUser = 1;
       const userInfo = {
         user,
         isCurrUser,
