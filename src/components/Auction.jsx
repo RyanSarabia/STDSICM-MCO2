@@ -76,14 +76,9 @@ export default function Auction() {
       }
 
       axios.get(`/auction/getOwner/${auctionId}`).then((res2) => {
-        console.log(res2.data);
-        // eslint-disable-next-line no-underscore-dangle
-        axios.get(`/auction/getUser/${res2.data._id}`).then((res3) => {
-          console.log(res3.data);
-          if (res3.data.isCurrUser) {
-            setDisable(true);
-          }
-        });
+        if (res2.data.isCurr) {
+          setDisable(true);
+        }
       });
 
       if (tempdata.currentPrice >= tempdata.startPrice) {
