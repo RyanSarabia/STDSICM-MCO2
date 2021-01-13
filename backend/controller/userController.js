@@ -5,9 +5,21 @@ exports.getOwner = async function getOwner(req, res) {
   try {
     const auction = req.params.auctionid;
     const user = await User.findOne({ auctions: auction });
+    const currUser = await User.findOne({
+      email: req.session.passport.user.profile.emails[0].value,
+    });
+    let isCurrUser = 0;
+
     if (user) {
-      res.send(user);
-    } else res.redirect('/explore');
+      if (user.email === currUser.email) {
+        isCurrUser = 1;
+      }
+      const userInfo = {
+        user,
+        isCurrUser,
+      };
+      res.send(userInfo);
+    } else res.redirect('/auction/auction');
   } catch (e) {
     console.log(e);
   }
@@ -183,6 +195,20 @@ exports.getID = async function getID(req, res) {
     if (auction) {
       // eslint-disable-next-line no-underscore-dangle
       res.send(auction._id);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+exports.getUser = async function getUser(req, res) {
+  try {
+    const user = await User.findOne({ _id: req.params.userid });
+
+    if (user) {
+      res.send(user);
+    } else {
+      res.send('No Results');
     }
   } catch (e) {
     console.log(e);
