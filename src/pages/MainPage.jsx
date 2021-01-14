@@ -14,7 +14,7 @@ export default function MainPage() {
   useEffect(() => {
     axios.get('/getID').then((res) => {
       // eslint-disable-next-line no-underscore-dangle
-      setUserID(res.data._id);
+      setUserID(res.data);
     });
   });
 
