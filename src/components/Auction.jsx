@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -16,7 +17,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 // import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import TextField from '@material-ui/core/TextField';
 import { useParams } from 'react-router-dom';
-import { Typography } from '@material-ui/core';
+import { Typography, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ImagePopup from './ImagePopup';
 import { formatDate, diffMinutes } from '../myFunctions';
@@ -103,7 +104,13 @@ export default function Auction() {
 
       setAuction(tempdata);
     });
-    setOwner('Johnny Boy');
+
+    axios.get(`/auction/getOwner/${auctionId}`).then((res) => {
+      console.log(res);
+      const ownerData = res.data.user;
+      // `${ownerData.firstName} ${ownerData.lastName}`
+      setOwner(ownerData);
+    });
   }, [loadTrigger]);
 
   const handleImageClick = () => {
@@ -178,7 +185,7 @@ export default function Auction() {
                 marginLeft: '0.5%',
               }}
             >
-              {owner}
+              <Link href={`/profile/${owner._id}`}>{`${owner.firstName} ${owner.lastName}`}</Link>
             </Typography>
             <Chip label={auction.postdate} size="small" variant="outlined" />
           </Grid>
@@ -245,7 +252,12 @@ export default function Auction() {
               <Typography variant="caption">HIGHEST BIDDER</Typography>
               <br />
               <Chip
-                label={`Mr.${auction.highestBidder}`}
+                label={
+                  // eslint-disable-next-line no-constant-condition
+                  auction.highestbidder === null || auction.highestbidder === undefined
+                    ? ''
+                    : `${auction.highestbidder.firstName} ${auction.highestbidder.lastName}`
+                }
                 color="primary"
                 variant="outlined"
                 style={{ maxWidth: '160px' }}

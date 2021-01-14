@@ -54,17 +54,15 @@ router.post('/', upload.single('file'), async (req, res) => {
               postdate,
               startPrice: req.body.startPrice,
               incPrice: req.body.incPrice,
-              currentPrice: req.body.startPrice,
+              currentPrice: 0,
               highestbidder: null,
               stealPrice: req.body.stealPrice,
               photo: urlCreated,
             });
             user.auctions.push(newAuction);
             await newAuction.save();
-            await user
-              .save()
-              .then(() => res.json('Auction Added!'))
-              .catch((err2) => res.status(400).json(`Error: ${err2}`));
+            await user.save();
+            res.send(newAuction);
           });
         });
     } else {
