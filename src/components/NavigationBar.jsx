@@ -37,7 +37,7 @@ export default function NavigationBar({ logout, userID }) {
               </IconButton>
             </Tooltip>
             <Tooltip title="Profile">
-              <IconButton aria-label="profile" href={`${path}profile/${userID}`}>
+              <IconButton aria-label="profile" href={`/profile/${userID}`}>
                 <FaceIcon />
               </IconButton>
             </Tooltip>
