@@ -29,6 +29,7 @@ router.get('/getAllAuction', userController.getAllAuction);
 router.get('/getSearch', userController.getSearch);
 router.get('/getID', userController.getID);
 router.post('/postAuction/:auctionid/:action', userController.postAuctionAction);
+router.post('/postProfile', userController.postProfile);
 
 router.post('/', upload.single('file'), async (req, res) => {
   const checkPrice = (req.body.stealPrice - req.body.startPrice) % req.body.incPrice;

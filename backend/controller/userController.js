@@ -214,3 +214,26 @@ exports.getUser = async function getUser(req, res) {
     console.log(e);
   }
 };
+
+exports.postProfile = async function postProfile(req, res) {
+  try {
+    const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
+    const newBio = req.query.bio;
+    const newContact = req.query.contact;
+
+    if (user) {
+      if (newBio) {
+        user.bio = newBio;
+      }
+      if (newContact) {
+        user.contactNum = newContact;
+      }
+      const updatedUser = await user.save();
+      console.log(updatedUser);
+    } else {
+      res.send('User not Edited');
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
