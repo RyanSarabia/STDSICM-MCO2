@@ -12,7 +12,8 @@ export default function MainPage() {
 
   useEffect(() => {
     axios.get('/getID').then((res) => {
-      setUserID(res.data.user_id);
+      // eslint-disable-next-line no-underscore-dangle
+      setUserID(res.data);
     });
   });
 
@@ -27,6 +28,7 @@ export default function MainPage() {
   return (
     <>
       <NavigationBar logout={logout} userID={userID} />
+      <Route exact path="/" component={Explore} />
       <Route path="/explore" component={Explore} />
       <Route path="/create" component={Create} />
       <Route path="/profile/:userID" component={Profile} />

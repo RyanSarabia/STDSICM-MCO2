@@ -1,6 +1,32 @@
 const User = require('../model/user.model');
 const Auction = require('../model/auction.model');
 
+<<<<<<< HEAD
+=======
+exports.getOwner = async function getOwner(req, res) {
+  try {
+    const auction = req.params.auctionid;
+    const user = await User.findOne({ auctions: auction });
+    const currUser = await User.findOne({
+      email: req.session.passport.user.profile.emails[0].value,
+    });
+    let isCurrUser = 0;
+
+    if (user) {
+      if (user.email === currUser.email) {
+        isCurrUser = 1;
+      }
+      const userInfo = {
+        user,
+        isCurrUser,
+      };
+      res.send(userInfo);
+    } else res.redirect('/auction/auction');
+  } catch (e) {
+    console.log(e);
+  }
+};
+>>>>>>> dev
 exports.getAuction = async function getAuction(req, res) {
   try {
     const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
@@ -86,6 +112,53 @@ exports.getAllAuction = async function getAllAuction(req, res) {
   }
 };
 
+<<<<<<< HEAD
+=======
+exports.postAuctionAction = async function postAuctionAction(req, res) {
+  try {
+    const postaction = req.params.action;
+    const postid = req.params.auctionid;
+    // eslint-disable-next-line radix
+    const bidPrice = parseInt(req.query.bid);
+
+    const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
+    if (user) {
+      const auction = await Auction.findOne({ _id: postid });
+
+      if (auction) {
+        if (postaction === 'bid') {
+          if (bidPrice % auction.incPrice === 0) {
+            console.log('bid!!!');
+            const tempCurrPrice = bidPrice;
+
+            if (tempCurrPrice < auction.stealPrice) {
+              auction.currentPrice = tempCurrPrice;
+            } else if (tempCurrPrice >= auction.stealPrice) {
+              auction.currentPrice = auction.stealPrice;
+            }
+          }
+        } else if (postaction === 'steal') {
+          auction.currentPrice = auction.stealPrice;
+        }
+
+        auction.highestbidder = user;
+        console.log(auction.highestbidder);
+        console.log(auction.currentPrice);
+
+        await auction
+          .save()
+          .then(() => res.json('Auction Updated!'))
+          .catch((err1) => res.status(400).json(`Error: ${err1}`));
+      } else {
+        res.send('No action');
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+>>>>>>> dev
 exports.getID = async function getID(req, res) {
   try {
     const auction = await Auction.findOne({ _id: req.query.id });

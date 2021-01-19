@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
@@ -17,6 +18,7 @@ const datefns = new DateFnsUtils();
 
 export default function CreateForm() {
   const [redirect, setRedirect] = useState(false);
+  const [id, setID] = useState();
   const [image, setImage] = useState({});
   const [previewSource, setPreviewSource] = useState();
   const [loading, setLoading] = useState(false);
@@ -64,7 +66,8 @@ export default function CreateForm() {
         console.log(data);
         console.log(form);
         axios.post('/upload', form).then((res2) => {
-          console.log(res2.data);
+          console.log(res2.data._id);
+          setID(res2.data._id);
           setRedirect(true);
         });
       }
@@ -101,7 +104,7 @@ export default function CreateForm() {
   return (
     <>
       {redirect ? (
-        <Redirect to="/auction" />
+        <Redirect to={`/auction/${id}`} />
       ) : (
         <Paper>
           <form onSubmit={handleSubmit(onSubmit)}>

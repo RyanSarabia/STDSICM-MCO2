@@ -26,6 +26,10 @@ router.get('/getAuction', userController.getAuction);
 router.get('/getAllAuction', userController.getAllAuction);
 router.get('/getSearch', userController.getSearch);
 router.get('/getID', userController.getID);
+<<<<<<< HEAD
+=======
+router.post('/postAuction/:auctionid/:action', userController.postAuctionAction);
+>>>>>>> dev
 
 router.post('/', upload.single('file'), async (req, res) => {
   const checkPrice = (req.body.stealPrice - req.body.startPrice) % req.body.incPrice;
@@ -51,16 +55,19 @@ router.post('/', upload.single('file'), async (req, res) => {
               postdate,
               startPrice: req.body.startPrice,
               incPrice: req.body.incPrice,
+<<<<<<< HEAD
               currentPrice: req.body.startPrice,
+=======
+              currentPrice: 0,
+              highestbidder: null,
+>>>>>>> dev
               stealPrice: req.body.stealPrice,
               photo: urlCreated,
             });
             user.auctions.push(newAuction);
             await newAuction.save();
-            await user
-              .save()
-              .then(() => res.json('Auction Added!'))
-              .catch((err2) => res.status(400).json(`Error: ${err2}`));
+            await user.save();
+            res.send(newAuction);
           });
         });
     } else {
