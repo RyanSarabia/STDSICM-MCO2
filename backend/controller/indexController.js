@@ -6,7 +6,7 @@ exports.signin = passport.authenticate('google', {
     'https://www.googleapis.com/auth/userinfo.profile',
     'https://www.googleapis.com/auth/userinfo.email',
   ],
-  hostedDomain: 'dlsu.edu.ph',
+  // hostedDomain: 'dlsu.edu.ph',
 });
 
 exports.callback = passport.authenticate('google', {
