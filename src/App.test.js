@@ -1,7 +1,9 @@
+/* eslint-disable import/extensions */
 /** import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App'; */
-const { formatDate } = require('./myFunctions');
+// eslint-disable-next-line import/no-unresolved
+import { formatDate } from './myFunctions';
 
 /** test('renders learn react link', () => {
   render(<App />);
