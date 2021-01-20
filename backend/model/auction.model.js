@@ -20,7 +20,6 @@ const auctionSchema = new mongoose.Schema({
   currentPrice: { type: Number, required: true },
   stealPrice: { type: Number, required: true },
   photo: { type: String },
-  highestbidder: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
 });
 
 auctionSchema.index({ title: 'text' });
