@@ -16,33 +16,33 @@ export default function NavigationBar({ logout, userID }) {
   const { path } = useRouteMatch();
 
   return (
-    <AppBar color="inherit" position="sticky">
+    <AppBar color="inherit" position="sticky" id="id-navbar">
       <Toolbar>
         <Grid container justify="space-between" alignItems="center">
           <Grid item>
-            <Typography variant="h6" style={{ fontWeight: 'bold' }}>
+            <Typography variant="h6" style={{ fontWeight: 'bold' }} id="id-navbar-title">
               Lasell++
             </Typography>
           </Grid>
 
           <Grid item>
             <Tooltip title="Explore">
-              <IconButton aria-label="explore" href={`${path}explore`}>
+              <IconButton aria-label="explore" href={`${path}explore`} id="id-explore-button">
                 <ExploreIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Create">
-              <IconButton aria-label="create" href={`${path}create`}>
+              <IconButton aria-label="create" href={`${path}create`} id="id-create-button">
                 <CreateIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Profile">
-              <IconButton aria-label="profile" href={`/profile/${userID}`}>
+              <IconButton aria-label="profile" href={`/profile/${userID}`} id="id-profile-button">
                 <FaceIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Logout">
-              <IconButton onClick={logout} aria-label="logout">
+              <IconButton onClick={logout} aria-label="logout" id="id-logout-button">
                 <ExitToAppIcon />
               </IconButton>
             </Tooltip>
