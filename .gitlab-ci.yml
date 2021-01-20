@@ -31,3 +31,17 @@ build_job:
     - npm run build
     - echo build_passed!
 
+cache:
+  paths:
+    - node_modules/
+
+Production:
+  image: ruby:latest
+  only:
+    - master
+  stage: deploy
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=lasellplus --api-key=8f44ef09-2723-42e0-9da6-80f44a3f48b7
