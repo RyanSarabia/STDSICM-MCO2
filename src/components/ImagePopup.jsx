@@ -29,7 +29,7 @@ export default function ImagePopup({ image, open, onClose, caption }) {
           direction="column"
           justify="center"
           alignItems="center"
-          // style={{ minHeight: '100vh' }}
+          style={{ outline: 'none', maxWidth: 'fit-content' }}
         >
           <Card>
             <CardHeader
