@@ -16,10 +16,17 @@ function FormatDescription(props) {
     const truncDesc = `${desc.substring(0, 250)}... `;
     return (
       <div>
-        <Typography style={{ wordWrap: 'break-word', fontSize: '12px' }}>
+        <Typography
+          style={{ wordWrap: 'break-word', fontSize: '12px' }}
+          className="class-explore-card-desc"
+        >
           {truncDesc}
           <span>
-            <a href="/" style={{ fontWeight: 'bold', color: 'green', textDecoration: 'none' }}>
+            <a
+              href="/"
+              style={{ fontWeight: 'bold', color: 'green', textDecoration: 'none' }}
+              className="class-explore-card-more"
+            >
               See More
             </a>
           </span>
@@ -27,7 +34,14 @@ function FormatDescription(props) {
       </div>
     );
   }
-  return <Typography style={{ wordWrap: 'break-word', fontSize: '12px' }}>{desc}</Typography>;
+  return (
+    <Typography
+      style={{ wordWrap: 'break-word', fontSize: '12px' }}
+      className="class-explore-card-desc"
+    >
+      {desc}
+    </Typography>
+  );
 }
 
 export default function ExploreCard({ auction }) {
@@ -62,7 +76,11 @@ export default function ExploreCard({ auction }) {
             style={{ wordWrap: 'break-word' }}
           >
             <Grid item style={{ fontWeight: 'bold', maxWidth: '100%' }}>
-              <Typography variant="h5" style={{ fontWeight: 'bold', wordWrap: 'break-word' }}>
+              <Typography
+                variant="h5"
+                style={{ fontWeight: 'bold', wordWrap: 'break-word' }}
+                className="class-explore-card-title"
+              >
                 {auction.title}
               </Typography>
             </Grid>
@@ -75,7 +93,7 @@ export default function ExploreCard({ auction }) {
               <Chip label={auction.cutoffdate} style={{ maxWidth: '100%' }} />
             </Grid>
             <Grid item>
-              <Button color="primary" variant="contained">
+              <Button color="primary" variant="contained" className="class-explore-card-view">
                 View Details
               </Button>
             </Grid>
@@ -117,6 +135,7 @@ export default function ExploreCard({ auction }) {
                   component="image"
                   style={{ height: 200, width: 200 }}
                   image={auction.photo}
+                  className="class-explore-card-img"
                 />
               </Card>
             </Grid>
