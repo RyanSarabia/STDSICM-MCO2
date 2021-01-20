@@ -61,7 +61,8 @@ export default function RegistrationForm() {
                     message: 'Invalid contact number format.',
                   },
                 })}
-                helperText={<ErrorMessage errors={errors} name="contact" />}
+                helperText={<ErrorMessage errors={errors} name="contact" id="id-contact-error" />}
+                id="id-contact-field"
               />
             </Grid>
             <Grid item>
@@ -75,6 +76,7 @@ export default function RegistrationForm() {
                 rowsMax={6}
                 inputProps={{ maxLength: '140' }}
                 inputRef={register}
+                id="id-bio-field"
               />
             </Grid>
 
@@ -85,6 +87,7 @@ export default function RegistrationForm() {
                 variant="contained"
                 disabled={!formState.isValid}
                 type="submit"
+                id="id-submit-button"
               >
                 Confirm
               </Button>
