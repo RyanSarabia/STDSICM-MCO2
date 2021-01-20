@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import axios from 'axios';
-import Auction from '../components/Auction';
 import Explore from '../components/Explore';
 import Create from '../components/Create';
 import NavigationBar from '../components/NavigationBar';
@@ -33,7 +32,6 @@ export default function MainPage() {
       <Route path="/explore" component={Explore} />
       <Route path="/create" component={Create} />
       <Route path="/profile/:userID" component={Profile} />
-      <Route path="/auction/:auction" component={Auction} />
     </>
   );
 }
