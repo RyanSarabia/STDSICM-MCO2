@@ -61,6 +61,22 @@ export default function Profile() {
   const onSubmit = (data) => {
     console.log(`Contact: ${data.newContact}`);
     console.log(`Bio: ${data.newBio}`);
+
+    axios
+      .post('/profile/postProfile', { bio: data.newBio, contact: data.newContact })
+      .then((res) => {
+        const tempdata = res.data;
+
+        setUser(tempdata);
+        setAuctions(tempdata.auctions);
+
+        const defaultValues = {
+          newBio: tempdata.bio,
+          newContact: tempdata.contactNum,
+        };
+        reset(defaultValues);
+        setEditing(false);
+      });
   };
 
   return (
