@@ -124,7 +124,11 @@ export default function ExploreCard({ auction }) {
           >
             <Grid item style={{ fontWeight: 'bold', maxWidth: '100%' }}>
               <a href={toAuction} style={{ textDecoration: 'none', color: 'black' }}>
-                <Typography className="class-explore-card-title" variant="h5" style={{ fontWeight: 'bold', wordWrap: 'break-word' }}>
+                <Typography
+                  className="class-explore-card-title"
+                  variant="h5"
+                  style={{ fontWeight: 'bold', wordWrap: 'break-word' }}
+                >
                   {auction.title}
                 </Typography>
               </a>
@@ -138,7 +142,12 @@ export default function ExploreCard({ auction }) {
               <Chip label={auction.cutoffdate} style={{ maxWidth: '100%' }} />
             </Grid>
             <Grid item>
-              <Button className="class-explore-card-view" color="primary" variant="contained" href={toAuction}>
+              <Button
+                className="class-explore-card-view"
+                color="primary"
+                variant="contained"
+                href={toAuction}
+              >
                 View Details
               </Button>
             </Grid>
