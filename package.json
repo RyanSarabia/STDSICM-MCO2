@@ -41,7 +41,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "cd backend && npm start",
+    "start": "cd backend && node server.js",
     "worker": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
