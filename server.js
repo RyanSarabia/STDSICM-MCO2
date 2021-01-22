@@ -1,23 +1,28 @@
 const path = require('path');
-const mongoose = require('../node_modules/mongoose');
-const express = require('../node_modules/express');
-const passport = require('../node_modules/passport');
-const bodyParser = require('../node_modules/body-parser');
-require('../node_modules/dotenv').config();
 
-const cors = require('../node_modules/cors');
+// Cookies and sessions
+const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
+
+const mongoose = require('mongoose');
+const express = require('./node_modules/express');
+const passport = require('./node_modules/passport/lib');
+const bodyParser = require('./node_modules/body-parser');
+require('./node_modules/dotenv').config();
+
+const cors = require('./node_modules/cors');
 
 const app = express();
 // const port = process.env.PORT || 5000;
 
-const UserAuth = require('./config/validation');
+const UserAuth = require('./backend/config/validation');
 
 // routes
-const indexRoute = require('./routes/index');
-const userRoute = require('./routes/user');
+const indexRoute = require('./backend/routes/index');
+const userRoute = require('./backend/routes/user');
 
 // cloudinary
-const cloudinary = require('../node_modules/cloudinary');
+const cloudinary = require('./node_modules/cloudinary');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -25,7 +30,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const { createProxyMiddleware } = require('../node_modules/http-proxy-middleware');
+const { createProxyMiddleware } = require('./node_modules/http-proxy-middleware');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,14 +38,10 @@ app.use(bodyParser.json());
 
 // passport
 app.use(passport.initialize());
-require('./config/passport');
+require('./backend/config/passport');
 
 // express static
 app.use(express.static('client/build'));
-
-// Cookies and sessions
-const cookieParser = require('../node_modules/cookie-parser');
-const cookieSession = require('../node_modules/cookie-session');
 
 app.use(
   cookieSession({
