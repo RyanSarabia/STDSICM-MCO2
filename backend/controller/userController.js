@@ -24,12 +24,13 @@ exports.getOwner = async function getOwner(req, res) {
     console.log(e);
   }
 };
-
 exports.getAuction = async function getAuction(req, res) {
   try {
     const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
-    if (user && req.query.id) {
-      const auction = await Auction.findOne({ _id: req.query.id });
+    if (user && req.params.auctionid) {
+      const auction = await Auction.findOne({ _id: req.params.auctionid }).populate(
+        'highestbidder'
+      );
       if (auction) {
         const foundAuction = {
           title: auction.title,
@@ -40,6 +41,7 @@ exports.getAuction = async function getAuction(req, res) {
           startPrice: auction.startPrice,
           increment: auction.incPrice,
           currentPrice: auction.currentPrice,
+          highestbidder: auction.highestbidder,
           stealPrice: auction.stealPrice,
           imageurl: auction.photo,
         };
@@ -201,7 +203,7 @@ exports.getID = async function getID(req, res) {
 
 exports.getUser = async function getUser(req, res) {
   try {
-    const user = await User.findOne({ _id: req.params.userid });
+    const user = await User.findOne({ _id: req.params.userid }).populate('auctions');
 
     if (user) {
       res.send(user);
