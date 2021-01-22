@@ -14,14 +14,15 @@ import { Typography, TextField } from '@material-ui/core';
 import ExploreCard from './ExploreCard';
 
 export default function Profile() {
-  const { register, errors, handleSubmit, formState } = useForm({
-    criteriaMode: 'all',
-    mode: 'onChange',
-  });
   const profileId = useParams().userID;
   const [user, setUser] = useState('');
   const [auctions, setAuctions] = useState('');
   const [isEditing, setEditing] = useState(false);
+
+  const { register, errors, handleSubmit, formState, reset } = useForm({
+    criteriaMode: 'all',
+    mode: 'onChange',
+  });
 
   // console.log(profileId);
 
@@ -33,6 +34,13 @@ export default function Profile() {
 
       setUser(tempdata);
       setAuctions(tempdata.auctions);
+
+      const defaultValues = {
+        newBio: tempdata.bio,
+        newContact: tempdata.contactNum,
+      };
+
+      reset(defaultValues);
     });
 
     axios.get(`/profile/getUserAuctions/${profileId}`).then((res2) => {
@@ -129,7 +137,6 @@ export default function Profile() {
                   color="primary"
                   variant="outlined"
                   fullWidth
-                  defaultValue={user.bio}
                   rows={3}
                   rowsMax={6}
                   inputProps={{ maxLength: '140' }}
