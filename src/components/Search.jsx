@@ -40,7 +40,7 @@ export default function Search() {
         inputProps={{ maxLength: '30' }}
         endAdornment={
           <InputAdornment position="end">
-            <IconButton aria-label="search" onClick={handleSubmit}>
+            <IconButton aria-label="search" onClick={handleSubmit} id="id-search-button">
               <SearchIcon />
             </IconButton>
           </InputAdornment>
@@ -49,6 +49,7 @@ export default function Search() {
         value={searchInput}
         onChange={handleChange}
         onKeyPress={handleEnterPress}
+        id="id-searchbar"
       />
     </FormControl>
   );

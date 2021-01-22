@@ -35,6 +35,7 @@ export default function DialogButton({
   return (
     <>
       <Button
+        className="class-auction-action-button"
         variant="contained"
         color="primary"
         onClick={handleOpen}
@@ -49,15 +50,21 @@ export default function DialogButton({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title"> {dialogTitle} </DialogTitle>
+        <DialogTitle id="id-dialog-title"> {dialogTitle} </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">{dialogMessage}</DialogContentText>
+          <DialogContentText id="id-dialog-description">{dialogMessage}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button id="id-cancel-button" onClick={handleClose} color="primary">
             {cancelText}
           </Button>
-          <Button onClick={handleConfirm} color="primary" variant="contained" autoFocus>
+          <Button
+            id="id-confirm-button"
+            onClick={handleConfirm}
+            color="primary"
+            variant="contained"
+            autoFocus
+          >
             {confirmText}
           </Button>
         </DialogActions>

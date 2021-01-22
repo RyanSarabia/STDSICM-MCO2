@@ -26,13 +26,14 @@ export default class Registration extends Component {
     const { user } = this.state;
     return (
       <Grid container direction="column" alignItems="center" style={{ marginTop: '20vh' }}>
-        <Typography variant="h5" style={{ fontWeight: 'bold' }}>
+        <Typography variant="h5" style={{ fontWeight: 'bold' }} id="id-welcome-text">
           <Grid container direction="row" alignItems="center" justify="center">
             Welcome,
             <Avatar
               alt={user.firstName + user.lastName}
               src={user.dpURL}
               style={{ margin: '0.5vh' }}
+              id="id-avatar"
             />
             {user.firstName} {user.lastName}! Complete your details to sign-up.
           </Grid>
