@@ -39,7 +39,7 @@ export default function Landing() {
             variant="contained"
             color="primary"
             className={{ textTransform: 'uppercase' }}
-            href="http://localhost:5000/api/auth/google"
+            href="/api/auth/google"
           >
             Sign In With Google
           </Button>
