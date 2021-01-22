@@ -65,7 +65,7 @@ export default function CreateForm() {
         form.append('postDate', datefns.date());
         console.log(data);
         console.log(form);
-        axios.post('/upload', form).then((res2) => {
+        axios.post('/api/upload', form).then((res2) => {
           console.log(res2.data._id);
           setID(res2.data._id);
           setRedirect(true);

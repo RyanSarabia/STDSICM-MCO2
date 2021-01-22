@@ -1,3 +1,4 @@
+const path = require('path');
 const mongoose = require('../node_modules/mongoose');
 const express = require('../node_modules/express');
 const passport = require('../node_modules/passport');
@@ -23,6 +24,8 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+const { createProxyMiddleware } = require('../node_modules/http-proxy-middleware');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -53,6 +56,14 @@ app.use((req, res, next) => {
   next();
 });
 
+// to run react app
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+  app.use(express.static('/src'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(`${__dirname}/build/index.html`));
+  });
+}
+
 app.use('/', indexRoute);
 app.use('/register', UserAuth.userIsLoggedIn, UserAuth.userIsNew, indexRoute);
 app.use('/explore', userRoute);
@@ -60,14 +71,14 @@ app.use('/upload', userRoute);
 app.use('/create', userRoute);
 app.use('/profile', userRoute);
 app.use('/auction', userRoute);
-// app.use(
-//   '/api',
-//   createProxyMiddleware({
-//     target: 'https://localhost:5000',
-//     secure: false,
-//     changeOrigin: true,
-//   }),
-// );
+app.use(
+  '/api',
+  createProxyMiddleware({
+    target: 'https://localhost:5000',
+    secure: false,
+    changeOrigin: true,
+  })
+);
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 

@@ -19,7 +19,7 @@ export default function RegistrationForm() {
   // Place DB save call in this function
   const onSubmit = (data) => {
     let newUser;
-    axios.get('/register').then((res) => {
+    axios.get('/api/register').then((res) => {
       newUser = {
         email: res.data.email,
         firstName: res.data.firstName,
@@ -28,7 +28,7 @@ export default function RegistrationForm() {
         contact: data.contact,
         bio: data.bio,
       };
-      axios.post('/register', newUser).then((res2) => {
+      axios.post('/api/register', newUser).then((res2) => {
         console.log(res2.data);
         setRedirect(true);
       });

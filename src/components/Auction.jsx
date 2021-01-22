@@ -63,7 +63,7 @@ export default function Auction() {
   console.log(auction);
 
   useEffect(() => {
-    axios.get(`/auction/getAuction/${auctionId}`).then((res) => {
+    axios.get(`/api/auction/getAuction/${auctionId}`).then((res) => {
       const tempdata = res.data;
       console.log(tempdata);
 
@@ -76,7 +76,7 @@ export default function Auction() {
         setDisable(true);
       }
 
-      axios.get(`/auction/getOwner/${auctionId}`).then((res2) => {
+      axios.get(`/aapi/uction/getOwner/${auctionId}`).then((res2) => {
         if (res2.data.isCurrUser) {
           setDisable(true);
         }
@@ -105,7 +105,7 @@ export default function Auction() {
       setAuction(tempdata);
     });
 
-    axios.get(`/auction/getOwner/${auctionId}`).then((res) => {
+    axios.get(`/api/auction/getOwner/${auctionId}`).then((res) => {
       console.log(res);
       const ownerData = res.data.user;
       // `${ownerData.firstName} ${ownerData.lastName}`
@@ -140,14 +140,14 @@ export default function Auction() {
   }
 
   const handleBid = () => {
-    axios.post(`/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
+    axios.post(`/api/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
       console.log(res);
       setTrigger(!loadTrigger);
     });
   };
 
   const handleSteal = () => {
-    axios.post(`/auction/postAuction/${auctionId}/steal`).then((res) => {
+    axios.post(`/api/auction/postAuction/${auctionId}/steal`).then((res) => {
       console.log(res);
       setTrigger(!loadTrigger);
     });

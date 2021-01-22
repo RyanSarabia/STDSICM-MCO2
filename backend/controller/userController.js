@@ -19,7 +19,7 @@ exports.getOwner = async function getOwner(req, res) {
         isCurrUser,
       };
       res.send(userInfo);
-    } else res.redirect('/auction/auction');
+    } else res.redirect('/explore');
   } catch (e) {
     console.log(e);
   }
@@ -150,19 +150,6 @@ exports.postAuctionAction = async function postAuctionAction(req, res) {
       } else {
         res.send('No action');
       }
-    }
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-exports.getID = async function getID(req, res) {
-  try {
-    const auction = await Auction.findOne({ _id: req.query.id });
-
-    if (auction) {
-      // eslint-disable-next-line no-underscore-dangle
-      res.send(auction._id);
     }
   } catch (e) {
     console.log(e);
