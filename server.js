@@ -92,6 +92,7 @@ mongoose.connect(
   'mongodb+srv://admin:admin1234@cluster0.tlkdu.mongodb.net/Lasell2?retryWrites=true&w=majority',
   {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
   }
 );
 mongoose.connection
