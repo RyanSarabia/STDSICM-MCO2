@@ -12,6 +12,7 @@ import Chip from '@material-ui/core/Chip';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { Typography, TextField } from '@material-ui/core';
 import ExploreCard from './ExploreCard';
+import { formatDate } from '../myFunctions';
 
 export default function Profile() {
   const profileId = useParams().userID;
@@ -24,28 +25,24 @@ export default function Profile() {
     mode: 'onChange',
   });
 
-  // console.log(profileId);
-
   useEffect(() => {
     axios.get(`/profile/getUser/${profileId}`).then((res) => {
-      const tempdata = res.data;
-      console.log(tempdata);
-      console.log(tempdata.auctions);
+      const tempuser = res.data;
+      const tempauctions = res.data.auctions;
 
-      setUser(tempdata);
-      setAuctions(tempdata.auctions);
+      for (let i = 0; i < tempauctions.length; i += 1) {
+        tempauctions[i].postdate = formatDate(tempauctions[i].postdate);
+        tempauctions[i].cutoffdate = formatDate(tempauctions[i].cutoffdate);
+      }
+      setUser(tempuser);
+      setAuctions(tempauctions);
 
       const defaultValues = {
-        newBio: tempdata.bio,
-        newContact: tempdata.contactNum,
+        newBio: tempuser.bio,
+        newContact: tempuser.contactNum,
       };
 
       reset(defaultValues);
-    });
-
-    axios.get(`/profile/getUserAuctions/${profileId}`).then((res2) => {
-      console.log('Here are the auctions: ');
-      console.log(res2);
     });
   }, []);
 
