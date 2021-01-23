@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 const path = require('path');
 
 // Cookies and sessions
@@ -82,8 +83,20 @@ app.use(
     changeOrigin: true,
   })
 );
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+
+mongoose.connect(
+  'mongodb+srv://admin:admin1234@cluster0.tlkdu.mongodb.net/Lasell2?retryWrites=true&w=majority',
+  {
+    useNewUrlParser: true,
+  }
+);
+mongoose.connection
+  .once('open', function () {
+    console.log('Conection has been made!');
+  })
+  .on('error', function (error) {
+    console.log('Error is: ', error);
+  });
 
 const { connection } = mongoose;
 connection.once('open', () => {
