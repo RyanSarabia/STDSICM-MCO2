@@ -203,7 +203,10 @@ exports.getID = async function getID(req, res) {
 
 exports.getUser = async function getUser(req, res) {
   try {
-    const user = await User.findOne({ _id: req.params.userid }).populate({ path: 'auctions', options: { sort: { postdate: -1 } } })
+    const user = await User.findOne({ _id: req.params.userid }).populate({
+      path: 'auctions',
+      options: { sort: { postdate: -1 } },
+    });
 
     if (user) {
       res.send(user);
@@ -219,7 +222,10 @@ exports.postProfile = async function postProfile(req, res) {
   try {
     const user = await User.findOne({
       email: req.session.passport.user.profile.emails[0].value,
-    }).populate('auctions');
+    }).populate({
+      path: 'auctions',
+      options: { sort: { postdate: -1 } },
+    });
     const newBio = req.body.bio;
     const newContact = req.body.contact;
 

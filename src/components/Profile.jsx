@@ -62,15 +62,21 @@ export default function Profile() {
     axios
       .post('/profile/postProfile', { bio: data.newBio, contact: data.newContact })
       .then((res) => {
-        const tempdata = res.data;
+        const tempuser = res.data;
+        const tempauctions = res.data.auctions;
 
-        setUser(tempdata);
-        setAuctions(tempdata.auctions);
+        for (let i = 0; i < tempauctions.length; i += 1) {
+          tempauctions[i].postdate = formatDate(tempauctions[i].postdate);
+          tempauctions[i].cutoffdate = formatDate(tempauctions[i].cutoffdate);
+        }
+        setUser(tempuser);
+        setAuctions(tempauctions);
 
         const defaultValues = {
-          newBio: tempdata.bio,
-          newContact: tempdata.contactNum,
+          newBio: tempuser.bio,
+          newContact: tempuser.contactNum,
         };
+
         reset(defaultValues);
         setEditing(false);
       });
@@ -109,12 +115,14 @@ export default function Profile() {
               />
             </Grid>
             <Grid item container justify="center">
-              <Typography variant="h6">{user.firstName}</Typography>
+              <Typography variant="h6">{`${user.firstName} ${user.lastName}`}</Typography>
             </Grid>
             <Grid
               hidden={isEditing}
               style={{
                 flexWrap: 'wrap',
+                margin: 'auto',
+                textAlign: 'center',
               }}
             >
               {user.bio}
@@ -122,17 +130,21 @@ export default function Profile() {
             <Grid
               hidden={isEditing}
               style={{
-                marginLeft: '4vw',
-                marginTop: '3vw',
+                margin: 'auto',
+                marginTop: '2%',
+                marginBottom: '8%',
               }}
             >
               <Typography variant="caption">CONTACT NUMBER</Typography>
               <br />
               <Chip
-                label={`${user.contactNum}`}
+                label={`+63${user.contactNum}`}
                 color="primary"
                 variant="outlined"
-                style={{ maxWidth: '160px' }}
+                style={{
+                  margin: 'auto',
+                  maxWidth: '160px',
+                }}
               />
             </Grid>
             <Grid
