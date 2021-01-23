@@ -35,6 +35,10 @@ cloudinary.config({
 
 const { createProxyMiddleware } = require('./node_modules/http-proxy-middleware');
 
+app.use(function (req, res) {
+  res.sendFile(path.join(__dirname, '/build/index.html'));
+});
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -44,7 +48,7 @@ app.use(passport.initialize());
 require('./backend/config/passport');
 
 // express static
-app.use(express.static('/build'));
+// app.use(express.static('/build'));
 
 app.use(
   cookieSession({
@@ -92,19 +96,13 @@ mongoose.connect(
 );
 mongoose.connection
   .once('open', function () {
-    console.log('Conection has been made!');
+    console.log('Connection has been made!');
   })
   .on('error', function (error) {
     console.log('Error is: ', error);
   });
 
-const { connection } = mongoose;
-connection.once('open', () => {
-  console.log('MongoDB database connection established successfully');
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
 });
-
-app.listen(process.env.PORT || 5000);
-
-// app.listen(port, () => {
-//   console.log(`Server is running on port: ${port}`);
-// });
