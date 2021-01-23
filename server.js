@@ -5,10 +5,12 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const express = require('./node_modules/express');
 const passport = require('./node_modules/passport/lib');
 const bodyParser = require('./node_modules/body-parser');
-require('./node_modules/dotenv').config();
+
+dotenv.config();
 
 const cors = require('./node_modules/cors');
 
@@ -41,7 +43,7 @@ app.use(passport.initialize());
 require('./backend/config/passport');
 
 // express static
-app.use(express.static('client/build'));
+app.use(express.static('/build'));
 
 app.use(
   cookieSession({
