@@ -172,7 +172,13 @@ export default function Auction() {
             <Typography id="id-auction-title" variant="h4" style={{ textTransform: 'capitalize' }}>
               {auction.title}
             </Typography>
-            <Chip icon={statusIcon} label={status} variant="outlined" elevation={3} />
+            <Chip
+              id="id-auction-status"
+              icon={statusIcon}
+              label={status}
+              variant="outlined"
+              elevation={3}
+            />
           </Grid>
           <Grid item container style={{ marginTop: '1%' }}>
             <FaceIcon />
@@ -189,7 +195,12 @@ export default function Auction() {
                 {`${owner.firstName} ${owner.lastName}`}
               </Link>
             </Typography>
-            <Chip label={auction.postdate} size="small" variant="outlined" />
+            <Chip
+              id="id-auction-postdate"
+              label={auction.postdate}
+              size="small"
+              variant="outlined"
+            />
           </Grid>
           <Grid item container style={{ marginTop: '1%', marginBottom: '1%' }}>
             <Typography id="id-auction-description" variant="body2">
@@ -237,6 +248,7 @@ export default function Auction() {
               <Typography variant="caption">STARTING BID</Typography>
               <br />
               <Chip
+                id="id-auction-startprice"
                 label={`P${auction.startPrice}.00`}
                 color="primary"
                 variant="outlined"
@@ -247,6 +259,7 @@ export default function Auction() {
               <Typography variant="caption">CURRENT BID</Typography>
               <br />
               <Chip
+                id="id-auction-currentprice"
                 label={`P${auction.currentPrice}.00`}
                 color="primary"
                 variant="outlined"
@@ -257,6 +270,7 @@ export default function Auction() {
               <Typography variant="caption">HIGHEST BIDDER</Typography>
               <br />
               <Chip
+                id="id-auction-highestbidder"
                 label={
                   // eslint-disable-next-line no-constant-condition
                   auction.highestbidder === null || auction.highestbidder === undefined
@@ -272,6 +286,7 @@ export default function Auction() {
           <Grid item direction="column" container>
             <Typography variant="caption">CUT-OFF</Typography>
             <Chip
+              id="id-auction-cutoffdate"
               label={auction.cutoff}
               variant="outlined"
               color="primary"

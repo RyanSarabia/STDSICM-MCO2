@@ -102,6 +102,7 @@ export default function Profile() {
           <Grid container>
             <Grid item container justify="center">
               <CardMedia
+                id="id-profile-img"
                 style={{
                   width: '10vw',
                   height: '10vw',
@@ -115,7 +116,9 @@ export default function Profile() {
               />
             </Grid>
             <Grid item container justify="center">
-              <Typography variant="h6">{`${user.firstName} ${user.lastName}`}</Typography>
+              <Typography id="id-profile-username" variant="h6">
+                {`${user.firstName} ${user.lastName}`}
+              </Typography>
             </Grid>
             <Grid
               hidden={isEditing}
@@ -125,7 +128,9 @@ export default function Profile() {
                 textAlign: 'center',
               }}
             >
-              {user.bio}
+              <Typography id="id-profile-bio" variant="body2">
+                {user.bio}
+              </Typography>
             </Grid>
             <Grid
               hidden={isEditing}
@@ -138,6 +143,7 @@ export default function Profile() {
               <Typography variant="caption">CONTACT NUMBER</Typography>
               <br />
               <Chip
+                id="id-profile-contact"
                 label={`+63${user.contactNum}`}
                 color="primary"
                 variant="outlined"
@@ -166,7 +172,7 @@ export default function Profile() {
                   rowsMax={6}
                   inputProps={{ maxLength: '140' }}
                   inputRef={register}
-                  id="profile-id-bio-field"
+                  id="id-profile-bio-field"
                 />
                 <Grid
                   style={{
@@ -196,14 +202,14 @@ export default function Profile() {
                     helperText={
                       <ErrorMessage errors={errors} name="newContact" id="id-contact-error" />
                     }
-                    id="profile-id-contact-field"
+                    id="id-profile-contact-field"
                   />
                   <Button
                     color="primary"
                     variant="contained"
                     disabled={!formState.isValid}
                     type="submit"
-                    id="id-submit-button"
+                    id="id-profile-save-button"
                   >
                     Save
                   </Button>
@@ -212,6 +218,7 @@ export default function Profile() {
             </Grid>
             <Grid item container justify="center">
               <Button
+                id="id-profile-action-button"
                 variant={isEditing ? 'outlined' : 'contained'}
                 color={isEditing ? 'secondary' : 'primary'}
                 onClick={toggleEditing}

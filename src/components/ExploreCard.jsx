@@ -57,6 +57,7 @@ function BidPrice(props) {
         </Grid>
         <Grid item>
           <Chip
+            className="class-explore-card-bid"
             label={new Intl.NumberFormat('en-US', {
               style: 'currency',
               currency: 'PHP',
@@ -73,6 +74,7 @@ function BidPrice(props) {
       </Grid>
       <Grid item>
         <Chip
+          className="class-explore-card-start"
           label={new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'PHP',
@@ -139,7 +141,11 @@ export default function ExploreCard({ auction }) {
             </Grid>
 
             <Grid item style={{ maxWidth: '100%' }}>
-              <Chip label={auction.cutoffdate} style={{ maxWidth: '100%' }} />
+              <Chip
+                className="class-explore-card-cutoffdate"
+                label={auction.cutoffdate}
+                style={{ maxWidth: '100%' }}
+              />
             </Grid>
             <Grid item>
               <Button
@@ -179,6 +185,7 @@ export default function ExploreCard({ auction }) {
                 </Grid>
                 <Grid item>
                   <Chip
+                    className="class-explore-card-steal"
                     label={new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'PHP',
@@ -199,7 +206,12 @@ export default function ExploreCard({ auction }) {
               </Card>
             </Grid>
             <Grid item>
-              <Chip label={auction.postdate} size="small" variant="outlined" />
+              <Chip
+                className="class-explore-card-postdate"
+                label={auction.postdate}
+                size="small"
+                variant="outlined"
+              />
             </Grid>
           </Grid>
         </Grid>
