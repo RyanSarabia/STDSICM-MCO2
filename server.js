@@ -2,11 +2,12 @@
 const path = require('path');
 
 // Cookies and sessions
-const dotenv = require('dotenv');
+
 const cookieParser = require('./node_modules/cookie-parser');
 const cookieSession = require('./node_modules/cookie-session');
 
 const mongoose = require('./node_modules/mongoose');
+const dotenv = require('./node_modules/dotenv');
 const express = require('./node_modules/express');
 const passport = require('./node_modules/passport/lib');
 const bodyParser = require('./node_modules/body-parser');
