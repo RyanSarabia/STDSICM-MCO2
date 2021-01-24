@@ -6,7 +6,7 @@ const path = require('path');
 const cookieParser = require('./node_modules/cookie-parser');
 const cookieSession = require('./node_modules/cookie-session');
 
-const mongoose = require('./node_modules/mongoose');
+// const mongoose = require('./node_modules/mongoose');
 const dotenv = require('./node_modules/dotenv');
 const express = require('./node_modules/express');
 const passport = require('./node_modules/passport/lib');
@@ -89,17 +89,17 @@ app.use(
   })
 );
 
-mongoose.connect(process.env.ATLAS_URI);
+// mongoose.connect(process.env.ATLAS_URI);
 
-// When successfully connected
-mongoose.connection.on('connected', () => {
-  console.log('Established Mongoose Default Connection');
-});
+// // When successfully connected
+// mongoose.connection.on('connected', () => {
+//   console.log('Established Mongoose Default Connection');
+// });
 
-// When connection throws an error
-mongoose.connection.on('error', (err) => {
-  console.log(`Mongoose Default Connection Error : ${err}`);
-});
+// // When connection throws an error
+// mongoose.connection.on('error', (err) => {
+//   console.log(`Mongoose Default Connection Error : ${err}`);
+// });
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
