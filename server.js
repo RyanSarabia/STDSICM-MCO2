@@ -89,20 +89,17 @@ app.use(
   })
 );
 
-mongoose.connect(
-  'mongodb+srv://admin:admin1234@cluster0.tlkdu.mongodb.net/Lasell2?retryWrites=true&w=majority',
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
-mongoose.connection
-  .once('open', function () {
-    console.log('Connection has been made!');
-  })
-  .on('error', function (error) {
-    console.log('Error is: ', error);
-  });
+mongoose.connect(process.env.ATLAS_URI);
+
+// When successfully connected
+mongoose.connection.on('connected', () => {
+  console.log('Established Mongoose Default Connection');
+});
+
+// When connection throws an error
+mongoose.connection.on('error', (err) => {
+  console.log(`Mongoose Default Connection Error : ${err}`);
+});
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
