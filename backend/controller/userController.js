@@ -207,9 +207,20 @@ exports.getUser = async function getUser(req, res) {
       path: 'auctions',
       options: { sort: { postdate: -1 } },
     });
+    const currUser = await User.findOne({
+      email: req.session.passport.user.profile.emails[0].value,
+    });
 
+    let isCurrUser = 0;
     if (user) {
-      res.send(user);
+      if (user.email === currUser.email) {
+        isCurrUser = 1;
+      }
+      const userInfo = {
+        user,
+        isCurrUser,
+      };
+      res.send(userInfo);
     } else {
       res.send('No Results');
     }
