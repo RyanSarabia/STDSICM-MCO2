@@ -13,6 +13,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { Typography, TextField } from '@material-ui/core';
 import ExploreCard from './ExploreCard';
 import { formatDate } from '../myFunctions';
+import PaginationBar from './PaginationBar';
 
 export default function Profile() {
   const profileId = useParams().userID;
@@ -20,6 +21,7 @@ export default function Profile() {
   const [isCurrUser, setCurrUser] = useState(0);
   const [auctions, setAuctions] = useState('');
   const [isEditing, setEditing] = useState(false);
+  const [auctionCount, setCount] = useState('');
 
   useEffect(() => {
     axios.get(`/profile/getUser/${profileId}`).then((res) => {
@@ -33,8 +35,11 @@ export default function Profile() {
         tempauctions[i].postdate = formatDate(tempauctions[i].postdate);
         tempauctions[i].cutoffdate = formatDate(tempauctions[i].cutoffdate);
       }
+
+      console.log(res.data.count);
       setUser(tempuser);
       setAuctions(tempauctions);
+      setCount(res.data.count);
     });
   }, []);
 
@@ -243,6 +248,17 @@ export default function Profile() {
             })}
         </Grid>
       </Grid>
+      {auctionCount > 10 && (
+        <Grid
+          container
+          xs={12}
+          alignItems="center"
+          justify="center"
+          style={{ marginTop: '4vh', marginBottom: '4vh' }}
+        >
+          <PaginationBar pageCount={Math.ceil(auctionCount / 10, 10)} />
+        </Grid>
+      )}
     </Grid>
   );
 }
