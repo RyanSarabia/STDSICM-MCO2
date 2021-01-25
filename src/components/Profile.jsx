@@ -21,11 +21,6 @@ export default function Profile() {
   const [auctions, setAuctions] = useState('');
   const [isEditing, setEditing] = useState(false);
 
-  const { register, errors, handleSubmit, formState, reset } = useForm({
-    criteriaMode: 'all',
-    mode: 'onChange',
-  });
-
   useEffect(() => {
     axios.get(`/profile/getUser/${profileId}`).then((res) => {
       setCurrUser(res.data.isCurrUser);
@@ -40,13 +35,6 @@ export default function Profile() {
       }
       setUser(tempuser);
       setAuctions(tempauctions);
-
-      const defaultValues = {
-        newBio: tempuser.bio,
-        newContact: tempuser.contactNum,
-      };
-
-      reset(defaultValues);
     });
   }, []);
 
@@ -76,18 +64,21 @@ export default function Profile() {
         setUser(tempuser);
         setAuctions(tempauctions);
 
-        const defaultValues = {
-          newBio: tempuser.bio,
-          newContact: tempuser.contactNum,
-        };
-
-        reset(defaultValues);
         setEditing(false);
       });
   };
 
   function BioAndContact() {
     if (isEditing) {
+      const { register, errors, handleSubmit, formState } = useForm({
+        defaultValues: {
+          newBio: user.bio,
+          newContact: user.contactNum,
+        },
+        criteriaMode: 'all',
+        mode: 'onChange',
+      });
+
       return (
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           <Grid container direction="column" alignContent="center">
