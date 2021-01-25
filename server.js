@@ -58,14 +58,11 @@ app.use((req, res, next) => {
   next();
 });
 
-const buildPath = path.join(__dirname, '..', 'build');
-app.use(express.static(buildPath));
-
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(buildPath));
+  app.use(express.static('/build'));
 
   app.get('*', (req, res) => {
-    res.sendFile(buildPath);
+    res.sendFile(path.join(`${__dirname}/build/index.html`));
   });
 }
 
