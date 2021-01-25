@@ -12,14 +12,14 @@ export default function MainPage() {
   const [userID, setUserID] = useState();
 
   useEffect(() => {
-    axios.get('/getID').then((res) => {
+    axios.get('/api/getID').then((res) => {
       // eslint-disable-next-line no-underscore-dangle
       setUserID(res.data);
     });
   });
 
   const logout = () => {
-    axios.get('/logout').then((res) => {
+    axios.get('/api/logout').then((res) => {
       if (res.data === 'success') {
         window.location.reload();
       }
