@@ -76,7 +76,7 @@ export default function Auction() {
         setDisable(true);
       }
 
-      axios.get(`/aapi/uction/getOwner/${auctionId}`).then((res2) => {
+      axios.get(`/api/auction/getOwner/${auctionId}`).then((res2) => {
         if (res2.data.isCurrUser) {
           setDisable(true);
         }

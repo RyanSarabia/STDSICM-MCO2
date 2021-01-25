@@ -2,7 +2,6 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-import axios from 'axios';
 
 export default function Landing() {
   // useEffect(() => {
@@ -12,10 +11,6 @@ export default function Landing() {
   //     props.history.push('/');
   //   }
   // });
-  const login = () => {
-    console.log('reached');
-    axios.get('/api/auth/google');
-  };
 
   return (
     <Container>
@@ -44,7 +39,7 @@ export default function Landing() {
             variant="contained"
             color="primary"
             className={{ textTransform: 'uppercase' }}
-            onClick={login}
+            href="/api/auth/google"
           >
             Sign In With Google
           </Button>
