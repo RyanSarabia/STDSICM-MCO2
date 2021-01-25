@@ -203,10 +203,24 @@ exports.getID = async function getID(req, res) {
 
 exports.getUser = async function getUser(req, res) {
   try {
-    const user = await User.findOne({ _id: req.params.userid }).populate({ path: 'auctions', options: { sort: { postdate: -1 } } })
+    const user = await User.findOne({ _id: req.params.userid }).populate({
+      path: 'auctions',
+      options: { sort: { postdate: -1 } },
+    });
+    const currUser = await User.findOne({
+      email: req.session.passport.user.profile.emails[0].value,
+    });
 
+    let isCurrUser = 0;
     if (user) {
-      res.send(user);
+      if (user.email === currUser.email) {
+        isCurrUser = 1;
+      }
+      const userInfo = {
+        user,
+        isCurrUser,
+      };
+      res.send(userInfo);
     } else {
       res.send('No Results');
     }
@@ -219,7 +233,10 @@ exports.postProfile = async function postProfile(req, res) {
   try {
     const user = await User.findOne({
       email: req.session.passport.user.profile.emails[0].value,
-    }).populate('auctions');
+    }).populate({
+      path: 'auctions',
+      options: { sort: { postdate: -1 } },
+    });
     const newBio = req.body.bio;
     const newContact = req.body.contact;
 

@@ -17,18 +17,17 @@ import { formatDate } from '../myFunctions';
 export default function Profile() {
   const profileId = useParams().userID;
   const [user, setUser] = useState('');
+  const [isCurrUser, setCurrUser] = useState(0);
   const [auctions, setAuctions] = useState('');
   const [isEditing, setEditing] = useState(false);
 
-  const { register, errors, handleSubmit, formState, reset } = useForm({
-    criteriaMode: 'all',
-    mode: 'onChange',
-  });
-
   useEffect(() => {
     axios.get(`/profile/getUser/${profileId}`).then((res) => {
-      const tempuser = res.data;
-      const tempauctions = res.data.auctions;
+      setCurrUser(res.data.isCurrUser);
+      const tempuser = res.data.user;
+      const tempauctions = res.data.user.auctions;
+
+      console.log(res);
 
       for (let i = 0; i < tempauctions.length; i += 1) {
         tempauctions[i].postdate = formatDate(tempauctions[i].postdate);
@@ -36,13 +35,6 @@ export default function Profile() {
       }
       setUser(tempuser);
       setAuctions(tempauctions);
-
-      const defaultValues = {
-        newBio: tempuser.bio,
-        newContact: tempuser.contactNum,
-      };
-
-      reset(defaultValues);
     });
   }, []);
 
@@ -62,19 +54,131 @@ export default function Profile() {
     axios
       .post('/profile/postProfile', { bio: data.newBio, contact: data.newContact })
       .then((res) => {
-        const tempdata = res.data;
+        const tempuser = res.data;
+        const tempauctions = res.data.auctions;
 
-        setUser(tempdata);
-        setAuctions(tempdata.auctions);
+        for (let i = 0; i < tempauctions.length; i += 1) {
+          tempauctions[i].postdate = formatDate(tempauctions[i].postdate);
+          tempauctions[i].cutoffdate = formatDate(tempauctions[i].cutoffdate);
+        }
+        setUser(tempuser);
+        setAuctions(tempauctions);
 
-        const defaultValues = {
-          newBio: tempdata.bio,
-          newContact: tempdata.contactNum,
-        };
-        reset(defaultValues);
         setEditing(false);
       });
   };
+
+  function BioAndContact() {
+    if (isEditing) {
+      const { register, errors, handleSubmit, formState } = useForm({
+        defaultValues: {
+          newBio: user.bio,
+          newContact: user.contactNum,
+        },
+        criteriaMode: 'all',
+        mode: 'onChange',
+      });
+
+      return (
+        <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+          <Grid container direction="column" alignContent="center">
+            <TextField
+              item
+              multiline
+              name="newBio"
+              label="New Bio"
+              color="primary"
+              variant="outlined"
+              rows={3}
+              rowsMax={6}
+              inputProps={{ maxLength: '140' }}
+              inputRef={register}
+              id="id-profile-bio-field"
+            />
+            <Grid
+              item
+              style={{
+                marginTop: '5%',
+                marginBottom: '5%',
+              }}
+            >
+              <TextField
+                name="newContact"
+                label="New Contact Number"
+                color="primary"
+                variant="outlined"
+                size="small"
+                required
+                inputProps={{ maxLength: '10' }}
+                // eslint-disable-next-line react/jsx-no-duplicate-props
+                InputProps={{
+                  startAdornment: <InputAdornment position="start"> +63 </InputAdornment>,
+                }}
+                inputRef={register({
+                  required: 'This field is required.',
+                  pattern: {
+                    value: /^9[0-9]{9}$/,
+                    message: 'Invalid contact number format.',
+                  },
+                })}
+                helperText={
+                  <ErrorMessage errors={errors} name="newContact" id="id-contact-error" />
+                }
+                id="id-profile-contact-field"
+              />
+              <Button
+                color="primary"
+                variant="contained"
+                disabled={!formState.isValid}
+                type="submit"
+                id="id-profile-save-button"
+              >
+                Save
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      );
+    }
+    return (
+      <Grid container direction="column" justify="center" style={{ width: '100%' }}>
+        <Typography item id="id-profile-bio" align="center" variant="body2">
+          {user.bio}
+        </Typography>
+        <Typography item align="center" variant="caption" style={{ marginTop: '3%' }}>
+          CONTACT NUMBER
+        </Typography>
+        <Chip
+          item
+          id="id-profile-contact"
+          label={`+63${user.contactNum}`}
+          color="primary"
+          variant="outlined"
+          style={{
+            margin: 'auto',
+            maxWidth: '160px',
+          }}
+        />
+      </Grid>
+    );
+  }
+
+  function ProfileEditButton() {
+    if (isCurrUser) {
+      return (
+        <Button
+          id="id-profile-action-button"
+          variant={isEditing ? 'outlined' : 'contained'}
+          color={isEditing ? 'secondary' : 'primary'}
+          onClick={toggleEditing}
+          style={{ marginTop: '7%' }}
+        >
+          {isEditing ? 'Cancel' : 'Edit profile'}
+        </Button>
+      );
+    }
+    return '';
+  }
 
   return (
     <Grid container spacing={5}>
@@ -93,9 +197,10 @@ export default function Profile() {
             borderRadius: '5px',
           }}
         >
-          <Grid container>
+          <Grid container justify="center">
             <Grid item container justify="center">
               <CardMedia
+                id="id-profile-img"
                 style={{
                   width: '10vw',
                   height: '10vw',
@@ -108,105 +213,11 @@ export default function Profile() {
                 image={user.dpURL}
               />
             </Grid>
-            <Grid item container justify="center">
-              <Typography variant="h6">{user.firstName}</Typography>
-            </Grid>
-            <Grid
-              hidden={isEditing}
-              style={{
-                flexWrap: 'wrap',
-              }}
-            >
-              {user.bio}
-            </Grid>
-            <Grid
-              hidden={isEditing}
-              style={{
-                marginLeft: '4vw',
-                marginTop: '3vw',
-              }}
-            >
-              <Typography variant="caption">CONTACT NUMBER</Typography>
-              <br />
-              <Chip
-                label={`${user.contactNum}`}
-                color="primary"
-                variant="outlined"
-                style={{ maxWidth: '160px' }}
-              />
-            </Grid>
-            <Grid
-              hidden={!isEditing}
-              style={{
-                margin: 'auto',
-                marginTop: '10%',
-              }}
-            >
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <TextField
-                  multiline
-                  name="newBio"
-                  label="New Bio"
-                  color="primary"
-                  variant="outlined"
-                  fullWidth
-                  rows={3}
-                  rowsMax={6}
-                  inputProps={{ maxLength: '140' }}
-                  inputRef={register}
-                  id="profile-id-bio-field"
-                />
-                <Grid
-                  style={{
-                    marginTop: '5%',
-                    marginBottom: '5%',
-                  }}
-                >
-                  <TextField
-                    name="newContact"
-                    label="New Contact Number"
-                    color="primary"
-                    variant="outlined"
-                    size="small"
-                    required
-                    inputProps={{ maxLength: '10' }}
-                    // eslint-disable-next-line react/jsx-no-duplicate-props
-                    InputProps={{
-                      startAdornment: <InputAdornment position="start"> +63 </InputAdornment>,
-                    }}
-                    inputRef={register({
-                      required: 'This field is required.',
-                      pattern: {
-                        value: /^9[0-9]{9}$/,
-                        message: 'Invalid contact number format.',
-                      },
-                    })}
-                    helperText={
-                      <ErrorMessage errors={errors} name="newContact" id="id-contact-error" />
-                    }
-                    id="profile-id-contact-field"
-                  />
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    disabled={!formState.isValid}
-                    type="submit"
-                    id="id-submit-button"
-                  >
-                    Save
-                  </Button>
-                </Grid>
-              </form>
-            </Grid>
-            <Grid item container justify="center">
-              <Button
-                variant={isEditing ? 'outlined' : 'contained'}
-                color={isEditing ? 'secondary' : 'primary'}
-                onClick={toggleEditing}
-              >
-                {isEditing ? 'Cancel' : 'Edit profile'}
-              </Button>
-            </Grid>
+            <Typography item id="id-profile-username" variant="h6">
+              {`${user.firstName} ${user.lastName}`}
+            </Typography>
+            <BioAndContact />
+            <ProfileEditButton />
           </Grid>
         </Card>
       </Grid>
