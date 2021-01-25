@@ -34,10 +34,6 @@ cloudinary.config({
 
 const { createProxyMiddleware } = require('./node_modules/http-proxy-middleware');
 
-app.use(function (req, res) {
-  res.sendFile(path.join(__dirname, '/build/index.html'));
-});
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -62,13 +58,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// to run react app
-if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
-  app.use(express.static('/build'));
-  app.get('/*', (req, res) => {
-    res.sendFile(path.join(`${__dirname}/build/index.html`));
-  });
-}
+const buildPath = path.join(__dirname, '..', 'build');
+app.use(express.static(buildPath));
 
 app.use('/', indexRoute);
 app.use('/register', UserAuth.userIsLoggedIn, UserAuth.userIsNew, indexRoute);
@@ -85,18 +76,6 @@ app.use(
     changeOrigin: true,
   })
 );
-
-// mongoose.connect(process.env.ATLAS_URI);
-
-// // When successfully connected
-// mongoose.connection.on('connected', () => {
-//   console.log('Established Mongoose Default Connection');
-// });
-
-// // When connection throws an error
-// mongoose.connection.on('error', (err) => {
-//   console.log(`Mongoose Default Connection Error : ${err}`);
-// });
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
