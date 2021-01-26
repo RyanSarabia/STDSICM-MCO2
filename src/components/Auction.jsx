@@ -169,10 +169,16 @@ export default function Auction() {
       >
         <Grid container>
           <Grid item container justify="space-between">
-            <Typography variant="h4" style={{ textTransform: 'capitalize' }}>
+            <Typography id="id-auction-title" variant="h4" style={{ textTransform: 'capitalize' }}>
               {auction.title}
             </Typography>
-            <Chip icon={statusIcon} label={status} variant="outlined" elevation={3} />
+            <Chip
+              id="id-auction-status"
+              icon={statusIcon}
+              label={status}
+              variant="outlined"
+              elevation={3}
+            />
           </Grid>
           <Grid item container style={{ marginTop: '1%' }}>
             <FaceIcon />
@@ -185,12 +191,21 @@ export default function Auction() {
                 marginLeft: '0.5%',
               }}
             >
-              <Link href={`/profile/${owner._id}`}>{`${owner.firstName} ${owner.lastName}`}</Link>
+              <Link id="id-auction-seller" href={`/profile/${owner._id}`}>
+                {`${owner.firstName} ${owner.lastName}`}
+              </Link>
             </Typography>
-            <Chip label={auction.postdate} size="small" variant="outlined" />
+            <Chip
+              id="id-auction-postdate"
+              label={auction.postdate}
+              size="small"
+              variant="outlined"
+            />
           </Grid>
           <Grid item container style={{ marginTop: '1%', marginBottom: '1%' }}>
-            <Typography variant="body2">{auction.description}</Typography>
+            <Typography id="id-auction-description" variant="body2">
+              {auction.description}
+            </Typography>
           </Grid>
           <Grid item container justify="center">
             <CardMedia
@@ -204,6 +219,7 @@ export default function Auction() {
               }}
               component="image"
               image={auction.imageurl}
+              id="id-auction-image"
             />
           </Grid>
         </Grid>
@@ -232,6 +248,7 @@ export default function Auction() {
               <Typography variant="caption">STARTING BID</Typography>
               <br />
               <Chip
+                id="id-auction-startprice"
                 label={`P${auction.startPrice}.00`}
                 color="primary"
                 variant="outlined"
@@ -242,6 +259,7 @@ export default function Auction() {
               <Typography variant="caption">CURRENT BID</Typography>
               <br />
               <Chip
+                id="id-auction-currentprice"
                 label={`P${auction.currentPrice}.00`}
                 color="primary"
                 variant="outlined"
@@ -252,6 +270,7 @@ export default function Auction() {
               <Typography variant="caption">HIGHEST BIDDER</Typography>
               <br />
               <Chip
+                id="id-auction-highestbidder"
                 label={
                   // eslint-disable-next-line no-constant-condition
                   auction.highestbidder === null || auction.highestbidder === undefined
@@ -267,6 +286,7 @@ export default function Auction() {
           <Grid item direction="column" container>
             <Typography variant="caption">CUT-OFF</Typography>
             <Chip
+              id="id-auction-cutoffdate"
               label={auction.cutoff}
               variant="outlined"
               color="primary"
@@ -275,6 +295,7 @@ export default function Auction() {
           </Grid>
           <Grid item style={{ marginTop: '1vw' }}>
             <TextField
+              id="id-bid-field"
               type="text"
               variant="outlined"
               size="small"
@@ -296,6 +317,7 @@ export default function Auction() {
                       style={{ marginLeft: '10px' }}
                     >
                       <IconButton
+                        id="id-increment-button"
                         onClick={HandleIncrement}
                         disabled={isDisabled}
                         style={{ padding: 0 }}
@@ -303,6 +325,7 @@ export default function Auction() {
                         <KeyboardArrowUpIcon style={{ fontSize: '20px' }} />
                       </IconButton>
                       <IconButton
+                        id="id-decrement-button"
                         onClick={HandleDecrement}
                         disabled={isDisabled}
                         style={{ padding: 0 }}
@@ -316,6 +339,7 @@ export default function Auction() {
               style={{ width: '50%' }}
             />
             <DialogButton
+              buttonId="id-bid-button"
               isDisabled={isDisabled}
               dialogMessage="Are you sure you want to bid? This action cannot be undone."
               dialogTitle={`Bid on ${auction.title}?`}
@@ -327,6 +351,7 @@ export default function Auction() {
           </Grid>
           <Grid item>
             <TextField
+              id="id-stealprice-field"
               type="text"
               variant="outlined"
               size="small"
@@ -341,6 +366,7 @@ export default function Auction() {
               style={{ width: '50%' }}
             />
             <DialogButton
+              buttonId="id-steal-button"
               isDisabled={isDisabled}
               dialogMessage="Are you sure you want to steal? This action cannot be undone."
               dialogTitle={`Steal ${auction.title}?`}

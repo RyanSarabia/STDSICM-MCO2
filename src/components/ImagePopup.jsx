@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 export default function ImagePopup({ image, open, onClose, caption }) {
   return (
     <Modal
+      id="id-image-popup"
       open={open}
       onClose={onClose}
       aria-labelledby="simple-modal-title"
@@ -34,16 +35,18 @@ export default function ImagePopup({ image, open, onClose, caption }) {
           <Card>
             <CardHeader
               action={
-                <IconButton onClick={onClose}>
+                <IconButton id="id-popup-close-button" onClick={onClose}>
                   <HighlightOffIcon />
                 </IconButton>
               }
               title={caption}
+              id="id-popup-title"
             />
             <CardMedia
               component="img"
               style={{ maxWidth: '60vh', minWidth: '50vh' }}
               image={image}
+              id="id-popup-content"
             />
           </Card>
         </Grid>

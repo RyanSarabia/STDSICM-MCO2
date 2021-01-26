@@ -119,6 +119,7 @@ export default function CreateForm() {
               <Grid container item xs={7} direction="column" spacing={2}>
                 <Grid item>
                   <TextField
+                    id="id-title-field"
                     label="Title"
                     name="title"
                     variant="filled"
@@ -128,13 +129,14 @@ export default function CreateForm() {
                     inputRef={register({
                       required: 'This field is required.',
                     })}
-                    helperText={<ErrorMessage errors={errors} name="title" />}
+                    helperText={<ErrorMessage errors={errors} name="title" id="id-title-error" />}
                     error={!!errors.title}
                   />
                 </Grid>
 
                 <Grid item>
                   <TextField
+                    id="id-description-field"
                     label="Description"
                     name="description"
                     variant="filled"
@@ -147,7 +149,9 @@ export default function CreateForm() {
                     inputRef={register({
                       required: 'This field is required.',
                     })}
-                    helperText={<ErrorMessage errors={errors} name="description" />}
+                    helperText={
+                      <ErrorMessage errors={errors} name="description" id="id-description-error" />
+                    }
                     error={!!errors.description}
                   />
                 </Grid>
@@ -157,6 +161,7 @@ export default function CreateForm() {
                     as={
                       // eslint-disable-next-line react/jsx-wrap-multilines
                       <DateTimePicker
+                        id="id-cutoff-field"
                         required
                         variant="inline"
                         inputVariant="filled"
@@ -168,7 +173,9 @@ export default function CreateForm() {
                         // format="yyyy/MM/dd HH:mm"
                         minutesStep={5}
                         disablePast
-                        helperText={<ErrorMessage errors={errors} name="cutoff" />}
+                        helperText={
+                          <ErrorMessage errors={errors} name="cutoff" id="id-cutoff-error" />
+                        }
                         error={!!errors.cutoff}
                       />
                     }
@@ -186,6 +193,7 @@ export default function CreateForm() {
               <Grid container item xs={5} direction="column" spacing={2} alignItems="flex-start">
                 <Grid item>
                   <TextField
+                    id="id-startprice-field"
                     label="Starting Price"
                     name="startPrice"
                     variant="filled"
@@ -204,13 +212,16 @@ export default function CreateForm() {
                         message: 'Input a valid currency value.',
                       },
                     })}
-                    helperText={<ErrorMessage errors={errors} name="startPrice" />}
+                    helperText={
+                      <ErrorMessage errors={errors} name="startPrice" id="id-startprice-error" />
+                    }
                     error={!!errors.startPrice}
                   />
                 </Grid>
 
                 <Grid item>
                   <TextField
+                    id="id-increment-field"
                     label="Increment"
                     name="increment"
                     variant="filled"
@@ -230,13 +241,16 @@ export default function CreateForm() {
                         message: 'Input a valid currency value.',
                       },
                     })}
-                    helperText={<ErrorMessage errors={errors} name="increment" />}
+                    helperText={
+                      <ErrorMessage errors={errors} name="increment" id="id-increment-error" />
+                    }
                     error={!!errors.increment}
                   />
                 </Grid>
 
                 <Grid item>
                   <TextField
+                    id="id-stealprice-field"
                     label="Steal Price"
                     name="stealPrice"
                     variant="filled"
@@ -255,13 +269,15 @@ export default function CreateForm() {
                       },
                       validate: validateStealPrice,
                     })}
-                    helperText={<ErrorMessage errors={errors} name="stealPrice" />}
+                    helperText={
+                      <ErrorMessage errors={errors} name="stealPrice" id="id-stealprice-error" />
+                    }
                     error={!!errors.stealPrice}
                   />
                 </Grid>
 
                 <Grid item>
-                  <Button variant="contained" component="label">
+                  <Button variant="contained" component="label" id="id-upload-button">
                     Upload File
                     <input
                       type="file"
@@ -277,7 +293,12 @@ export default function CreateForm() {
                 <Grid item>
                   <Container>
                     {previewSource && (
-                      <img src={previewSource} alt="Item" style={{ maxWidth: '20vh' }} />
+                      <img
+                        src={previewSource}
+                        alt="Item"
+                        style={{ maxWidth: '20vh' }}
+                        id="id-upload-image"
+                      />
                     )}
                   </Container>
                 </Grid>
@@ -285,6 +306,7 @@ export default function CreateForm() {
 
               <Grid container item xs={12} alignItems="center" style={{ marginTop: '2vh' }}>
                 <Button
+                  id="id-post-button"
                   color="primary"
                   variant="contained"
                   disabled={!formState.isValid || loading}
@@ -293,6 +315,7 @@ export default function CreateForm() {
                   Post
                 </Button>
                 <LinearProgress
+                  id="id-progressbar"
                   color="primary"
                   style={{ marginTop: '20px', width: '100%' }}
                   hidden={!loading}

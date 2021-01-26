@@ -29,8 +29,10 @@ export default function Landing() {
           justify="center"
           style={{ textAlign: 'center' }}
         >
-          <h1 style={{ margin: 0, fontSize: 90, color: '#173D36' }}> LaSell++ </h1>
-          <h5 style={{ margin: 0 }}>
+          <h1 style={{ margin: 0, fontSize: 90, color: '#173D36' }} id="id-lasell-title">
+            LaSell++
+          </h1>
+          <h5 style={{ margin: 0 }} id="id-lasell-tagline">
             Made by Lasallians, for Lasallians. Sell and bid within the Lasallian community.
           </h5>
         </Grid>
@@ -40,6 +42,7 @@ export default function Landing() {
             color="primary"
             className={{ textTransform: 'uppercase' }}
             href="/api/auth/google"
+            id="id-signin-button"
           >
             Sign In With Google
           </Button>

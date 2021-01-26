@@ -26,8 +26,10 @@ export default function PaginationBar({ pageCount }) {
                 }`}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...item}
+                className={`class-page-${item.page}-button`}
               />
             )}
+            id="id-paginationbar"
           />
         );
       }}
