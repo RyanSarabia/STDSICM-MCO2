@@ -32,8 +32,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const { createProxyMiddleware } = require('./node_modules/http-proxy-middleware');
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -75,14 +73,6 @@ app.use('/upload', userRoute);
 app.use('/create', userRoute);
 app.use('/profile', userRoute);
 app.use('/auction', userRoute);
-app.use(
-  '/api',
-  createProxyMiddleware({
-    target: 'https://localhost:5000',
-    secure: false,
-    changeOrigin: true,
-  })
-);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
