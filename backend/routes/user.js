@@ -24,8 +24,8 @@ const upload = multer({ storage });
 
 router.get('/api/getUser/:userid', userController.getUser);
 router.get('/api/getAuction/:auctionid', userController.getAuction);
-router.get('/api/getOwner/:auctionid', userController.getOwner);
-router.get('/api/getAllAuction', userController.getAllAuction);
+router.get('/api/explore/getOwner/:auctionid', userController.getOwner);
+router.get('/api/explore/getAllAuction', userController.getAllAuction);
 router.get('/api/getSearch', userController.getSearch);
 router.get('/api/getID', userController.getID);
 router.post('/api/postAuction/:auctionid/:action', userController.postAuctionAction);
