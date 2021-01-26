@@ -21,7 +21,7 @@ module.exports.userIsNew = function userIsNew(req, res, next) {
         next();
       } else {
         console.log('useris new');
-        res.redirect('/register');
+        res.redirect('/register/api/newuser');
       }
     });
   } catch (error) {
