@@ -20,8 +20,8 @@ module.exports.userIsNew = function userIsNew(req, res, next) {
         console.log('userisnew user found');
         next();
       } else {
-        console.log('useris new');
-        res.redirect('https://lasellplus.herokuapp.com/register');
+        console.log('user is new');
+        next();
       }
     });
   } catch (error) {
