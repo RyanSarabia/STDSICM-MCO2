@@ -4,7 +4,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 
 // eslint-disable-next-line react/prop-types
-export default function PaginationBar({ pageCount }) {
+export default function PaginationBar({ pageCount, pageName }) {
   return (
     <Route>
       {({ location }) => {
@@ -22,7 +22,7 @@ export default function PaginationBar({ pageCount }) {
               <PaginationItem
                 component={Link}
                 /* eslint-disable */
-                to={`/explore${item.page === 1 ? '' : `?page=${item.page}`}${query.get('search') === null ? '' : `?search=${query.get('search')}`
+                to={`/${pageName}${item.page === 1 ? '' : `?page=${item.page}`}${query.get('search') === null ? '' : `?search=${query.get('search')}`
                   }`}
                 /* eslint-enable */
                 // eslint-disable-next-line react/jsx-props-no-spreading

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import Grid from '@material-ui/core/Grid';
@@ -23,8 +23,11 @@ export default function Profile() {
   const [isEditing, setEditing] = useState(false);
   const [auctionCount, setCount] = useState('');
 
+  const location = useLocation();
+
   useEffect(() => {
-    axios.get(`/profile/getUser/${profileId}`).then((res) => {
+    axios.get(`/profile/getUser/${profileId}${location.search}`).then((res) => {
+      window.scrollTo(0, 0);
       setCurrUser(res.data.isCurrUser);
       const tempuser = res.data.user;
       const tempauctions = res.data.user.auctions;
@@ -41,7 +44,7 @@ export default function Profile() {
       setAuctions(tempauctions);
       setCount(res.data.count);
     });
-  }, []);
+  }, [location]);
 
   function toggleEditing() {
     if (isEditing) {
@@ -256,7 +259,11 @@ export default function Profile() {
           justify="center"
           style={{ marginTop: '4vh', marginBottom: '4vh' }}
         >
-          <PaginationBar pageCount={Math.ceil(auctionCount / 10, 10)} />
+          <PaginationBar
+            pageCount={Math.ceil(auctionCount / 10, 10)}
+            // eslint-disable-next-line no-underscore-dangle
+            pageName={`profile/${user._id}`}
+          />
         </Grid>
       )}
     </Grid>

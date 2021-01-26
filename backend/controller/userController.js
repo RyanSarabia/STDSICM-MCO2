@@ -207,9 +207,6 @@ exports.getUser = async function getUser(req, res) {
   const pageNum = req.query.page;
   const itemsPerPage = 10;
 
-  console.log(req.query);
-  console.log("PAGENUM", pageNum);
-
   if (!input)
     input = "";
 

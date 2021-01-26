@@ -59,7 +59,7 @@ export default function Explore() {
           justify="center"
           style={{ marginTop: '4vh', marginBottom: '4vh' }}
         >
-          <PaginationBar pageCount={Math.ceil(auctionCount / 10, 10)} />
+          <PaginationBar pageCount={Math.ceil(auctionCount / 10, 10)} pageName="explore" />
         </Grid>
       )}
     </div>
