@@ -21,7 +21,7 @@ module.exports.userIsNew = function userIsNew(req, res, next) {
         next();
       } else {
         console.log('useris new');
-        res.redirect('/register/api/newuser');
+        res.redirect('https://lasellplus.herokuapp.com/register');
       }
     });
   } catch (error) {
