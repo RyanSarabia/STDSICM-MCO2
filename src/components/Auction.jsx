@@ -140,14 +140,14 @@ export default function Auction() {
   }
 
   const handleBid = () => {
-    axios.post(`/api/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
+    axios.post(`/auction/api/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
       console.log(res);
       setTrigger(!loadTrigger);
     });
   };
 
   const handleSteal = () => {
-    axios.post(`/api/auction/postAuction/${auctionId}/steal`).then((res) => {
+    axios.post(`/auction/api/postAuction/${auctionId}/steal`).then((res) => {
       console.log(res);
       setTrigger(!loadTrigger);
     });
