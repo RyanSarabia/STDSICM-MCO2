@@ -339,6 +339,7 @@ export default function Auction() {
               style={{ width: '50%' }}
             />
             <DialogButton
+              buttonId="id-bid-button"
               isDisabled={isDisabled}
               dialogMessage="Are you sure you want to bid? This action cannot be undone."
               dialogTitle={`Bid on ${auction.title}?`}
@@ -365,6 +366,7 @@ export default function Auction() {
               style={{ width: '50%' }}
             />
             <DialogButton
+              buttonId="id-steal-button"
               isDisabled={isDisabled}
               dialogMessage="Are you sure you want to steal? This action cannot be undone."
               dialogTitle={`Steal ${auction.title}?`}

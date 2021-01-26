@@ -16,6 +16,7 @@ export default function DialogButton({
   cancelText,
   buttonText,
   confirmAction,
+  buttonId,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -35,7 +36,7 @@ export default function DialogButton({
   return (
     <>
       <Button
-        className="class-auction-action-button"
+        id={buttonId}
         variant="contained"
         color="primary"
         onClick={handleOpen}
