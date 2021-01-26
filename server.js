@@ -67,8 +67,8 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-app.use('/api/google/auth', indexRoute.signin);
 app.use('/', indexRoute);
+app.use('/login', indexRoute);
 app.use('/register', UserAuth.userIsLoggedIn, UserAuth.userIsNew, indexRoute);
 app.use('/explore', userRoute);
 app.use('/upload', userRoute);
