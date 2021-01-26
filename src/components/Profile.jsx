@@ -17,7 +17,7 @@ export default function Profile() {
   // console.log(profileId);
 
   useEffect(() => {
-    axios.get(`/api/profile/getUser/${profileId}`).then((res) => {
+    axios.get(`/profile/api/getUser/${profileId}`).then((res) => {
       const tempdata = res.data;
       console.log(tempdata);
       console.log(tempdata.auctions);
@@ -26,7 +26,7 @@ export default function Profile() {
       setAuctions(tempdata.auctions);
     });
 
-    axios.get(`/api/profile/getUserAuctions/${profileId}`).then((res2) => {
+    axios.get(`/profile/api/getUserAuctions/${profileId}`).then((res2) => {
       console.log('Here are the auctions: ');
       console.log(res2);
     });

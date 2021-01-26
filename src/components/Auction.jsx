@@ -63,7 +63,7 @@ export default function Auction() {
   console.log(auction);
 
   useEffect(() => {
-    axios.get(`/api/auction/getAuction/${auctionId}`).then((res) => {
+    axios.get(`/auction/api/getAuction/${auctionId}`).then((res) => {
       const tempdata = res.data;
       console.log(tempdata);
 
@@ -76,7 +76,7 @@ export default function Auction() {
         setDisable(true);
       }
 
-      axios.get(`/api/auction/getOwner/${auctionId}`).then((res2) => {
+      axios.get(`/auction/api/getOwner/${auctionId}`).then((res2) => {
         if (res2.data.isCurrUser) {
           setDisable(true);
         }
@@ -105,7 +105,7 @@ export default function Auction() {
       setAuction(tempdata);
     });
 
-    axios.get(`/api/auction/getOwner/${auctionId}`).then((res) => {
+    axios.get(`/auction/api/getOwner/${auctionId}`).then((res) => {
       console.log(res);
       const ownerData = res.data.user;
       // `${ownerData.firstName} ${ownerData.lastName}`

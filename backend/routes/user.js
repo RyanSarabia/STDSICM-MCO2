@@ -24,14 +24,14 @@ const upload = multer({ storage });
 
 router.get('/api/getUser/:userid', userController.getUser);
 router.get('/api/getAuction/:auctionid', userController.getAuction);
-router.get('/api/explore/getOwner/:auctionid', userController.getOwner);
-router.get('/api/explore/getAllAuction', userController.getAllAuction);
+router.get('/api/getOwner/:auctionid', userController.getOwner);
+router.get('/api/getAllAuction', userController.getAllAuction);
 router.get('/api/getSearch', userController.getSearch);
 router.get('/api/getID', userController.getID);
 router.post('/api/postAuction/:auctionid/:action', userController.postAuctionAction);
 router.post('/api/postProfile', userController.postProfile);
 
-router.post('/api', upload.single('file'), async (req, res) => {
+router.post('/api/upload', upload.single('file'), async (req, res) => {
   const checkPrice = (req.body.stealPrice - req.body.startPrice) % req.body.incPrice;
   const file = parser.format(path.extname(req.file.originalname).toString(), req.file.buffer)
     .content;

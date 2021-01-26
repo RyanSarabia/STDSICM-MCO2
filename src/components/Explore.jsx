@@ -13,7 +13,7 @@ export default function Explore() {
   const location = useLocation();
 
   useEffect(() => {
-    axios.get(`/api/explore/getAllAuction${location.search}`).then((res) => {
+    axios.get(`/explore/api/getAllAuction${location.search}`).then((res) => {
       const tempdata = res.data.auctions;
 
       for (let i = 0; i < tempdata.length; i += 1) {
