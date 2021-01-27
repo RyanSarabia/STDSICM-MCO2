@@ -18,6 +18,13 @@ function convertTZ(date) {
   );
 }
 
+// cloudinary
+cloudinary.config({
+  cloud_name: 'lasell2',
+  api_key: '333571364327867',
+  api_secret: '8BvyYKkstiDxIDLfJ-usxrSqz5U',
+});
+
 const storage = multer.memoryStorage();
 
 const upload = multer({ storage });

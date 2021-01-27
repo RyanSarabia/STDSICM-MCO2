@@ -23,15 +23,6 @@ const UserAuth = require('./backend/config/validation');
 const indexRoute = require('./backend/routes/index');
 const userRoute = require('./backend/routes/user');
 
-// cloudinary
-const cloudinary = require('./node_modules/cloudinary');
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
