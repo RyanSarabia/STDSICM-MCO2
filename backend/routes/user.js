@@ -31,7 +31,7 @@ router.get('/api/getID', userController.getID);
 router.post('/api/postAuction/:auctionid/:action', userController.postAuctionAction);
 router.post('/api/postProfile', userController.postProfile);
 
-router.post('/', upload.single('file'), async (req, res) => {
+router.post('/api', upload.single('file'), async (req, res) => {
   const checkPrice = (req.body.stealPrice - req.body.startPrice) % req.body.incPrice;
   const file = parser.format(path.extname(req.file.originalname).toString(), req.file.buffer)
     .content;
