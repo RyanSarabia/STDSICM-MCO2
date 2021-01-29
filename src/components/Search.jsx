@@ -7,7 +7,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 
-export default function Search() {
+// eslint-disable-next-line react/prop-types
+export default function Search({ pageName }) {
   const [searchInput, setSearch] = useState('');
   const location = useLocation();
   const history = useHistory();
@@ -21,7 +22,7 @@ export default function Search() {
       // can be done without URLSearchParams, but will be kept if new URL queries are used
       const query = new URLSearchParams(location.search);
       query.set('search', searchInput);
-      history.push(`/explore?search=${query.get('search')}`);
+      history.push(`/${pageName}?search=${query.get('search')}`);
     }
   };
 

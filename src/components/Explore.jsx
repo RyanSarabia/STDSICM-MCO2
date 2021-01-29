@@ -29,7 +29,6 @@ export default function Explore() {
 
   return (
     <div>
-      <p> Explore page </p>
       <Grid
         item
         container
@@ -38,7 +37,7 @@ export default function Explore() {
         justify="center"
         style={{ marginBottom: '5vh' }}
       >
-        <Search />
+        <Search pageName="explore" />
       </Grid>
       <Grid container direction="column" xs={12} alignItems="center" justify="center" spacing={5}>
         {auctions &&
@@ -59,7 +58,7 @@ export default function Explore() {
           justify="center"
           style={{ marginTop: '4vh', marginBottom: '4vh' }}
         >
-          <PaginationBar pageCount={Math.ceil(auctionCount / 10, 10)} />
+          <PaginationBar pageCount={Math.ceil(auctionCount / 10, 10)} pageName="explore" />
         </Grid>
       )}
     </div>

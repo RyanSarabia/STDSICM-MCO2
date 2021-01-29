@@ -1,6 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import Grid from '@material-ui/core/Grid';
@@ -13,6 +14,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { Typography, TextField } from '@material-ui/core';
 import ExploreCard from './ExploreCard';
 import { formatDate } from '../myFunctions';
+import PaginationBar from './PaginationBar';
+import Search from './Search';
 
 export default function Profile() {
   const profileId = useParams().userID;
@@ -20,9 +23,13 @@ export default function Profile() {
   const [isCurrUser, setCurrUser] = useState(0);
   const [auctions, setAuctions] = useState('');
   const [isEditing, setEditing] = useState(false);
+  const [auctionCount, setCount] = useState('');
+
+  const location = useLocation();
 
   useEffect(() => {
-    axios.get(`/profile/getUser/${profileId}`).then((res) => {
+    axios.get(`/profile/getUser/${profileId}${location.search}`).then((res) => {
+      window.scrollTo(0, 0);
       setCurrUser(res.data.isCurrUser);
       const tempuser = res.data.user;
       const tempauctions = res.data.user.auctions;
@@ -33,10 +40,13 @@ export default function Profile() {
         tempauctions[i].postdate = formatDate(tempauctions[i].postdate);
         tempauctions[i].cutoffdate = formatDate(tempauctions[i].cutoffdate);
       }
+
+      console.log(res.data.count);
       setUser(tempuser);
       setAuctions(tempauctions);
+      setCount(res.data.count);
     });
-  }, []);
+  }, [location]);
 
   function toggleEditing() {
     if (isEditing) {
@@ -233,6 +243,9 @@ export default function Profile() {
             marginTop: '5vw',
           }}
         >
+          <Grid item container xs={12} alignItems="center" justify="center">
+            <Search pageName={`profile/${user._id}`} />
+          </Grid>
           {auctions &&
             auctions.map((auction) => {
               return (
@@ -243,6 +256,20 @@ export default function Profile() {
             })}
         </Grid>
       </Grid>
+      {auctionCount > 10 && (
+        <Grid
+          container
+          xs={12}
+          alignItems="center"
+          justify="center"
+          style={{ marginTop: '4vh', marginBottom: '4vh' }}
+        >
+          <PaginationBar
+            pageCount={Math.ceil(auctionCount / 10, 10)}
+            pageName={`profile/${user._id}`}
+          />
+        </Grid>
+      )}
     </Grid>
   );
 }
