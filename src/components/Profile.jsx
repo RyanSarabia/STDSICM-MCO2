@@ -22,12 +22,16 @@ export default function Profile() {
   const [isEditing, setEditing] = useState(false);
 
   useEffect(() => {
-    document.title = 'My Profile | Lasell++';
     axios.get(`/profile/api/getUser/${profileId}`).then((res) => {
       setCurrUser(res.data.isCurrUser);
       const tempuser = res.data.user;
       const tempauctions = res.data.user.auctions;
 
+      if (res.data.isCurrUser) {
+        document.title = 'My Profile | Lasell++';
+      } else {
+        document.title = `${res.data.user.firstName} ${res.data.user.lastName}'s Profile | Lasell++`;
+      }
       console.log(res);
 
       for (let i = 0; i < tempauctions.length; i += 1) {
