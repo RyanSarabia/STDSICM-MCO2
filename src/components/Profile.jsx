@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useLocation } from 'react-router-dom';
@@ -14,6 +15,7 @@ import { Typography, TextField } from '@material-ui/core';
 import ExploreCard from './ExploreCard';
 import { formatDate } from '../myFunctions';
 import PaginationBar from './PaginationBar';
+import Search from './Search';
 
 export default function Profile() {
   const profileId = useParams().userID;
@@ -241,6 +243,9 @@ export default function Profile() {
             marginTop: '5vw',
           }}
         >
+          <Grid item container xs={12} alignItems="center" justify="center">
+            <Search pageName={`profile/${user._id}`} />
+          </Grid>
           {auctions &&
             auctions.map((auction) => {
               return (
@@ -261,7 +266,6 @@ export default function Profile() {
         >
           <PaginationBar
             pageCount={Math.ceil(auctionCount / 10, 10)}
-            // eslint-disable-next-line no-underscore-dangle
             pageName={`profile/${user._id}`}
           />
         </Grid>
