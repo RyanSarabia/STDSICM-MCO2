@@ -67,6 +67,8 @@ export default function Auction() {
       const tempdata = res.data;
       console.log(tempdata);
 
+      document.title = `${tempdata.title} | Lasell++`;
+
       const curDate = new Date();
       const cutoffDate = new Date(tempdata.cutoff);
       if (curDate > cutoffDate || tempdata.currentPrice === tempdata.stealPrice) {

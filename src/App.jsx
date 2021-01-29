@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
@@ -31,6 +31,9 @@ const theme = createMuiTheme({
 require('./App.css');
 
 export default function App() {
+  useEffect(() => {
+    document.title = 'Lasell++';
+  });
   return (
     <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>

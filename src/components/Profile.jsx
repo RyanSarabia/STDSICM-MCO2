@@ -22,6 +22,7 @@ export default function Profile() {
   const [isEditing, setEditing] = useState(false);
 
   useEffect(() => {
+    document.title = 'My Profile | Lasell++';
     axios.get(`/profile/api/getUser/${profileId}`).then((res) => {
       setCurrUser(res.data.isCurrUser);
       const tempuser = res.data.user;

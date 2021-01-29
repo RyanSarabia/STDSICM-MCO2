@@ -13,6 +13,7 @@ export default function Explore() {
   const location = useLocation();
 
   useEffect(() => {
+    document.title = 'Explore | Lasell++';
     axios.get(`/explore/api/getAllAuction${location.search}`).then((res) => {
       const tempdata = res.data.auctions;
 

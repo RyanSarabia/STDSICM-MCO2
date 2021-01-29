@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CreateForm from './CreateForm';
 
 export default function Create() {
+  useEffect(() => {
+    document.title = 'Lasell++';
+  });
+
   return (
     <Grid container direction="column" alignItems="center" justify="center">
       <Grid item xs={12} style={{ marginTop: '10vh' }}>

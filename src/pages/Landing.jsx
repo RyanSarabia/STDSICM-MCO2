@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
@@ -11,6 +11,9 @@ export default function Landing() {
   //     props.history.push('/');
   //   }
   // });
+  useEffect(() => {
+    document.title = 'Lasell++';
+  });
 
   return (
     <Container>
