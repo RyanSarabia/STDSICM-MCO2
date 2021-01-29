@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-duplicate-props */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FormControl from '@material-ui/core/FormControl';
@@ -11,10 +11,6 @@ export default function Search() {
   const [searchInput, setSearch] = useState('');
   const location = useLocation();
   const history = useHistory();
-
-  useEffect(() => {
-    document.title = `Showing search results for ${searchInput} | Lasell++`;
-  });
 
   const handleChange = (e) => {
     setSearch(e.target.value);
