@@ -246,6 +246,17 @@ export default function Profile() {
           <Grid item container xs={12} alignItems="center" justify="center">
             <Search pageName={`profile/${user._id}`} />
           </Grid>
+          {auctionCount < 1 && (
+            <Grid
+              container
+              xs={12}
+              alignItems="center"
+              justify="center"
+              style={{ marginTop: '4vh', marginBottom: '4vh' }}
+            >
+              No auctions to show.
+            </Grid>
+          )}
           {auctions &&
             auctions.map((auction) => {
               return (
@@ -256,6 +267,7 @@ export default function Profile() {
             })}
         </Grid>
       </Grid>
+
       {auctionCount > 10 && (
         <Grid
           container

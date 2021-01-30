@@ -40,6 +40,17 @@ export default function Explore() {
         <Search pageName="explore" />
       </Grid>
       <Grid container direction="column" xs={12} alignItems="center" justify="center" spacing={5}>
+        {auctionCount < 1 && (
+          <Grid
+            container
+            xs={12}
+            alignItems="center"
+            justify="center"
+            style={{ marginTop: '4vh', marginBottom: '4vh' }}
+          >
+            No auctions to show.
+          </Grid>
+        )}
         {auctions &&
           auctions.map((auction) => {
             return (
