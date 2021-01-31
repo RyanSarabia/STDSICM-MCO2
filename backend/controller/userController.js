@@ -1,5 +1,6 @@
 const User = require('../model/user.model');
 const Auction = require('../model/auction.model');
+const { ConnectionStates } = require('mongoose');
 
 exports.getOwner = async function getOwner(req, res) {
   try {
@@ -189,11 +190,33 @@ exports.getID = async function getID(req, res) {
 };
 
 exports.getUser = async function getUser(req, res) {
+  var input = req.query.search;
+  const pageNum = req.query.page;
+  const itemsPerPage = 10;
+
+  if (!input)
+    input = "";
+
   try {
     const user = await User.findOne({ _id: req.params.userid }).populate({
       path: 'auctions',
-      options: { sort: { postdate: -1 } },
+      match: { title: { $regex: input, $options: 'i' } },
+      options: {
+        sort: { postdate: -1 },
+        limit: itemsPerPage,
+        skip: (pageNum - 1) * itemsPerPage,
+      },
     });
+
+    const tempuser = await User.findOne({ _id: req.params.userid }).populate({
+      path: 'auctions',
+      match: {
+        title: { $regex: input, $options: 'i' }
+      },
+    });
+
+    const count = tempuser.auctions.length;
+
     const currUser = await User.findOne({
       email: req.session.passport.user.profile.emails[0].value,
     });
@@ -206,6 +229,7 @@ exports.getUser = async function getUser(req, res) {
       const userInfo = {
         user,
         isCurrUser,
+        count
       };
       res.send(userInfo);
     } else {
