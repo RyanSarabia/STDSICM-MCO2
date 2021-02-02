@@ -3,6 +3,7 @@ import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import { useLocation } from 'react-router-dom';
 import ExploreCard from './ExploreCard';
+import Loading from './Loading';
 import Search from './Search';
 import PaginationBar from './PaginationBar';
 import { formatDate } from '../myFunctions';
@@ -11,6 +12,7 @@ export default function Explore() {
   const [auctions, setAuctions] = useState('');
   const [auctionCount, setCount] = useState('');
   const location = useLocation();
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get(`/explore/getAllAuction${location.search}`).then((res) => {
@@ -24,54 +26,68 @@ export default function Explore() {
       setAuctions(tempdata);
       setCount(res.data.count);
       window.scrollTo(0, 0);
+      setLoading(false);
     });
   }, [location]);
 
   return (
-    <div>
-      <Grid
-        item
-        container
-        xs={12}
-        alignItems="center"
-        justify="center"
-        style={{ marginBottom: '5vh' }}
-      >
-        <Search pageName="explore" />
-      </Grid>
-      <Grid container direction="column" xs={12} alignItems="center" justify="center" spacing={5}>
-        {auctionCount < 1 && (
+    <>
+      {isLoading ? (
+        <Loading label="Fetching data..." />
+      ) : (
+        <div>
           <Grid
+            item
             container
             xs={12}
             alignItems="center"
             justify="center"
-            style={{ marginTop: '4vh', marginBottom: '4vh' }}
+            style={{ marginBottom: '5vh' }}
           >
-            No auctions to show.
+            <Search pageName="explore" />
           </Grid>
-        )}
-        {auctions &&
-          auctions.map((auction) => {
-            return (
-              <Grid item>
-                <ExploreCard auction={auction} />
+          <Grid
+            container
+            direction="column"
+            xs={12}
+            alignItems="center"
+            justify="center"
+            spacing={5}
+          >
+            {auctionCount < 1 && (
+              <Grid
+                container
+                xs={12}
+                alignItems="center"
+                justify="center"
+                style={{ marginTop: '4vh', marginBottom: '4vh' }}
+              >
+                No auctions to show.
               </Grid>
-            );
-          })}
-      </Grid>
+            )}
+            {auctions &&
+              auctions.map((auction) => {
+                return (
+                  <Grid item>
+                    <ExploreCard auction={auction} />
+                  </Grid>
+                );
+              })}
+          </Grid>
 
-      {auctionCount > 10 && (
-        <Grid
-          container
-          xs={12}
-          alignItems="center"
-          justify="center"
-          style={{ marginTop: '4vh', marginBottom: '4vh' }}
-        >
-          <PaginationBar pageCount={Math.ceil(auctionCount / 10, 10)} pageName="explore" />
-        </Grid>
+          {auctionCount > 10 && (
+            <Grid
+              container
+              xs={12}
+              alignItems="center"
+              justify="center"
+              style={{ marginTop: '4vh', marginBottom: '4vh' }}
+            >
+              <PaginationBar pageCount={Math.ceil(auctionCount / 10, 10)} pageName="explore" />
+            </Grid>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }
