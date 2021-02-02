@@ -3,6 +3,7 @@
 import { Redirect, Route } from 'react-router-dom';
 import React, { Component } from 'react';
 import axios from 'axios';
+import Loading from './Loading';
 
 export default class ProtectedRoute extends Component {
   constructor(props) {
@@ -30,7 +31,7 @@ export default class ProtectedRoute extends Component {
     return (
       <>
         {isLoading ? (
-          <p>Loading</p>
+          <Loading label="Authenticating..." hasBackdrop />
         ) : (
           <Route
             {...rest}
