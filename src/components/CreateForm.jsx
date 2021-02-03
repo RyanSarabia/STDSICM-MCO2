@@ -23,7 +23,17 @@ export default function CreateForm() {
   const [previewSource, setPreviewSource] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { register, errors, handleSubmit, formState, control, getValues, trigger } = useForm({
+  const {
+    register,
+    setError,
+    clearErrors,
+    errors,
+    handleSubmit,
+    formState,
+    control,
+    getValues,
+    trigger,
+  } = useForm({
     criteriaMode: 'all',
     mode: 'onChange',
   });
@@ -32,11 +42,40 @@ export default function CreateForm() {
     setPreviewSource(URL.createObjectURL(file));
   };
 
+  const isImage = (filename) => {
+    // Get Extension
+    const parts = filename.split('.');
+    const ext = parts[parts.length - 1];
+    console.log(ext);
+    switch (ext.toLowerCase()) {
+      case 'jpg':
+      case 'jpeg':
+      case 'gif':
+      case 'bmp':
+      case 'png':
+        return true;
+      default:
+        return false;
+    }
+  };
+
   const handleImageUpload = (e) => {
     e.preventDefault();
     const file = e.target.files[0];
-    previewFile(file);
-    setImage(file);
+    if (file) {
+      if (isImage(file.name)) {
+        clearErrors('image');
+        previewFile(file);
+        setImage(file);
+      } else {
+        setPreviewSource('');
+        setImage('');
+        setError('image', {
+          type: 'manual',
+          message: 'Only accepting jpg/jpeg, png, gif, bmp. Please try again.',
+        });
+      }
+    }
   };
 
   // Put here DB stuff to save input
@@ -288,6 +327,7 @@ export default function CreateForm() {
                       hidden
                     />
                   </Button>
+                  {errors.image && <p style={{ color: 'red' }}>{errors.image.message}</p>}
                 </Grid>
 
                 <Grid item>
