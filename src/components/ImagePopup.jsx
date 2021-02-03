@@ -34,9 +34,9 @@ export default function ImagePopup({ image, open, onClose, caption }) {
         >
           <Card
             style={{
-              maxWidth: '60vh',
+              maxWidth: '90vh',
               minWidth: '50vh',
-              maxHeight: '80vh',
+              maxHeight: '90vh',
               overflow: 'auto',
             }}
           >
