@@ -97,8 +97,10 @@ export default function Auction() {
         tempdata.postdate = `${minutesPosted} minute ago`;
       } else if (minutesPosted < 60) {
         tempdata.postdate = `${minutesPosted} minutes ago`;
+      } else if (minutesPosted < 120) {
+        tempdata.postdate = `1 hour ago`;
       } else if (minutesPosted < 1440) {
-        tempdata.postdate = `${minutesPosted / 60} hours ago`;
+        tempdata.postdate = `${Math.floor(minutesPosted / 60, 10)} hours ago`;
       } else {
         tempdata.postdate = formatDate(tempdata.postdate);
       }
