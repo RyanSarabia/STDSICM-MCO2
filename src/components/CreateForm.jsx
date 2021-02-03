@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { DateTimePicker } from '@material-ui/pickers';
 import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
+// import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
@@ -218,7 +218,7 @@ export default function CreateForm() {
                         error={!!errors.cutoff}
                       />
                     }
-                    defaultValue={datefns.date()}
+                    defaultValue={null}
                     control={control}
                     name="cutoff"
                     rules={{
@@ -317,7 +317,7 @@ export default function CreateForm() {
 
                 <Grid item>
                   <Button variant="contained" component="label" id="id-upload-button">
-                    Upload File
+                    Upload File *
                     <input
                       type="file"
                       name="image"
@@ -330,17 +330,26 @@ export default function CreateForm() {
                   {errors.image && <p style={{ color: 'red' }}>{errors.image.message}</p>}
                 </Grid>
 
-                <Grid item>
-                  <Container>
-                    {previewSource && (
-                      <img
-                        src={previewSource}
-                        alt="Item"
-                        style={{ maxWidth: '20vh' }}
-                        id="id-upload-image"
-                      />
-                    )}
-                  </Container>
+                <Grid item container alignItems="center" justify="center">
+                  {previewSource ? (
+                    <img
+                      src={previewSource}
+                      alt="Item"
+                      style={{ maxWidth: '20vh' }}
+                      id="id-upload-image"
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        border: '1px solid gray',
+                        width: '100%',
+                        textAlign: 'center',
+                        padding: '0 8px 0 8px',
+                      }}
+                    >
+                      <p>No image uploaded</p>
+                    </div>
+                  )}
                 </Grid>
               </Grid>
 
