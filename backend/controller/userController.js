@@ -1,6 +1,6 @@
 const User = require('../model/user.model');
 const Auction = require('../model/auction.model');
-const { ConnectionStates } = require('mongoose');
+// const { ConnectionStates } = require('mongoose');
 
 exports.getOwner = async function getOwner(req, res) {
   try {
@@ -203,12 +203,11 @@ exports.getID = async function getID(req, res) {
 };
 
 exports.getUser = async function getUser(req, res) {
-  var input = req.query.search;
+  let input = req.query.search;
   const pageNum = req.query.page;
   const itemsPerPage = 10;
 
-  if (!input)
-    input = "";
+  if (!input) input = '';
 
   try {
     const user = await User.findOne({ _id: req.params.userid }).populate({
@@ -224,7 +223,7 @@ exports.getUser = async function getUser(req, res) {
     const tempuser = await User.findOne({ _id: req.params.userid }).populate({
       path: 'auctions',
       match: {
-        title: { $regex: input, $options: 'i' }
+        title: { $regex: input, $options: 'i' },
       },
     });
 
@@ -242,7 +241,7 @@ exports.getUser = async function getUser(req, res) {
       const userInfo = {
         user,
         isCurrUser,
-        count
+        count,
       };
       res.send(userInfo);
     } else {
@@ -265,9 +264,10 @@ exports.postProfile = async function postProfile(req, res) {
     const newContact = req.body.contact;
 
     if (user) {
-      if (newBio) {
-        user.bio = newBio;
-      }
+      // if (newBio) {
+      //   user.bio = newBio;
+      // }
+      user.bio = newBio;
       if (newContact) {
         user.contactNum = newContact;
       }
