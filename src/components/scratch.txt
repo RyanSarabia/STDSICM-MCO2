@@ -1,0 +1,45 @@
+Title
+
+              <a
+                href={toAuction}
+                style={{
+                  maxWidth: '100%',
+                  textDecoration: 'none',
+                  color: 'black',
+                }}
+              >
+                <Typography
+                  className="class-explore-card-title"
+                  variant="h5"
+                  style={{ fontWeight: 'bold' }}
+                >
+                  {auction.title}
+                </Typography>
+              </a>
+
+BidPrice
+              <Grid item container justify="flex-end">
+                <BidPrice
+                  hasBid={hasBid}
+                  curBid={auction.currentPrice}
+                  startBid={auction.startPrice}
+                />
+              </Grid>
+
+stealPrice
+
+                <Grid item container direction="column" xs={6} alignItems="center">
+                  <Typography item variant="overline">
+                    Steal
+                  </Typography>
+                  <Chip
+                    item
+                    className="class-explore-card-steal"
+                    label={new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: 'PHP',
+                    }).format(auction.stealPrice)}
+                  />
+                </Grid>
+
+postdate

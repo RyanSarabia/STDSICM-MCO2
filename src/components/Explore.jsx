@@ -39,25 +39,16 @@ export default function Explore() {
           <Grid
             item
             container
-            xs={12}
             alignItems="center"
             justify="center"
-            style={{ marginBottom: '5vh' }}
+            style={{ margin: '5vh 0 5vh 0' }}
           >
             <Search pageName="explore" />
           </Grid>
-          <Grid
-            container
-            direction="column"
-            xs={12}
-            alignItems="center"
-            justify="center"
-            spacing={5}
-          >
+          <Grid container direction="column" alignItems="center" justify="center" spacing={5}>
             {auctionCount < 1 && (
               <Grid
                 container
-                xs={12}
                 alignItems="center"
                 justify="center"
                 style={{ marginTop: '4vh', marginBottom: '4vh' }}
@@ -67,18 +58,13 @@ export default function Explore() {
             )}
             {auctions &&
               auctions.map((auction) => {
-                return (
-                  <Grid item>
-                    <ExploreCard auction={auction} />
-                  </Grid>
-                );
+                return <ExploreCard item auction={auction} />;
               })}
           </Grid>
 
           {auctionCount > 10 && (
             <Grid
               container
-              xs={12}
               alignItems="center"
               justify="center"
               style={{ marginTop: '4vh', marginBottom: '4vh' }}
