@@ -317,38 +317,48 @@ export default function Auction() {
                   onKeyDown={(event) => {
                     event.preventDefault();
                   }}
-                  value={bidAmount}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">P</InputAdornment>,
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Grid
-                          container
-                          direction="column"
-                          justify="center"
-                          alignItems="center"
-                          style={{ marginLeft: '10px' }}
-                        >
-                          <IconButton
-                            id="id-increment-button"
-                            onClick={HandleIncrement}
-                            disabled={isDisabled}
-                            style={{ padding: 0 }}
-                          >
-                            <KeyboardArrowUpIcon style={{ fontSize: '20px' }} />
-                          </IconButton>
-                          <IconButton
-                            id="id-decrement-button"
-                            onClick={HandleDecrement}
-                            disabled={isDisabled}
-                            style={{ padding: 0 }}
-                          >
-                            <KeyboardArrowDownIcon style={{ fontSize: '20px' }} />
-                          </IconButton>
-                        </Grid>
-                      </InputAdornment>
-                    ),
-                  }}
+                  value={isDisabled ? 'Bid Closed' : `${bidAmount}.00`}
+                  InputProps={
+                    isDisabled
+                      ? {
+                          inputProps: {
+                            readOnly: true,
+                            disabled: true,
+                            value: 'Bid Closed',
+                          },
+                        }
+                      : {
+                          startAdornment: <InputAdornment position="start">P</InputAdornment>,
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Grid
+                                container
+                                direction="column"
+                                justify="center"
+                                alignItems="center"
+                                style={{ marginLeft: '10px' }}
+                              >
+                                <IconButton
+                                  id="id-increment-button"
+                                  onClick={HandleIncrement}
+                                  disabled={isDisabled}
+                                  style={{ padding: 0 }}
+                                >
+                                  <KeyboardArrowUpIcon style={{ fontSize: '20px' }} />
+                                </IconButton>
+                                <IconButton
+                                  id="id-decrement-button"
+                                  onClick={HandleDecrement}
+                                  disabled={isDisabled}
+                                  style={{ padding: 0 }}
+                                >
+                                  <KeyboardArrowDownIcon style={{ fontSize: '20px' }} />
+                                </IconButton>
+                              </Grid>
+                            </InputAdornment>
+                          ),
+                        }
+                  }
                   style={{ width: '50%' }}
                 />
                 <DialogButton
@@ -368,14 +378,24 @@ export default function Auction() {
                   type="text"
                   variant="outlined"
                   size="small"
-                  InputProps={{
-                    inputProps: {
-                      readOnly: true,
-                      disabled: true,
-                      value: `P${auction.stealPrice}.00`,
-                      style: { textAlign: 'center' },
-                    },
-                  }}
+                  InputProps={
+                    isDisabled
+                      ? {
+                          inputProps: {
+                            readOnly: true,
+                            disabled: true,
+                            value: 'Bid Closed',
+                          },
+                        }
+                      : {
+                          startAdornment: <InputAdornment position="start">P</InputAdornment>,
+                          inputProps: {
+                            readOnly: true,
+                            disabled: true,
+                            value: `${auction.stealPrice}.00`,
+                          },
+                        }
+                  }
                   style={{ width: '50%' }}
                 />
                 <DialogButton
