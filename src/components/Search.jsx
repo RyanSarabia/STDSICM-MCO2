@@ -44,7 +44,6 @@ export default function Search({ pageName }) {
             </IconButton>
           </InputAdornment>
         }
-        style={{ width: '30vw' }}
         value={searchInput}
         onChange={handleChange}
         onKeyPress={handleEnterPress}
