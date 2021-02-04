@@ -4,11 +4,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 // import Badge from '@material-ui/core/Badge';
+import MuiAlert from '@material-ui/lab/Alert';
 import FaceIcon from '@material-ui/icons/Face';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
+import Snackbar from '@material-ui/core/Snackbar';
 import clsx from 'clsx';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
@@ -60,6 +62,8 @@ export default function Auction() {
   const [isModalOpen, setModal] = useState(false);
   const [loadTrigger, setTrigger] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const [successMessage, setSuccess] = useState('');
+  const [showSnackbar, setSnackbar] = useState(false);
 
   console.log(auctionId);
   console.log(auction);
@@ -127,6 +131,10 @@ export default function Auction() {
     setModal(false);
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbar(false);
+  };
+
   function HandleIncrement() {
     const bid = parseInt(bidAmount, 10);
     const inc = parseInt(auction.increment, 10);
@@ -148,6 +156,8 @@ export default function Auction() {
     axios.post(`/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
       console.log(res);
       setTrigger(!loadTrigger);
+      setSuccess('Bid successful! You are now the highest bidder.');
+      setSnackbar(true);
     });
   };
 
@@ -155,6 +165,8 @@ export default function Auction() {
     axios.post(`/auction/postAuction/${auctionId}/steal`).then((res) => {
       console.log(res);
       setTrigger(!loadTrigger);
+      setSuccess('Steal successful! You are the winner of this auction.');
+      setSnackbar(true);
     });
   };
 
@@ -408,6 +420,17 @@ export default function Auction() {
                   buttonText="Steal"
                   confirmAction={handleSteal}
                 />
+
+                <Snackbar
+                  open={showSnackbar}
+                  autoHideDuration={6000}
+                  onClose={handleSnackbarClose}
+                  // anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                >
+                  <MuiAlert variant="filled" onClose={handleSnackbarClose} severity="success">
+                    {successMessage}
+                  </MuiAlert>
+                </Snackbar>
               </Grid>
             </Grid>
           </Card>
