@@ -55,7 +55,7 @@ function BidPrice(props) {
     return (
       <Grid item container direction="column" xs={6} alignItems="center">
         <Grid item>
-          <Typography variant="h5"> Current</Typography>
+          <Typography variant="overline"> Current</Typography>
         </Grid>
         <Grid item>
           <Chip
@@ -72,7 +72,7 @@ function BidPrice(props) {
   return (
     <Grid item container direction="column" xs={6} alignItems="center">
       <Grid item>
-        <Typography variant="h5"> Starting</Typography>
+        <Typography variant="overline"> Starting</Typography>
       </Grid>
       <Grid item>
         <Chip
@@ -111,118 +111,110 @@ export default function ExploreCard({ auction }) {
     setModal(false);
   };
 
+  /* eslint-disable */
+
   return (
     <Container>
-      <Paper elevation={5} style={{ height: '50vh', width: '50vw' }}>
+      <Paper elevation={5} style={{ height: '55vh', width: '45vw' }}>
         {isLoading ? (
           <LinearProgress />
         ) : (
-          <Grid
-            container
-            justify="space-around"
-            alignContent="space-between"
-            style={{ padding: '4vh' }}
-          >
             <Grid
-              item
               container
-              direction="column"
-              xs={5}
-              spacing={1}
-              style={{ wordWrap: 'break-word' }}
+              justify="space-around"
+              alignContent="space-between"
+              style={{ padding: '4vh' }}
             >
-              <Grid item style={{ fontWeight: 'bold', maxWidth: '100%' }}>
-                <a href={toAuction} style={{ textDecoration: 'none', color: 'black' }}>
-                  <Typography
-                    className="class-explore-card-title"
-                    variant="h5"
-                    style={{ fontWeight: 'bold', wordWrap: 'break-word' }}
-                  >
-                    {auction.title}
-                  </Typography>
-                </a>
-              </Grid>
-
-              <Grid item style={{ maxWidth: '100%' }}>
-                <FormatDescription desc={auction.description} _id={auction._id} />
-              </Grid>
-
-              <Grid item style={{ maxWidth: '100%' }}>
-                <Chip
-                  className="class-explore-card-cutoffdate"
-                  label={auction.cutoffdate}
-                  style={{ maxWidth: '100%' }}
-                />
-              </Grid>
-              <Grid item>
-                <Button
-                  className="class-explore-card-view"
-                  color="primary"
-                  variant="contained"
-                  href={toAuction}
-                >
-                  View Details
-                </Button>
-              </Grid>
-            </Grid>
-
-            <Grid item container direction="column" xs={7} alignItems="center">
-              <Grid item container justify="space-around">
-                <BidPrice
-                  hasBid={hasBid}
-                  curBid={auction.currentPrice}
-                  startBid={auction.startPrice}
-                />
-                {/* <Grid item container direction="column" xs={6} alignItems="center">
-                <Grid item>
-                  <Typography variant="h5"> Current</Typography>
+              <Grid
+                item
+                container
+                direction="column"
+                xs={5}
+                spacing={1}
+                style={{ wordWrap: 'break-word' }}
+              >
+                <Grid item style={{ fontWeight: 'bold', maxWidth: '100%' }}>
+                  <a href={toAuction} style={{ textDecoration: 'none', color: 'black' }}>
+                    <Typography
+                      className="class-explore-card-title"
+                      variant="h5"
+                      style={{ fontWeight: 'bold', wordWrap: 'break-word' }}
+                    >
+                      {auction.title}
+                    </Typography>
+                  </a>
                 </Grid>
-                <Grid item>
-                  <Chip
-                    label={new Intl.NumberFormat('en-US', {
-                      style: 'currency',
-                      currency: 'PHP',
-                    }).format(auction.currentPrice)}
-                  />
+
+                <Grid item style={{ maxWidth: '100%', marginTop: '5%', marginBottom: '5%' }}>
+                  <FormatDescription desc={auction.description} _id={auction._id} />
                 </Grid>
-              </Grid> */}
-                <Grid item container direction="column" xs={6} alignItems="center">
-                  <Grid item>
-                    <Typography variant="h5"> Steal </Typography>
-                  </Grid>
-                  <Grid item>
+
+                <div>
+                  <Typography variant="overline"> Cut-off </Typography>
+                  <Grid item style={{ maxWidth: '100%' }}>
                     <Chip
-                      className="class-explore-card-steal"
-                      label={new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'PHP',
-                      }).format(auction.stealPrice)}
+                      className="class-explore-card-cutoffdate"
+                      label={auction.cutoffdate}
+                      style={{ maxWidth: '100%', marginBottom: "10%" }}
                     />
                   </Grid>
+                </div>
+                <Grid item>
+                  <Button
+                    className="class-explore-card-view"
+                    color="primary"
+                    variant="contained"
+                    href={toAuction}
+                  >
+                    View Details
+                </Button>
                 </Grid>
               </Grid>
 
-              <Grid item>
-                <Card onClick={handleImageClick}>
-                  <CardMedia
-                    component="image"
-                    style={{ height: 200, width: 200 }}
-                    image={auction.photo}
-                    className="class-explore-card-img"
+              <Grid item container direction="column" xs={7} alignItems="center" spacing="2">
+                <Grid item container justify="flex-end">
+                  <BidPrice
+                    hasBid={hasBid}
+                    curBid={auction.currentPrice}
+                    startBid={auction.startPrice}
                   />
-                </Card>
-              </Grid>
-              <Grid item>
-                <Chip
-                  className="class-explore-card-postdate"
-                  label={auction.postdate}
-                  size="small"
-                  variant="outlined"
-                />
+                  <Grid item container direction="column" xs={6} alignItems="center">
+                    <Grid item style={{}}>
+                      <Typography variant="overline"> Steal </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Chip
+                        className="class-explore-card-steal"
+                        label={new Intl.NumberFormat('en-US', {
+                          style: 'currency',
+                          currency: 'PHP',
+                        }).format(auction.stealPrice)}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                <Grid item>
+                  <Card onClick={handleImageClick}>
+                    <CardMedia
+                      component="image"
+                      style={{ height: 250, width: 250 }}
+                      image={auction.photo}
+                      className="class-explore-card-img"
+                    />
+                  </Card>
+                </Grid>
+                <Grid item style={{ marginLeft: "auto" }} >
+                  <Chip
+                    className="class-explore-card-postdate"
+                    label={auction.postdate}
+                    size="small"
+                    variant="outlined"
+                  />
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        )}
+          )}
       </Paper>
       <ImagePopup
         open={isModalOpen}
@@ -230,8 +222,9 @@ export default function ExploreCard({ auction }) {
         image={auction.photo}
         caption={auction.title}
       />
-    </Container>
+    </Container >
   );
+  /* eslint-disable */
 }
 // {
 //   new Intl.NumberFormat('en-US', {

@@ -1,16 +1,32 @@
 const formatDate = (refDate) => {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
   const oldDate = new Date(refDate);
-  let newDate = oldDate.getMonth() + 1 < 10 ? `0${oldDate.getMonth() + 1}` : oldDate.getMonth() + 1;
-  newDate += '/';
+
+  let newDate = months[oldDate.getMonth()];
+  newDate += ' ';
   newDate += oldDate.getDate() < 10 ? `0${oldDate.getDate()}` : oldDate.getDate();
-  newDate += '/';
+  newDate += ' ';
   newDate += oldDate.getFullYear();
-  newDate += ' | ';
-  newDate += oldDate.getHours() < 10 ? `0${oldDate.getHours()}` : oldDate.getHours();
+  newDate += ' ';
+  newDate += oldDate.getHours() % 12 === 0 ? 12 : oldDate.getHours() % 12;
   newDate += ':';
   newDate += oldDate.getMinutes() < 10 ? `0${oldDate.getMinutes()}` : oldDate.getMinutes();
   newDate += ':';
   newDate += oldDate.getSeconds() < 10 ? `0${oldDate.getSeconds()}` : oldDate.getSeconds();
+  newDate += oldDate.getHours() >= 12 ? ' pm' : ' am';
 
   return newDate;
 };
