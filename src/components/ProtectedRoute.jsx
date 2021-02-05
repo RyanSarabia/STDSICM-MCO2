@@ -16,7 +16,6 @@ export default class ProtectedRoute extends Component {
 
   componentDidMount() {
     axios.get('/validate').then((res) => {
-      console.log('check session');
       if (res.data === 'Has Session') {
         this.setState({ user: true, isLoading: false });
       } else {
