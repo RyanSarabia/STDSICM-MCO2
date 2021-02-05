@@ -17,7 +17,6 @@ function FormatDescription(props) {
   const { desc, _id } = props;
   if (desc.length > 250) {
     const truncDesc = `${desc.substring(0, 250)}... `;
-    console.log(_id);
     const toAuction = `/auction/${_id}`;
     return (
       <div>
@@ -111,7 +110,6 @@ export default function ExploreCard({ auction }) {
   };
 
   const handlePopupClose = () => {
-    console.log('closing');
     setModal(false);
   };
 

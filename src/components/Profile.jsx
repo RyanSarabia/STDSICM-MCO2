@@ -35,15 +35,10 @@ export default function Profile() {
       setCurrUser(res.data.isCurrUser);
       const tempuser = res.data.user;
       const tempauctions = res.data.user.auctions;
-
-      console.log(res);
-
       for (let i = 0; i < tempauctions.length; i += 1) {
         tempauctions[i].postdate = formatDate(tempauctions[i].postdate);
         tempauctions[i].cutoffdate = formatDate(tempauctions[i].cutoffdate);
       }
-
-      console.log(res.data.count);
       setUser(tempuser);
       setAuctions(tempauctions);
       setCount(res.data.count);
@@ -57,7 +52,6 @@ export default function Profile() {
     } else {
       setEditing(true);
     }
-    console.log(isEditing);
   }
 
   const onSubmit = (data) => {

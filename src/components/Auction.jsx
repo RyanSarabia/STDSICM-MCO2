@@ -65,18 +65,13 @@ export default function Auction() {
   const [successMessage, setSuccess] = useState('');
   const [showSnackbar, setSnackbar] = useState(false);
 
-  console.log(auctionId);
-  console.log(auction);
-
   useEffect(() => {
     axios.get(`/auction/getAuction/${auctionId}`).then((res) => {
       const tempdata = res.data;
-      console.log(tempdata);
 
       const curDate = new Date();
       const cutoffDate = new Date(tempdata.cutoff);
       if (curDate > cutoffDate || tempdata.currentPrice === tempdata.stealPrice) {
-        console.log('buboi');
         setStatus('CLOSED');
         setStatusIcon(grayCircle);
         setDisable(true);
@@ -115,7 +110,6 @@ export default function Auction() {
     });
 
     axios.get(`/auction/getOwner/${auctionId}`).then((res) => {
-      console.log(res);
       const ownerData = res.data.user;
       // `${ownerData.firstName} ${ownerData.lastName}`
       setOwner(ownerData);
@@ -127,7 +121,6 @@ export default function Auction() {
   };
 
   const handlePopupClose = () => {
-    console.log('closing');
     setModal(false);
   };
 
@@ -146,15 +139,13 @@ export default function Auction() {
     const inc = parseInt(auction.increment, 10);
     let min = parseInt(auction.startPrice, 10) - inc;
     if (hasBid) {
-      console.log('has bid');
       min = parseInt(auction.currentPrice, 10);
     }
     if (bid - inc > min) setBidAmount(bid - inc);
   }
 
   const handleBid = () => {
-    axios.post(`/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
-      console.log(res);
+    axios.post(`/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then(() => {
       setTrigger(!loadTrigger);
       setSuccess('Bid successful! You are now the highest bidder.');
       setSnackbar(true);
@@ -162,8 +153,7 @@ export default function Auction() {
   };
 
   const handleSteal = () => {
-    axios.post(`/auction/postAuction/${auctionId}/steal`).then((res) => {
-      console.log(res);
+    axios.post(`/auction/postAuction/${auctionId}/steal`).then(() => {
       setTrigger(!loadTrigger);
       setSuccess('Steal successful! You are the winner of this auction.');
       setSnackbar(true);
@@ -315,7 +305,7 @@ export default function Auction() {
                   label={auction.cutoff}
                   variant="outlined"
                   color="primary"
-                  style={{ maxWidth: '160px' }}
+                  style={{ maxWidth: '200px' }}
                 />
               </Grid>
               <Grid item style={{ marginTop: '1vw' }}>
