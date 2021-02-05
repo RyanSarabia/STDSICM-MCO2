@@ -82,7 +82,6 @@ exports.getAllAuction = async function getAllAuction(req, res) {
                 count,
                 auctions: results,
               };
-              console.log(count);
               res.send(result);
             } else {
               res.send('No results');
@@ -107,7 +106,6 @@ exports.getAllAuction = async function getAllAuction(req, res) {
               count,
               auctions: results,
             };
-            console.log(count);
             res.send(result);
           });
       } else res.redirect('/explore');
@@ -131,7 +129,6 @@ exports.postAuctionAction = async function postAuctionAction(req, res) {
       if (auction) {
         if (postaction === 'bid') {
           if (bidPrice % auction.incPrice === 0) {
-            console.log('bid!!!');
             const tempCurrPrice = bidPrice;
 
             if (tempCurrPrice < auction.stealPrice) {
@@ -145,8 +142,6 @@ exports.postAuctionAction = async function postAuctionAction(req, res) {
         }
 
         auction.highestbidder = user;
-        console.log(auction.highestbidder);
-        console.log(auction.currentPrice);
 
         await auction
           .save()
@@ -276,7 +271,6 @@ exports.postProfile = async function postProfile(req, res) {
         user.contactNum = newContact;
       }
       const updatedUser = await user.save();
-      console.log(updatedUser);
       res.send(updatedUser);
     } else {
       res.send('User not Edited');
