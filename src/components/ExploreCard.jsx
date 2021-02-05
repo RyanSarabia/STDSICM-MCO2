@@ -124,11 +124,8 @@ export default function ExploreCard({ auction }) {
           item
           elevation={5}
           style={{
-            position: 'relative',
-            padding: 0,
             height: '500px',
             width: '810px',
-            display: 'flex',
           }}
         >
           <LinearProgress />
