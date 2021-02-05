@@ -75,12 +75,14 @@ export default function Auction() {
         setStatus('CLOSED');
         setStatusIcon(grayCircle);
         setDisable(true);
+        setLoading(false);
       }
 
       axios.get(`/auction/getOwner/${auctionId}`).then((res2) => {
         if (res2.data.isCurrUser) {
           setDisable(true);
         }
+        setLoading(false);
       });
 
       if (tempdata.currentPrice >= tempdata.startPrice) {
@@ -106,7 +108,6 @@ export default function Auction() {
       tempdata.cutoff = formatDate(tempdata.cutoff);
 
       setAuction(tempdata);
-      setLoading(false);
     });
 
     axios.get(`/auction/getOwner/${auctionId}`).then((res) => {
