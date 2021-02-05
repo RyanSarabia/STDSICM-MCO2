@@ -315,7 +315,7 @@ export default function Auction() {
                   label={auction.cutoff}
                   variant="outlined"
                   color="primary"
-                  style={{ maxWidth: '160px' }}
+                  style={{ maxWidth: '200px' }}
                 />
               </Grid>
               <Grid item style={{ marginTop: '1vw' }}>
