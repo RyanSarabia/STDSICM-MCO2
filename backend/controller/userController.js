@@ -54,19 +54,23 @@ exports.getAuction = async function getAuction(req, res) {
   }
 };
 
+function escapeRegex(string) {
+  return string.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
 exports.getAllAuction = async function getAllAuction(req, res) {
   const input = req.query.search;
   const pageNum = req.query.page;
   const itemsPerPage = 10;
-
   if (input) {
     try {
+      const regex = escapeRegex(input);
       const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
       if (user) {
         const count = await Auction.find({
-          title: { $regex: input, $options: 'i' },
+          title: { $regex: regex, $options: 'i' },
         }).countDocuments();
-        Auction.find({ title: { $regex: input, $options: 'i' } })
+        Auction.find({ title: { $regex: regex, $options: 'i' } })
           .sort({ postdate: -1 })
           .skip((pageNum - 1) * itemsPerPage)
           .limit(itemsPerPage)

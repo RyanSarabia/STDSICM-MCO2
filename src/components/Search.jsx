@@ -20,7 +20,9 @@ export default function Search({ pageName }) {
   const handleSubmit = () => {
     // can be done without URLSearchParams, but will be kept if new URL queries are used
     const query = new URLSearchParams(location.search);
-    query.set('search', searchInput);
+    const searchInputTemp = encodeURIComponent(searchInput);
+    query.set('search', searchInputTemp);
+    console.log(searchInputTemp);
     history.push(`/${pageName}?search=${query.get('search')}`);
   };
 
