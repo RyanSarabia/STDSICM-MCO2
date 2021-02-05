@@ -20,9 +20,11 @@ export default function NavigationBar({ logout, userID }) {
       <Toolbar>
         <Grid container justify="space-between" alignItems="center">
           <Grid item>
-            <Typography variant="h6" style={{ fontWeight: 'bold' }} id="id-navbar-title">
-              Lasell++
-            </Typography>
+            <a href={`${path}explore`} style={{ textDecoration: 'none', color: 'black' }}>
+              <Typography variant="h6" style={{ fontWeight: 'bold' }} id="id-navbar-title">
+                Lasell++
+              </Typography>
+            </a>
           </Grid>
 
           <Grid item>
