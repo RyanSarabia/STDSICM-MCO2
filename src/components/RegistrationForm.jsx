@@ -28,8 +28,7 @@ export default function RegistrationForm() {
         contact: data.contact,
         bio: data.bio,
       };
-      axios.post('/register', newUser).then((res2) => {
-        console.log(res2.data);
+      axios.post('/register', newUser).then(() => {
         setRedirect(true);
       });
     });

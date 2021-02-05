@@ -22,7 +22,6 @@ export default function Search({ pageName }) {
     const query = new URLSearchParams(location.search);
     const searchInputTemp = encodeURIComponent(searchInput);
     query.set('search', searchInputTemp);
-    console.log(searchInputTemp);
     history.push(`/${pageName}?search=${query.get('search')}`);
   };
 

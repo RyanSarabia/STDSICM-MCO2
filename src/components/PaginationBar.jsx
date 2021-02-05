@@ -10,7 +10,6 @@ export default function PaginationBar({ pageCount, pageName }) {
       {({ location }) => {
         const query = new URLSearchParams(location.search);
         const page = parseInt(query.get('page') || '1', 10);
-        console.log('PAGE COUNT', pageCount);
         return (
           <Pagination
             page={page}
