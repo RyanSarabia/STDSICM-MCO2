@@ -11,18 +11,36 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CreateIcon from '@material-ui/icons/Create';
 import FaceIcon from '@material-ui/icons/Face';
 import { useRouteMatch } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(() => ({
+  Logo: {
+    textDecoration: 'none',
+    color: '#484848',
+    transition: '0.3s',
+    '&:hover': {
+      transform: 'scale(2.1)',
+      color: '#173D36',
+    },
+  },
+}));
 
 export default function NavigationBar({ logout, userID }) {
   const { path } = useRouteMatch();
+  const classes = useStyles();
 
   return (
     <AppBar color="inherit" position="sticky" id="id-navbar">
       <Toolbar>
         <Grid container justify="space-between" alignItems="center">
           <Grid item>
-            <a href={`${path}explore`} style={{ textDecoration: 'none', color: 'black' }}>
-              <Typography variant="h6" style={{ fontWeight: 'bold' }} id="id-navbar-title">
-                Lasell++
+            <a id="LasellLogo" href={`${path}explore`} className={classes.Logo}>
+              <Typography
+                variant="h5"
+                style={{ fontWeight: 'bold', letterSpacing: '1.2px' }}
+                id="id-navbar-title"
+              >
+                LaSell++
               </Typography>
             </a>
           </Grid>
