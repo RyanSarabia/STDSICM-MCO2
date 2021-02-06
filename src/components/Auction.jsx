@@ -154,11 +154,11 @@ export default function Auction() {
   };
 
   const handleSteal = () => {
+    setDisable(true);
     axios.post(`/auction/postAuction/${auctionId}/steal`).then(() => {
       setTrigger(!loadTrigger);
       setSuccess('Steal successful! You are the winner of this auction.');
       setSnackbar(true);
-      setDisable(true);
     });
   };
 
