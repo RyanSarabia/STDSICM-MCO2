@@ -158,6 +158,7 @@ export default function Auction() {
       setTrigger(!loadTrigger);
       setSuccess('Steal successful! You are the winner of this auction.');
       setSnackbar(true);
+      setDisable(true);
     });
   };
 
