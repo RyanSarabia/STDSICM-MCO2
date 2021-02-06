@@ -15,6 +15,7 @@ import { Typography, TextField } from '@material-ui/core';
 import ExploreCard from './ExploreCard';
 import { formatDate } from '../myFunctions';
 import PaginationBar from './PaginationBar';
+import Loading from './Loading';
 import Search from './Search';
 
 export default function Profile() {
@@ -23,6 +24,7 @@ export default function Profile() {
   const [isCurrUser, setCurrUser] = useState(0);
   const [auctions, setAuctions] = useState('');
   const [isEditing, setEditing] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [auctionCount, setCount] = useState('');
 
   const location = useLocation();
@@ -45,11 +47,10 @@ export default function Profile() {
         tempauctions[i].postdate = formatDate(tempauctions[i].postdate);
         tempauctions[i].cutoffdate = formatDate(tempauctions[i].cutoffdate);
       }
-
-      console.log(res.data.count);
       setUser(tempuser);
       setAuctions(tempauctions);
       setCount(res.data.count);
+      setLoading(false);
     });
   }, [location]);
 
@@ -59,7 +60,6 @@ export default function Profile() {
     } else {
       setEditing(true);
     }
-    console.log(isEditing);
   }
 
   const onSubmit = (data) => {
@@ -196,97 +196,103 @@ export default function Profile() {
   }
 
   return (
-    <Grid container spacing={5}>
-      <Grid item xs={4}>
-        <Card
-          elevation={5}
-          style={{
-            maxWidth: '100%',
-            minWidth: '30%',
-            marginLeft: '5vw',
-            marginTop: '5vw',
-            marginBottom: '5vw',
-            padding: '1vw',
-            paddingTop: '3vw',
-            paddingBottom: '3vw',
-            borderRadius: '5px',
-          }}
-        >
-          <Grid container justify="center">
-            <Grid item container justify="center">
-              <CardMedia
-                id="id-profile-img"
+    <>
+      {isLoading ? (
+        <Loading label="Calling user..." />
+      ) : (
+          <Grid container spacing={5}>
+            <Grid item xs={4}>
+              <Card
+                elevation={5}
                 style={{
-                  width: '10vw',
-                  height: '10vw',
-                  objectFit: 'scale-down',
-                  marginTop: '1vw',
-                  marginBottom: '2vw',
-                  borderRadius: '50%',
+                  maxWidth: '100%',
+                  minWidth: '30%',
+                  marginLeft: '5vw',
+                  marginTop: '5vw',
+                  marginBottom: '5vw',
+                  padding: '1vw',
+                  paddingTop: '3vw',
+                  paddingBottom: '3vw',
+                  borderRadius: '5px',
                 }}
-                component="image"
-                image={user.dpURL}
-              />
-            </Grid>
-            <Typography item id="id-profile-username" variant="h6">
-              {`${user.firstName} ${user.lastName}`}
-            </Typography>
-            <BioAndContact />
-            <ProfileEditButton />
-          </Grid>
-        </Card>
-      </Grid>
-      <Grid item xs={8}>
-        <Grid
-          container
-          direction="column"
-          xs={12}
-          alignItems="center"
-          justify="center"
-          spacing={5}
-          style={{
-            marginTop: '5vw',
-          }}
-        >
-          <Grid item container xs={12} alignItems="center" justify="center">
-            <Search pageName={`profile/${user._id}`} />
-          </Grid>
-          {auctionCount < 1 && (
-            <Grid
-              container
-              xs={12}
-              alignItems="center"
-              justify="center"
-              style={{ marginTop: '4vh', marginBottom: '4vh' }}
-            >
-              No auctions to show.
-            </Grid>
-          )}
-          {auctions &&
-            auctions.map((auction) => {
-              return (
-                <Grid item>
-                  <ExploreCard auction={auction} />
+              >
+                <Grid container justify="center">
+                  <Grid item container justify="center">
+                    <CardMedia
+                      id="id-profile-img"
+                      style={{
+                        width: '10vw',
+                        height: '10vw',
+                        objectFit: 'scale-down',
+                        marginTop: '1vw',
+                        marginBottom: '2vw',
+                        borderRadius: '50%',
+                      }}
+                      component="image"
+                      image={user.dpURL}
+                    />
+                  </Grid>
+                  <Typography item id="id-profile-username" variant="h6">
+                    {`${user.firstName} ${user.lastName}`}
+                  </Typography>
+                  <BioAndContact />
+                  <ProfileEditButton />
                 </Grid>
-              );
-            })}
-        </Grid>
-      </Grid>
+              </Card>
+            </Grid>
+            <Grid item xs={8}>
+              <Grid
+                container
+                direction="column"
+                xs={12}
+                alignItems="center"
+                justify="center"
+                spacing={5}
+                style={{
+                  marginTop: '5vw',
+                }}
+              >
+                <Grid item container xs={12} alignItems="center" justify="center">
+                  <Search pageName={`profile/${user._id}`} />
+                </Grid>
+                {auctionCount < 1 && (
+                  <Grid
+                    container
+                    xs={12}
+                    alignItems="center"
+                    justify="center"
+                    style={{ marginTop: '4vh', marginBottom: '4vh' }}
+                  >
+                    No auctions to show.
+                  </Grid>
+                )}
+                {auctions &&
+                  auctions.map((auction) => {
+                    return (
+                      <Grid item>
+                        <ExploreCard auction={auction} />
+                      </Grid>
+                    );
+                  })}
+              </Grid>
+            </Grid>
 
-      {auctionCount > 10 && (
-        <Grid
-          container
-          xs={12}
-          alignItems="center"
-          justify="center"
-          style={{ marginTop: '4vh', marginBottom: '4vh' }}
-        >
-          <PaginationBar
-            pageCount={Math.ceil(auctionCount / 10, 10)}
-            pageName={`profile/${user._id}`}
-          />
-        </Grid>
-      )}
-    </Grid>
+            {auctionCount > 10 && (
+              <Grid
+                container
+                xs={12}
+                alignItems="center"
+                justify="center"
+                style={{ marginTop: '4vh', marginBottom: '4vh' }}
+              >
+                <PaginationBar
+                  pageCount={Math.ceil(auctionCount / 10, 10)}
+                  pageName={`profile/${user._id}`}
+                />
+              </Grid>
+            )}
+          </Grid>
+        )}
+    </>
   );
 }

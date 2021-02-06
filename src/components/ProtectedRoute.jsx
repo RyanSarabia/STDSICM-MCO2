@@ -3,6 +3,7 @@
 import { Redirect, Route } from 'react-router-dom';
 import React, { Component } from 'react';
 import axios from 'axios';
+import Loading from './Loading';
 
 export default class ProtectedRoute extends Component {
   constructor(props) {
@@ -15,7 +16,6 @@ export default class ProtectedRoute extends Component {
 
   componentDidMount() {
     axios.get('/api/validate').then((res) => {
-      console.log('check session');
       if (res.data === 'Has Session') {
         this.setState({ user: true, isLoading: false });
       } else {
@@ -30,28 +30,28 @@ export default class ProtectedRoute extends Component {
     return (
       <>
         {isLoading ? (
-          <p>Loading</p>
+          <Loading label="Authenticating..." hasBackdrop />
         ) : (
-          <Route
-            {...rest}
-            render={(props) => {
-              if (user) {
-                return <RenderComponent {...rest} {...props} />;
-              }
+            <Route
+              {...rest}
+              render={(props) => {
+                if (user) {
+                  return <RenderComponent {...rest} {...props} />;
+                }
 
-              return (
-                <Redirect
-                  to={{
-                    pathname: '/login',
-                    state: {
-                      from: props.location,
-                    },
-                  }}
-                />
-              );
-            }}
-          />
-        )}
+                return (
+                  <Redirect
+                    to={{
+                      pathname: '/login',
+                      state: {
+                        from: props.location,
+                      },
+                    }}
+                  />
+                );
+              }}
+            />
+          )}
       </>
     );
   }

@@ -32,7 +32,14 @@ export default function ImagePopup({ image, open, onClose, caption }) {
           alignItems="center"
           style={{ outline: 'none', maxWidth: 'fit-content' }}
         >
-          <Card>
+          <Card
+            style={{
+              maxWidth: '90vh',
+              minWidth: '50vh',
+              maxHeight: '90vh',
+              overflow: 'auto',
+            }}
+          >
             <CardHeader
               action={
                 <IconButton id="id-popup-close-button" onClick={onClose}>
@@ -42,12 +49,7 @@ export default function ImagePopup({ image, open, onClose, caption }) {
               title={caption}
               id="id-popup-title"
             />
-            <CardMedia
-              component="img"
-              style={{ maxWidth: '60vh', minWidth: '50vh' }}
-              image={image}
-              id="id-popup-content"
-            />
+            <CardMedia component="img" image={image} id="id-popup-content" />
           </Card>
         </Grid>
       </Fade>

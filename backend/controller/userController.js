@@ -1,6 +1,6 @@
 const User = require('../model/user.model');
 const Auction = require('../model/auction.model');
-const { ConnectionStates } = require('mongoose');
+// const { ConnectionStates } = require('mongoose');
 
 exports.getOwner = async function getOwner(req, res) {
   try {
@@ -54,19 +54,23 @@ exports.getAuction = async function getAuction(req, res) {
   }
 };
 
+function escapeRegex(string) {
+  return string.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
 exports.getAllAuction = async function getAllAuction(req, res) {
   const input = req.query.search;
   const pageNum = req.query.page;
   const itemsPerPage = 10;
-
   if (input) {
     try {
+      const regex = escapeRegex(input);
       const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
       if (user) {
         const count = await Auction.find({
-          title: { $regex: input, $options: 'i' },
+          title: { $regex: regex, $options: 'i' },
         }).countDocuments();
-        Auction.find({ title: { $regex: input, $options: 'i' } })
+        Auction.find({ title: { $regex: regex, $options: 'i' } })
           .sort({ postdate: -1 })
           .skip((pageNum - 1) * itemsPerPage)
           .limit(itemsPerPage)
@@ -78,7 +82,6 @@ exports.getAllAuction = async function getAllAuction(req, res) {
                 count,
                 auctions: results,
               };
-              console.log(count);
               res.send(result);
             } else {
               res.send('No results');
@@ -103,7 +106,6 @@ exports.getAllAuction = async function getAllAuction(req, res) {
               count,
               auctions: results,
             };
-            console.log(count);
             res.send(result);
           });
       } else res.redirect('/explore');
@@ -127,7 +129,6 @@ exports.postAuctionAction = async function postAuctionAction(req, res) {
       if (auction) {
         if (postaction === 'bid') {
           if (bidPrice % auction.incPrice === 0) {
-            console.log('bid!!!');
             const tempCurrPrice = bidPrice;
 
             if (tempCurrPrice < auction.stealPrice) {
@@ -141,8 +142,6 @@ exports.postAuctionAction = async function postAuctionAction(req, res) {
         }
 
         auction.highestbidder = user;
-        console.log(auction.highestbidder);
-        console.log(auction.currentPrice);
 
         await auction
           .save()
@@ -190,12 +189,11 @@ exports.getID = async function getID(req, res) {
 };
 
 exports.getUser = async function getUser(req, res) {
-  var input = req.query.search;
+  let input = req.query.search;
   const pageNum = req.query.page;
   const itemsPerPage = 10;
 
-  if (!input)
-    input = "";
+  if (!input) input = '';
 
   try {
     const user = await User.findOne({ _id: req.params.userid }).populate({
@@ -211,7 +209,7 @@ exports.getUser = async function getUser(req, res) {
     const tempuser = await User.findOne({ _id: req.params.userid }).populate({
       path: 'auctions',
       match: {
-        title: { $regex: input, $options: 'i' }
+        title: { $regex: input, $options: 'i' },
       },
     });
 
@@ -229,7 +227,7 @@ exports.getUser = async function getUser(req, res) {
       const userInfo = {
         user,
         isCurrUser,
-        count
+        count,
       };
       res.send(userInfo);
     } else {
@@ -252,14 +250,14 @@ exports.postProfile = async function postProfile(req, res) {
     const newContact = req.body.contact;
 
     if (user) {
-      if (newBio) {
-        user.bio = newBio;
-      }
+      // if (newBio) {
+      //   user.bio = newBio;
+      // }
+      user.bio = newBio;
       if (newContact) {
         user.contactNum = newContact;
       }
       const updatedUser = await user.save();
-      console.log(updatedUser);
       res.send(updatedUser);
     } else {
       res.send('User not Edited');
