@@ -53,8 +53,6 @@ router.post('/api', upload.single('file'), async (req, res) => {
           await cloudinary.uploader.upload(file, async (err1, result) => {
             if (err1) throw err1;
             const urlCreated = result.secure_url;
-
-            console.log(urlCreated);
             const newAuction = new Auction({
               title: req.body.title,
               description: req.body.description,
