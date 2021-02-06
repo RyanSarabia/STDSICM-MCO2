@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
-// import Badge from '@material-ui/core/Badge';
 import MuiAlert from '@material-ui/lab/Alert';
 import FaceIcon from '@material-ui/icons/Face';
 import Grid from '@material-ui/core/Grid';
@@ -15,8 +14,6 @@ import clsx from 'clsx';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-// import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-// import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import TextField from '@material-ui/core/TextField';
 import { useParams } from 'react-router-dom';
 import { Typography, Link } from '@material-ui/core';
@@ -54,6 +51,7 @@ export default function Auction() {
   const [auction, setAuction] = useState('');
   const [bidAmount, setBidAmount] = useState(0);
   const [isDisabled, setDisable] = useState(false);
+  const [isCurrUser, setCurrUser] = useState(0);
   const [status, setStatus] = useState('OPEN');
   const [statusIcon, setStatusIcon] = useState(greenCircle);
   const [hasBid, setHasBid] = useState(false);
@@ -81,6 +79,7 @@ export default function Auction() {
       axios.get(`/auction/getOwner/${auctionId}`).then((res2) => {
         if (res2.data.isCurrUser) {
           setDisable(true);
+          setCurrUser(true);
         }
         setLoading(false);
       });
@@ -321,48 +320,40 @@ export default function Auction() {
                   onKeyDown={(event) => {
                     event.preventDefault();
                   }}
-                  value={isDisabled ? 'Bid Closed' : `${bidAmount}.00`}
-                  InputProps={
-                    isDisabled
-                      ? {
-                          inputProps: {
-                            readOnly: true,
-                            disabled: true,
-                            value: 'Bid Closed',
-                          },
-                        }
-                      : {
-                          startAdornment: <InputAdornment position="start">P</InputAdornment>,
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <Grid
-                                container
-                                direction="column"
-                                justify="center"
-                                alignItems="center"
-                                style={{ marginLeft: '10px' }}
-                              >
-                                <IconButton
-                                  id="id-increment-button"
-                                  onClick={HandleIncrement}
-                                  disabled={isDisabled}
-                                  style={{ padding: 0 }}
-                                >
-                                  <KeyboardArrowUpIcon style={{ fontSize: '20px' }} />
-                                </IconButton>
-                                <IconButton
-                                  id="id-decrement-button"
-                                  onClick={HandleDecrement}
-                                  disabled={isDisabled}
-                                  style={{ padding: 0 }}
-                                >
-                                  <KeyboardArrowDownIcon style={{ fontSize: '20px' }} />
-                                </IconButton>
-                              </Grid>
-                            </InputAdornment>
-                          ),
-                        }
-                  }
+                  value={status === 'OPEN' ? `${bidAmount}.00` : 'Auction Closed'}
+                  InputProps={{
+                    startAdornment: status === 'OPEN' && (
+                      <InputAdornment position="start">P</InputAdornment>
+                    ),
+                    endAdornment: status === 'OPEN' && !isCurrUser && (
+                      <InputAdornment position="end">
+                        <Grid
+                          container
+                          direction="column"
+                          justify="center"
+                          alignItems="center"
+                          style={{ marginLeft: '10px' }}
+                        >
+                          <IconButton
+                            id="id-increment-button"
+                            onClick={HandleIncrement}
+                            disabled={isDisabled}
+                            style={{ padding: 0 }}
+                          >
+                            <KeyboardArrowUpIcon style={{ fontSize: '20px' }} />
+                          </IconButton>
+                          <IconButton
+                            id="id-decrement-button"
+                            onClick={HandleDecrement}
+                            disabled={isDisabled}
+                            style={{ padding: 0 }}
+                          >
+                            <KeyboardArrowDownIcon style={{ fontSize: '20px' }} />
+                          </IconButton>
+                        </Grid>
+                      </InputAdornment>
+                    ),
+                  }}
                   style={{ width: '50%' }}
                 />
                 <DialogButton
@@ -383,12 +374,12 @@ export default function Auction() {
                   variant="outlined"
                   size="small"
                   InputProps={
-                    isDisabled
+                    status !== 'OPEN'
                       ? {
                           inputProps: {
                             readOnly: true,
                             disabled: true,
-                            value: 'Bid Closed',
+                            value: 'Auction Closed',
                           },
                         }
                       : {
