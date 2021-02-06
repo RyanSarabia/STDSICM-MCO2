@@ -32,26 +32,26 @@ export default class ProtectedRoute extends Component {
         {isLoading ? (
           <Loading label="Authenticating..." hasBackdrop />
         ) : (
-            <Route
-              {...rest}
-              render={(props) => {
-                if (user) {
-                  return <RenderComponent {...rest} {...props} />;
-                }
+          <Route
+            {...rest}
+            render={(props) => {
+              if (user) {
+                return <RenderComponent {...rest} {...props} />;
+              }
 
-                return (
-                  <Redirect
-                    to={{
-                      pathname: '/login',
-                      state: {
-                        from: props.location,
-                      },
-                    }}
-                  />
-                );
-              }}
-            />
-          )}
+              return (
+                <Redirect
+                  to={{
+                    pathname: '/login',
+                    state: {
+                      from: props.location,
+                    },
+                  }}
+                />
+              );
+            }}
+          />
+        )}
       </>
     );
   }

@@ -168,171 +168,171 @@ export default function Auction() {
       {isLoading ? (
         <Loading label="Setting up..." />
       ) : (
-          <Grid container direction="row" justify="space-between">
-            <Card
-              elevation={3}
-              style={{
-                maxWidth: '60%',
-                minWidth: '60%',
-                marginLeft: '5vw',
-                marginTop: '3vw',
-                marginBottom: '3vw',
-                padding: '1vw',
-                borderRadius: '1vw',
-              }}
+        <Grid container direction="row" justify="space-between">
+          <Card
+            elevation={3}
+            style={{
+              maxWidth: '60%',
+              minWidth: '60%',
+              marginLeft: '5vw',
+              marginTop: '3vw',
+              marginBottom: '3vw',
+              padding: '1vw',
+              borderRadius: '1vw',
+            }}
+          >
+            <Grid container>
+              <Grid item container justify="space-between">
+                <Typography
+                  id="id-auction-title"
+                  variant="h4"
+                  style={{ textTransform: 'capitalize' }}
+                >
+                  {auction.title}
+                </Typography>
+                <Chip
+                  id="id-auction-status"
+                  icon={statusIcon}
+                  label={status}
+                  variant="outlined"
+                  elevation={3}
+                />
+              </Grid>
+              <Grid item container style={{ marginTop: '1%' }}>
+                <FaceIcon />
+                <Typography
+                  variant="button"
+                  style={{
+                    fontSize: '1rem',
+                    fontWeight: 'bold',
+                    marginRight: '2%',
+                    marginLeft: '0.5%',
+                  }}
+                >
+                  <Link id="id-auction-seller" href={`/profile/${owner._id}`}>
+                    {`${owner.firstName} ${owner.lastName}`}
+                  </Link>
+                </Typography>
+                <Chip
+                  id="id-auction-postdate"
+                  label={auction.postdate}
+                  size="small"
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item container style={{ marginTop: '1%', marginBottom: '1%' }}>
+                <Typography id="id-auction-description" variant="body2">
+                  {auction.description}
+                </Typography>
+              </Grid>
+              <Grid item container justify="center">
+                <CardMedia
+                  onClick={handleImageClick}
+                  style={{
+                    width: '100%',
+                    height: '25vw',
+                    objectFit: 'scale-down',
+                    marginTop: '1vw',
+                    borderRadius: '10px',
+                  }}
+                  component="image"
+                  image={auction.imageurl}
+                  id="id-auction-image"
+                />
+              </Grid>
+            </Grid>
+          </Card>
+          <Card
+            elevation={3}
+            style={{
+              maxWidth: '30%',
+              minWidth: '30%',
+              maxHeight: '300px',
+              marginTop: '3vw',
+              marginBottom: '3vw',
+              marginRight: 0,
+              padding: '1vw',
+              borderRadius: '1vw 0vw 0vw 1vw',
+            }}
+          >
+            <Grid
+              container
+              direction="column"
+              justify="space-around"
+              style={{ padding: '2vw', height: '100%' }}
             >
-              <Grid container>
-                <Grid item container justify="space-between">
-                  <Typography
-                    id="id-auction-title"
-                    variant="h4"
-                    style={{ textTransform: 'capitalize' }}
-                  >
-                    {auction.title}
-                  </Typography>
+              <Grid item container spacing={2}>
+                <Grid item hidden={hasBid}>
+                  <Typography variant="caption">STARTING BID</Typography>
+                  <br />
                   <Chip
-                    id="id-auction-status"
-                    icon={statusIcon}
-                    label={status}
+                    id="id-auction-startprice"
+                    label={`P${auction.startPrice}.00`}
+                    color="primary"
                     variant="outlined"
-                    elevation={3}
+                    style={{ maxWidth: '160px' }}
                   />
                 </Grid>
-                <Grid item container style={{ marginTop: '1%' }}>
-                  <FaceIcon />
-                  <Typography
-                    variant="button"
-                    style={{
-                      fontSize: '1rem',
-                      fontWeight: 'bold',
-                      marginRight: '2%',
-                      marginLeft: '0.5%',
-                    }}
-                  >
-                    <Link id="id-auction-seller" href={`/profile/${owner._id}`}>
-                      {`${owner.firstName} ${owner.lastName}`}
-                    </Link>
-                  </Typography>
+                <Grid item hidden={!hasBid}>
+                  <Typography variant="caption">CURRENT BID</Typography>
+                  <br />
                   <Chip
-                    id="id-auction-postdate"
-                    label={auction.postdate}
-                    size="small"
+                    id="id-auction-currentprice"
+                    label={`P${auction.currentPrice}.00`}
+                    color="primary"
                     variant="outlined"
+                    style={{ maxWidth: '160px' }}
                   />
                 </Grid>
-                <Grid item container style={{ marginTop: '1%', marginBottom: '1%' }}>
-                  <Typography id="id-auction-description" variant="body2">
-                    {auction.description}
-                  </Typography>
-                </Grid>
-                <Grid item container justify="center">
-                  <CardMedia
-                    onClick={handleImageClick}
-                    style={{
-                      width: '100%',
-                      height: '25vw',
-                      objectFit: 'scale-down',
-                      marginTop: '1vw',
-                      borderRadius: '10px',
-                    }}
-                    component="image"
-                    image={auction.imageurl}
-                    id="id-auction-image"
+                <Grid item hidden={!hasBid}>
+                  <Typography variant="caption">HIGHEST BIDDER</Typography>
+                  <br />
+                  <Chip
+                    id="id-auction-highestbidder"
+                    label={
+                      // eslint-disable-next-line no-constant-condition
+                      auction.highestbidder === null || auction.highestbidder === undefined
+                        ? ''
+                        : `${auction.highestbidder.firstName} ${auction.highestbidder.lastName}`
+                    }
+                    color="primary"
+                    variant="outlined"
+                    style={{ maxWidth: '160px' }}
                   />
                 </Grid>
               </Grid>
-            </Card>
-            <Card
-              elevation={3}
-              style={{
-                maxWidth: '30%',
-                minWidth: '30%',
-                maxHeight: '300px',
-                marginTop: '3vw',
-                marginBottom: '3vw',
-                marginRight: 0,
-                padding: '1vw',
-                borderRadius: '1vw 0vw 0vw 1vw',
-              }}
-            >
-              <Grid
-                container
-                direction="column"
-                justify="space-around"
-                style={{ padding: '2vw', height: '100%' }}
-              >
-                <Grid item container spacing={2}>
-                  <Grid item hidden={hasBid}>
-                    <Typography variant="caption">STARTING BID</Typography>
-                    <br />
-                    <Chip
-                      id="id-auction-startprice"
-                      label={`P${auction.startPrice}.00`}
-                      color="primary"
-                      variant="outlined"
-                      style={{ maxWidth: '160px' }}
-                    />
-                  </Grid>
-                  <Grid item hidden={!hasBid}>
-                    <Typography variant="caption">CURRENT BID</Typography>
-                    <br />
-                    <Chip
-                      id="id-auction-currentprice"
-                      label={`P${auction.currentPrice}.00`}
-                      color="primary"
-                      variant="outlined"
-                      style={{ maxWidth: '160px' }}
-                    />
-                  </Grid>
-                  <Grid item hidden={!hasBid}>
-                    <Typography variant="caption">HIGHEST BIDDER</Typography>
-                    <br />
-                    <Chip
-                      id="id-auction-highestbidder"
-                      label={
-                        // eslint-disable-next-line no-constant-condition
-                        auction.highestbidder === null || auction.highestbidder === undefined
-                          ? ''
-                          : `${auction.highestbidder.firstName} ${auction.highestbidder.lastName}`
-                      }
-                      color="primary"
-                      variant="outlined"
-                      style={{ maxWidth: '160px' }}
-                    />
-                  </Grid>
-                </Grid>
-                <Grid item direction="column" container>
-                  <Typography variant="caption">CUT-OFF</Typography>
-                  <Chip
-                    id="id-auction-cutoffdate"
-                    label={auction.cutoff}
-                    variant="outlined"
-                    color="primary"
-                    style={{ maxWidth: '200px' }}
-                  />
-                </Grid>
-                <Grid item style={{ marginTop: '1vw' }}>
-                  <TextField
-                    id="id-bid-field"
-                    type="text"
-                    variant="outlined"
-                    size="small"
-                    label={`Increments of ${auction.increment}`}
-                    key={`${Math.floor(Math.random() * 1000)}-min`}
-                    onKeyDown={(event) => {
-                      event.preventDefault();
-                    }}
-                    value={isDisabled ? 'Bid Closed' : `${bidAmount}.00`}
-                    InputProps={
-                      isDisabled
-                        ? {
+              <Grid item direction="column" container>
+                <Typography variant="caption">CUT-OFF</Typography>
+                <Chip
+                  id="id-auction-cutoffdate"
+                  label={auction.cutoff}
+                  variant="outlined"
+                  color="primary"
+                  style={{ maxWidth: '200px' }}
+                />
+              </Grid>
+              <Grid item style={{ marginTop: '1vw' }}>
+                <TextField
+                  id="id-bid-field"
+                  type="text"
+                  variant="outlined"
+                  size="small"
+                  label={`Increments of ${auction.increment}`}
+                  key={`${Math.floor(Math.random() * 1000)}-min`}
+                  onKeyDown={(event) => {
+                    event.preventDefault();
+                  }}
+                  value={isDisabled ? 'Bid Closed' : `${bidAmount}.00`}
+                  InputProps={
+                    isDisabled
+                      ? {
                           inputProps: {
                             readOnly: true,
                             disabled: true,
                             value: 'Bid Closed',
                           },
                         }
-                        : {
+                      : {
                           startAdornment: <InputAdornment position="start">P</InputAdornment>,
                           endAdornment: (
                             <InputAdornment position="end">
@@ -363,36 +363,36 @@ export default function Auction() {
                             </InputAdornment>
                           ),
                         }
-                    }
-                    style={{ width: '50%' }}
-                  />
-                  <DialogButton
-                    buttonId="id-bid-button"
-                    isDisabled={isDisabled}
-                    dialogMessage="Are you sure you want to bid? This action cannot be undone."
-                    dialogTitle={`Bid on ${auction.title}?`}
-                    confirmText="Yes, bid!"
-                    cancelText="Cancel"
-                    buttonText="Bid"
-                    confirmAction={handleBid}
-                  />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    id="id-stealprice-field"
-                    type="text"
-                    variant="outlined"
-                    size="small"
-                    InputProps={
-                      isDisabled
-                        ? {
+                  }
+                  style={{ width: '50%' }}
+                />
+                <DialogButton
+                  buttonId="id-bid-button"
+                  isDisabled={isDisabled}
+                  dialogMessage="Are you sure you want to bid? This action cannot be undone."
+                  dialogTitle={`Bid on ${auction.title}?`}
+                  confirmText="Yes, bid!"
+                  cancelText="Cancel"
+                  buttonText="Bid"
+                  confirmAction={handleBid}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  id="id-stealprice-field"
+                  type="text"
+                  variant="outlined"
+                  size="small"
+                  InputProps={
+                    isDisabled
+                      ? {
                           inputProps: {
                             readOnly: true,
                             disabled: true,
                             value: 'Bid Closed',
                           },
                         }
-                        : {
+                      : {
                           startAdornment: <InputAdornment position="start">P</InputAdornment>,
                           inputProps: {
                             readOnly: true,
@@ -400,44 +400,44 @@ export default function Auction() {
                             value: `${auction.stealPrice}.00`,
                           },
                         }
-                    }
-                    style={{ width: '50%' }}
-                  />
-                  <DialogButton
-                    buttonId="id-steal-button"
-                    isDisabled={isDisabled}
-                    dialogMessage="Are you sure you want to steal? This action cannot be undone."
-                    dialogTitle={`Steal ${auction.title}?`}
-                    confirmText="Yes, steal!"
-                    cancelText="Cancel"
-                    buttonText="Steal"
-                    confirmAction={handleSteal}
-                  />
+                  }
+                  style={{ width: '50%' }}
+                />
+                <DialogButton
+                  buttonId="id-steal-button"
+                  isDisabled={isDisabled}
+                  dialogMessage="Are you sure you want to steal? This action cannot be undone."
+                  dialogTitle={`Steal ${auction.title}?`}
+                  confirmText="Yes, steal!"
+                  cancelText="Cancel"
+                  buttonText="Steal"
+                  confirmAction={handleSteal}
+                />
 
-                  <Snackbar
-                    open={showSnackbar}
-                    autoHideDuration={6000}
-                    onClose={handleSnackbarClose}
+                <Snackbar
+                  open={showSnackbar}
+                  autoHideDuration={6000}
+                  onClose={handleSnackbarClose}
                   // anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                  >
-                    <MuiAlert variant="filled" onClose={handleSnackbarClose} severity="success">
-                      {successMessage}
-                    </MuiAlert>
-                  </Snackbar>
-                </Grid>
+                >
+                  <MuiAlert variant="filled" onClose={handleSnackbarClose} severity="success">
+                    {successMessage}
+                  </MuiAlert>
+                </Snackbar>
               </Grid>
-            </Card>
-            <div className="modal">
-              <ImagePopup
-                open={isModalOpen}
-                onClose={handlePopupClose}
-                image={auction.imageurl}
-                caption={auction.title}
-              />
-            </div>
-            <script type="text/javascript" src="../myfunctions.js" />
-          </Grid>
-        )}
+            </Grid>
+          </Card>
+          <div className="modal">
+            <ImagePopup
+              open={isModalOpen}
+              onClose={handlePopupClose}
+              image={auction.imageurl}
+              caption={auction.title}
+            />
+          </div>
+          <script type="text/javascript" src="../myfunctions.js" />
+        </Grid>
+      )}
     </>
   );
 }
