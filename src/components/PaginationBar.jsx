@@ -20,13 +20,11 @@ export default function PaginationBar({ pageCount, pageName }) {
             renderItem={(item) => (
               <PaginationItem
                 component={Link}
-                to={`/${pageName}${
-                  item.page === 1
+                to={`/${pageName}${item.page === 1
                     ? `${query.get('search') === null ? '' : `?search=${query.get('search')}`}`
-                    : `?page=${item.page}${
-                        query.get('search') === null ? '' : `&search=${query.get('search')}`
-                      }`
-                }`}
+                    : `?page=${item.page}${query.get('search') === null ? '' : `&search=${query.get('search')}`
+                    }`
+                  }`}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...item}
                 className={`class-page-${item.page}-button`}

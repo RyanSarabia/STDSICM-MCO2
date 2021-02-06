@@ -129,128 +129,128 @@ export default function ExploreCard({ auction }) {
           <LinearProgress />
         </Card>
       ) : (
-        <Card
-          item
-          elevation={5}
-          style={{
-            position: 'relative',
-            padding: 0,
-            height: '500px',
-            width: '810px',
-            display: 'flex',
-          }}
-        >
-          <Grid
+          <Card
             item
-            container
-            direction="column"
-            justify="space-between"
-            spacing={1}
+            elevation={5}
             style={{
-              padding: '5%',
-              maxWidth: '320px',
-              wordWrap: 'break-word',
+              position: 'relative',
+              padding: 0,
+              height: '500px',
+              width: '810px',
+              display: 'flex',
             }}
           >
-            <Grid item style={{ maxWidth: '100%', maxHeight: '50%', padding: 0 }}>
-              <a
-                href={toAuction}
-                style={{
-                  textDecoration: 'none',
-                  color: 'black',
-                }}
-              >
-                <Typography
-                  className="class-explore-card-title"
-                  variant="h5"
-                  style={{ fontWeight: 'bold' }}
-                >
-                  {auction.title}
-                </Typography>
-              </a>
-
-              <FormatDescription desc={auction.description} _id={auction._id} />
-            </Grid>
-
             <Grid
               item
               container
               direction="column"
-              justify="center"
-              alignItems="flex-start"
-              style={{ maxHeight: '50%', padding: 0 }}
+              justify="space-between"
+              spacing={1}
+              style={{
+                padding: '5%',
+                maxWidth: '320px',
+                wordWrap: 'break-word',
+              }}
             >
-              <BidPrice
-                item
-                hasBid={hasBid}
-                curBid={auction.currentPrice}
-                startBid={auction.startPrice}
-              />
-              <Grid item container direction="column" style={{ marginBottom: '3%' }}>
-                <Typography item variant="overline" style={{ lineHeight: '160%' }}>
-                  Steal
-                </Typography>
-                <Chip
-                  item
-                  variant="outlined"
-                  color="primary"
-                  style={{ width: '100%' }}
-                  className="class-explore-card-steal"
-                  label={new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'PHP',
-                  }).format(auction.stealPrice)}
-                />
+              <Grid item style={{ maxWidth: '100%', maxHeight: '50%', padding: 0 }}>
+                <a
+                  href={toAuction}
+                  style={{
+                    textDecoration: 'none',
+                    color: 'black',
+                  }}
+                >
+                  <Typography
+                    className="class-explore-card-title"
+                    variant="h5"
+                    style={{ fontWeight: 'bold' }}
+                  >
+                    {auction.title}
+                  </Typography>
+                </a>
+
+                <FormatDescription desc={auction.description} _id={auction._id} />
               </Grid>
 
-              <Grid item container direction="column">
-                <Typography item variant="overline" style={{ lineHeight: '160%' }}>
-                  Cut-off
-                </Typography>
-                <Chip
-                  variant="outlined"
-                  color="primary"
-                  style={{ width: '100%' }}
-                  className="class-explore-card-cutoffdate"
-                  label={auction.cutoffdate}
-                  style={{ maxWidth: '100%' }}
+              <Grid
+                item
+                container
+                direction="column"
+                justify="center"
+                alignItems="flex-start"
+                style={{ maxHeight: '50%', padding: 0 }}
+              >
+                <BidPrice
+                  item
+                  hasBid={hasBid}
+                  curBid={auction.currentPrice}
+                  startBid={auction.startPrice}
                 />
+                <Grid item container direction="column" style={{ marginBottom: '3%' }}>
+                  <Typography item variant="overline" style={{ lineHeight: '160%' }}>
+                    Steal
+                </Typography>
+                  <Chip
+                    item
+                    variant="outlined"
+                    color="primary"
+                    style={{ width: '100%' }}
+                    className="class-explore-card-steal"
+                    label={new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: 'PHP',
+                    }).format(auction.stealPrice)}
+                  />
+                </Grid>
+
+                <Grid item container direction="column">
+                  <Typography item variant="overline" style={{ lineHeight: '160%' }}>
+                    Cut-off
+                </Typography>
+                  <Chip
+                    variant="outlined"
+                    color="primary"
+                    style={{ width: '100%' }}
+                    className="class-explore-card-cutoffdate"
+                    label={auction.cutoffdate}
+                    style={{ maxWidth: '100%' }}
+                  />
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          <CardMedia
-            onClick={handleImageClick}
-            component="image"
-            style={{ padding: 0, height: '100%', width: '500px' }}
-            image={auction.photo}
-            className="class-explore-card-img"
-          />
-
-          <Grid
-            container
-            direction="column"
-            alignItems="flex-end"
-            style={{ maxWidth: '20%', position: 'absolute', right: '10px', bottom: '20px' }}
-          >
-            <Button
-              item
-              className="class-explore-card-view"
-              color="primary"
-              variant="contained"
-              href={toAuction}
-            >
-              View Details
-            </Button>
-            <Chip
-              item
-              style={{ marginTop: '5px', color: 'white', backgroundColor: '#1a1a1a' }}
-              className="class-explore-card-postdate"
-              label={auction.postdate}
-              size="small"
+            <CardMedia
+              onClick={handleImageClick}
+              component="image"
+              style={{ padding: 0, height: '100%', width: '500px' }}
+              image={auction.photo}
+              className="class-explore-card-img"
             />
-          </Grid>
-        </Card>
-      )}
+
+            <Grid
+              container
+              direction="column"
+              alignItems="flex-end"
+              style={{ maxWidth: '20%', position: 'absolute', right: '10px', bottom: '20px' }}
+            >
+              <Button
+                item
+                className="class-explore-card-view"
+                color="primary"
+                variant="contained"
+                href={toAuction}
+              >
+                View Details
+            </Button>
+              <Chip
+                item
+                style={{ marginTop: '5px', color: 'white', backgroundColor: '#1a1a1a' }}
+                className="class-explore-card-postdate"
+                label={auction.postdate}
+                size="small"
+              />
+            </Grid>
+          </Card>
+        )}
       <ImagePopup
         open={isModalOpen}
         onClose={handlePopupClose}

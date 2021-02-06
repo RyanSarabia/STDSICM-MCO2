@@ -35,20 +35,20 @@ export default function Loading({ label, hasBackdrop }) {
           <CircularProgressWithLabel label={label} />
         </Backdrop>
       ) : (
-        <Box
-          top={0}
-          left={0}
-          bottom={0}
-          right={0}
-          position="absolute"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          minHeight="100%"
-        >
-          <CircularProgressWithLabel label={label} />
-        </Box>
-      )}
+          <Box
+            top={0}
+            left={0}
+            bottom={0}
+            right={0}
+            position="absolute"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            minHeight="100%"
+          >
+            <CircularProgressWithLabel label={label} />
+          </Box>
+        )}
     </>
   );
 }

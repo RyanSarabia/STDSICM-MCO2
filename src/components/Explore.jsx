@@ -36,45 +36,45 @@ export default function Explore() {
       {isLoading ? (
         <Loading label="Fetching data..." />
       ) : (
-        <div>
-          <Grid
-            item
-            container
-            alignItems="center"
-            justify="center"
-            style={{ margin: '5vh 0 5vh 0' }}
-          >
-            <Search pageName="explore" />
-          </Grid>
-          <Grid container direction="column" alignItems="center" justify="center" spacing={5}>
-            {auctionCount < 1 && (
+          <div>
+            <Grid
+              item
+              container
+              alignItems="center"
+              justify="center"
+              style={{ margin: '5vh 0 5vh 0' }}
+            >
+              <Search pageName="explore" />
+            </Grid>
+            <Grid container direction="column" alignItems="center" justify="center" spacing={5}>
+              {auctionCount < 1 && (
+                <Grid
+                  container
+                  alignItems="center"
+                  justify="center"
+                  style={{ marginTop: '4vh', marginBottom: '4vh' }}
+                >
+                  No auctions to show.
+                </Grid>
+              )}
+              {auctions &&
+                auctions.map((auction) => {
+                  return <ExploreCard item auction={auction} />;
+                })}
+            </Grid>
+
+            {auctionCount > 10 && (
               <Grid
                 container
                 alignItems="center"
                 justify="center"
                 style={{ marginTop: '4vh', marginBottom: '4vh' }}
               >
-                No auctions to show.
+                <PaginationBar pageCount={Math.ceil(auctionCount / 10, 10)} pageName="explore" />
               </Grid>
             )}
-            {auctions &&
-              auctions.map((auction) => {
-                return <ExploreCard item auction={auction} />;
-              })}
-          </Grid>
-
-          {auctionCount > 10 && (
-            <Grid
-              container
-              alignItems="center"
-              justify="center"
-              style={{ marginTop: '4vh', marginBottom: '4vh' }}
-            >
-              <PaginationBar pageCount={Math.ceil(auctionCount / 10, 10)} pageName="explore" />
-            </Grid>
-          )}
-        </div>
-      )}
+          </div>
+        )}
     </>
   );
 }
