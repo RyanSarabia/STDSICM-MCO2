@@ -1,3 +1,4 @@
+const port = process.env.PORT || 5000;
 const mongoose = require('../node_modules/mongoose');
 const express = require('../node_modules/express');
 const passport = require('../node_modules/passport');
@@ -7,7 +8,6 @@ require('../node_modules/dotenv').config();
 const cors = require('../node_modules/cors');
 
 const app = express();
-const port = process.env.PORT || 5000;
 
 const UserAuth = require('./config/validation');
 
@@ -38,6 +38,19 @@ app.use(express.static('client/build'));
 // Cookies and sessions
 const cookieParser = require('../node_modules/cookie-parser');
 const cookieSession = require('../node_modules/cookie-session');
+
+// Socket IO
+// eslint-disable-next-line import/order
+const server = require('http').createServer(app);
+const io = require('../node_modules/socket.io')(server);
+
+io.of('/socket').on('connection', (socket) => {
+  console.log('user connected:', socket.id);
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected:', socket.id);
+  });
+});
 
 app.use(
   cookieSession({
@@ -74,6 +87,26 @@ mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedT
 const { connection } = mongoose;
 connection.once('open', () => {
   console.log('MongoDB database connection established successfully');
+
+  // socket io stuff
+  const auctionChangeStream = connection.collection('auctions').watch();
+
+  auctionChangeStream.on('change', (change) => {
+    const auction = change.fullDocument;
+    switch (change.operationType) {
+      case 'insert':
+        io.of('/socket').emit('newAuction', auction);
+        break;
+      case 'delete':
+        io.of('/socket').emit('deleteAuction', auction);
+        break;
+      case 'update':
+        io.of('/socket').emit('updateAuction', auction);
+        break;
+      default:
+        break;
+    }
+  });
 });
 
 app.listen(port, () => {
