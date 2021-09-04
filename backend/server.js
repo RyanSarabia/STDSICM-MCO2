@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 const port = process.env.PORT || 5000;
 const mongoose = require('../node_modules/mongoose');
 const express = require('../node_modules/express');
@@ -42,7 +43,14 @@ const cookieSession = require('../node_modules/cookie-session');
 // Socket IO
 // eslint-disable-next-line import/order
 const server = require('http').createServer(app);
-const io = require('../node_modules/socket.io')(server);
+const io = require('../node_modules/socket.io')(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+  },
+});
+
+server.listen(4000);
 
 io.of('/socket').on('connection', (socket) => {
   console.log('user connected:', socket.id);
@@ -92,16 +100,32 @@ connection.once('open', () => {
   const auctionChangeStream = connection.collection('auctions').watch();
 
   auctionChangeStream.on('change', (change) => {
-    const auction = change.fullDocument;
     switch (change.operationType) {
       case 'insert':
+        console.log('saw insert');
+        const auction = {
+          title: change.fullDocument.title,
+          description: change.fullDocument.description,
+          cutoffdate: change.fullDocument.cutoffdate,
+          postdate: change.fullDocument.postdate,
+          startPrice: change.fullDocument.startPrice,
+          incPrice: change.fullDocument.incPrice,
+          currentPrice: change.fullDocument.currentPrice,
+          stealPrice: change.fullDocument.stealPrice,
+          photo: change.fullDocument.photo,
+          highestbidder: change.fullDocument.highestbidder,
+        };
         io.of('/socket').emit('newAuction', auction);
         break;
       case 'delete':
-        io.of('/socket').emit('deleteAuction', auction);
+        console.log('saw delete');
+        // io.of('/socket').emit('deleteAuction', auction);
         break;
       case 'update':
-        io.of('/socket').emit('updateAuction', auction);
+        console.log('saw update');
+        // console.log(`Change:${change}`);
+        // console.log(`Auction:${auction}`);
+        // io.of('/socket').emit('updateAuction', auction);
         break;
       default:
         break;

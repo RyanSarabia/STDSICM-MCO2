@@ -15,6 +15,7 @@ import ImagePopup from './ImagePopup';
 
 function FormatDescription(props) {
   const { desc, _id } = props;
+  console.log(desc);
   if (desc.length > 250) {
     const truncDesc = `${desc.substring(0, 250)}... `;
     const toAuction = `/auction/${_id}`;
