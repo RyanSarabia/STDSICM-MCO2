@@ -61,6 +61,7 @@ export default function Auction() {
   const [loadTrigger, setTrigger] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [successMessage, setSuccess] = useState('');
+  const [snackSeverity, setSnackSeverity] = useState('success');
   const [showSnackbar, setSnackbar] = useState(false);
 
   useEffect(() => {
@@ -145,19 +146,35 @@ export default function Auction() {
   }
 
   const handleBid = () => {
-    axios.post(`/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then(() => {
+    axios.post(`/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
+      console.log(res);
       setTrigger(!loadTrigger);
-      setSuccess('Bid successful! You are now the highest bidder.');
-      setSnackbar(true);
+      if (res.data === 'Auction Updated!') {
+        setSuccess('Bid successful! You are now the highest bidder.');
+        setSnackSeverity('success');
+        setSnackbar(true);
+      } else {
+        setSuccess('Bid denied!');
+        setSnackSeverity('error');
+        setSnackbar(true);
+      }
     });
   };
 
   const handleSteal = () => {
     setDisable(true);
-    axios.post(`/auction/postAuction/${auctionId}/steal`).then(() => {
+    axios.post(`/auction/postAuction/${auctionId}/steal`).then((res) => {
+      console.log(res);
       setTrigger(!loadTrigger);
-      setSuccess('Steal successful! You are the winner of this auction.');
-      setSnackbar(true);
+      if (res.data === 'Auction Updated!') {
+        setSuccess('Steal successful! You are the winner of this auction.');
+        setSnackSeverity('success');
+        setSnackbar(true);
+      } else {
+        setSuccess('Steal denied!');
+        setSnackSeverity('error');
+        setSnackbar(true);
+      }
     });
   };
 
@@ -410,7 +427,7 @@ export default function Auction() {
                   onClose={handleSnackbarClose}
                   // anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 >
-                  <MuiAlert variant="filled" onClose={handleSnackbarClose} severity="success">
+                  <MuiAlert variant="filled" onClose={handleSnackbarClose} severity={snackSeverity}>
                     {successMessage}
                   </MuiAlert>
                 </Snackbar>

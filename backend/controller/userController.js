@@ -1,6 +1,8 @@
+const { Mutex } = require('async-mutex');
 const User = require('../model/user.model');
 const Auction = require('../model/auction.model');
 // const { ConnectionStates } = require('mongoose');
+const mutex = new Mutex();
 
 exports.getOwner = async function getOwner(req, res) {
   try {
@@ -116,44 +118,46 @@ exports.getAllAuction = async function getAllAuction(req, res) {
 };
 
 exports.postAuctionAction = async function postAuctionAction(req, res) {
-  try {
-    const postaction = req.params.action;
-    const postid = req.params.auctionid;
-    // eslint-disable-next-line radix
-    const bidPrice = parseInt(req.query.bid);
+  await mutex.runExclusive(async () => {
+    try {
+      const postaction = req.params.action;
+      const postid = req.params.auctionid;
+      // eslint-disable-next-line radix
+      const bidPrice = parseInt(req.query.bid);
 
-    const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
-    if (user) {
-      const auction = await Auction.findOne({ _id: postid });
+      const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
+      if (user) {
+        const auction = await Auction.findOne({ _id: postid });
 
-      if (auction) {
-        if (postaction === 'bid') {
-          if (bidPrice % auction.incPrice === 0) {
-            const tempCurrPrice = bidPrice;
+        if (auction) {
+          if (postaction === 'bid') {
+            if (bidPrice % auction.incPrice === 0) {
+              const tempCurrPrice = bidPrice;
 
-            if (tempCurrPrice < auction.stealPrice) {
-              auction.currentPrice = tempCurrPrice;
-            } else if (tempCurrPrice >= auction.stealPrice) {
-              auction.currentPrice = auction.stealPrice;
+              if (tempCurrPrice < auction.stealPrice) {
+                auction.currentPrice = tempCurrPrice;
+              } else if (tempCurrPrice >= auction.stealPrice) {
+                auction.currentPrice = auction.stealPrice;
+              }
             }
+          } else if (postaction === 'steal') {
+            auction.currentPrice = auction.stealPrice;
           }
-        } else if (postaction === 'steal') {
-          auction.currentPrice = auction.stealPrice;
+
+          auction.highestbidder = user;
+
+          await auction
+            .save()
+            .then(() => res.json('Auction Updated!'))
+            .catch((err1) => res.status(400).json(`Error: ${err1}`));
+        } else {
+          res.send('No action');
         }
-
-        auction.highestbidder = user;
-
-        await auction
-          .save()
-          .then(() => res.json('Auction Updated!'))
-          .catch((err1) => res.status(400).json(`Error: ${err1}`));
-      } else {
-        res.send('No action');
       }
+    } catch (e) {
+      console.log(e);
     }
-  } catch (e) {
-    console.log(e);
-  }
+  });
 };
 
 exports.getID = async function getID(req, res) {
