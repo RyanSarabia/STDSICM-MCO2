@@ -46,7 +46,7 @@ const cookieSession = require('../node_modules/cookie-session');
 const server = require('http').createServer(app);
 const io = require('../node_modules/socket.io')(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'https://lasell-sharp.herokuapp.com',
     methods: ['GET', 'POST'],
   },
 });
