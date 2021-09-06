@@ -117,15 +117,11 @@ connection.once('open', () => {
         };
         io.of('/socket').emit('newAuction', auction);
         break;
-      case 'delete':
-        console.log('saw delete');
-        // io.of('/socket').emit('deleteAuction', auction);
-        break;
       case 'update':
         console.log('saw update');
-        // console.log(`Change:${change}`);
-        // console.log(`Auction:${auction}`);
-        // io.of('/socket').emit('updateAuction', auction);
+        // eslint-disable-next-line no-underscore-dangle
+        const auctionId = change.documentKey._id;
+        io.of('/socket').emit('updateAuction', auctionId);
         break;
       default:
         break;

@@ -33,6 +33,7 @@ export default function Explore() {
   }
 
   useEffect(() => {
+    console.log('running useEffect');
     fetch();
     const socket = io(`${URLs.socketURL}/socket`);
     socket.on('newAuction', () => {
