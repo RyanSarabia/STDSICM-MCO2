@@ -43,15 +43,15 @@ const cookieSession = require('../node_modules/cookie-session');
 
 // Socket IO
 // eslint-disable-next-line import/order
-const server = require('https').createServer(app);
+const server = require('http').createServer(app);
 const io = require('../node_modules/socket.io')(server, {
   cors: {
-    origin: 'https://lasell-sharp.herokuapp.com/',
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
   },
 });
 
-server.listen(process.env.PORT);
+server.listen(process.env.SOCKET_PORT);
 
 io.of('/socket').on('connection', (socket) => {
   console.log('user connected:', socket.id);
