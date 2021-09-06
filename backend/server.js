@@ -51,7 +51,7 @@ const io = require('../node_modules/socket.io')(server, {
   },
 });
 
-server.listen(4000);
+server.listen(process.env.PORT);
 
 io.of('/socket').on('connection', (socket) => {
   console.log('user connected:', socket.id);
