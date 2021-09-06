@@ -5,9 +5,10 @@ const path = require('path');
 const mongoose = require('./node_modules/mongoose');
 const bodyParser = require('./node_modules/body-parser');
 const express = require('./node_modules/express');
+const dotenv = require('./node_modules/dotenv');
 const passport = require('./node_modules/passport/lib');
 
-require('./node_modules/dotenv').config();
+dotenv.config();
 
 const cors = require('./node_modules/cors');
 
@@ -80,6 +81,7 @@ app.use(cookieParser());
 // path tracker middleware
 app.use((req, res, next) => {
   console.log(req.url);
+  res.set('Cache-Control', 'no-store');
   next();
 });
 
