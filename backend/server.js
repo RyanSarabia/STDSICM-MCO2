@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-case-declarations */
 const port = process.env.PORT || 5000;
 const mongoose = require('../node_modules/mongoose');
@@ -92,12 +93,27 @@ app.use('/auction', userRoute);
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 
+// async function getHighestBidder(auctionId) {
+//   let highestbidderEmail = null;
+//   try {
+//     const auction = await Auction.findOne({ _id: auctionId }).populate('highestbidder');
+//     if (auction) {
+//       highestbidderEmail = auction.highestbidder.email;
+//     }
+//   } catch (e) {
+//     console.log(e);
+//   }
+//   return highestbidderEmail;
+// }
+
 const { connection } = mongoose;
 connection.once('open', () => {
   console.log('MongoDB database connection established successfully');
 
   // socket io stuff
-  const auctionChangeStream = connection.collection('auctions').watch();
+  const auctionChangeStream = connection
+    .collection('auctions')
+    .watch([], { fullDocument: 'updateLookup' });
 
   auctionChangeStream.on('change', (change) => {
     switch (change.operationType) {
@@ -119,9 +135,14 @@ connection.once('open', () => {
         break;
       case 'update':
         console.log('saw update');
-        // eslint-disable-next-line no-underscore-dangle
+        const highestBidderId = change.fullDocument.highestbidder;
         const auctionId = change.documentKey._id;
-        io.of('/socket').emit('updateAuction', auctionId);
+        const updateData = {
+          highestBidderId,
+          auctionId,
+        };
+
+        io.of('/socket').emit('updateAuction', updateData);
         break;
       default:
         break;

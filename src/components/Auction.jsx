@@ -58,6 +58,7 @@ export default function Auction() {
   const [statusIcon, setStatusIcon] = useState(greenCircle);
   const [hasBid, setHasBid] = useState(false);
   const [owner, setOwner] = useState('Johnny Doe');
+  // const [userId, setUserId] = useState('');
   const auctionId = useParams().auction;
   const [isModalOpen, setModal] = useState(false);
   // const [loadTrigger, setTrigger] = useState(false);
@@ -116,33 +117,44 @@ export default function Auction() {
 
   useEffect(() => {
     console.log('running useEffect');
-    if (firstLoad) {
-      console.log('supposedly first load');
-      setFirstLoad(false);
-      const socket = io(`${URLs.socketURL}/socket`);
-      socket.on('updateAuction', (emitAuctionId) => {
-        console.log(`auctionId:${auctionId}`);
-        console.log(`emit:${emitAuctionId}`);
-        if (emitAuctionId === auctionId) {
-          // setTrigger(!loadTrigger);
-          fetch();
-          setSuccess('Auction updated');
-          setSnackSeverity('info');
-          setSnackbar(true);
-        }
-      });
-    }
 
     fetch();
-
     axios.get(`/auction/getOwner/${auctionId}`).then((res) => {
-      const ownerData = res.data.user;
+      console.log(res.data);
+      const ownerData = res.data.owner;
+      const curUserId = res.data.userId;
       // `${ownerData.firstName} ${ownerData.lastName}`
       setOwner(ownerData);
+      // setUserId(curUserId);
       if (res.data.isCurrUser) {
         setDisable(true);
         setCurrUser(true);
       }
+
+      if (firstLoad) {
+        console.log('supposedly first load');
+        setFirstLoad(false);
+        const socket = io(`${URLs.socketURL}/socket`);
+        socket.on('updateAuction', (emitData) => {
+          const emitAuctionId = emitData.auctionId;
+          const emitHighestBidderId = emitData.highestBidderId;
+
+          console.log(`auctionId:${auctionId}`);
+          console.log(`emit:${emitAuctionId}`);
+          console.log(`userId:${curUserId}`);
+          console.log(`emitHighestBidderId:${emitHighestBidderId}`);
+          if (emitAuctionId === auctionId) {
+            // setTrigger(!loadTrigger);
+            fetch();
+            if (curUserId !== emitHighestBidderId) {
+              setSuccess('Auction updated');
+              setSnackSeverity('info');
+              setSnackbar(true);
+            }
+          }
+        });
+      }
+
       setLoading(false);
     });
   }, []);
@@ -193,7 +205,7 @@ export default function Auction() {
 
   const handleSteal = () => {
     setDisable(true);
-    axios.post(`/auction/postAuction/${auctionId}/steal`).then((res) => {
+    axios.post(`/auction/postAuction/${auctionId}/steal?bid=${auction.stealPrice}`).then((res) => {
       console.log(res);
       // setTrigger(!loadTrigger);
       if (res.data === 'Auction Updated!') {
