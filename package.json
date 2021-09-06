@@ -2,6 +2,7 @@
   "name": "lasell2.0",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://lasell-sharp.herokuapp.com/",
   "engines": {
     "node": "12.16.1"
   },
