@@ -35,7 +35,7 @@ app.use(passport.initialize());
 require('./config/passport');
 
 // express static
-app.use(express.static('client/build'));
+app.use(express.static('/build'));
 
 // Cookies and sessions
 const cookieParser = require('../node_modules/cookie-parser');
