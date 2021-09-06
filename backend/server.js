@@ -1,10 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-case-declarations */
 const port = process.env.PORT || 5000;
+const path = require('path');
 const mongoose = require('../node_modules/mongoose');
+const bodyParser = require('../node_modules/body-parser');
 const express = require('../node_modules/express');
 const passport = require('../node_modules/passport');
-const bodyParser = require('../node_modules/body-parser');
+
 require('../node_modules/dotenv').config();
 
 const cors = require('../node_modules/cors');
@@ -35,7 +37,13 @@ app.use(passport.initialize());
 require('./config/passport');
 
 // express static
-app.use(express.static('/build'));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(`${__dirname}/build`)));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(`${__dirname}/build/index.html`));
+  });
+}
 
 // Cookies and sessions
 const cookieParser = require('../node_modules/cookie-parser');
