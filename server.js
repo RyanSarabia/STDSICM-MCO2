@@ -2,25 +2,25 @@
 /* eslint-disable no-case-declarations */
 const port = process.env.PORT || 5000;
 const path = require('path');
-const mongoose = require('../node_modules/mongoose');
-const bodyParser = require('../node_modules/body-parser');
-const express = require('../node_modules/express');
-const passport = require('../node_modules/passport');
+const mongoose = require('./node_modules/mongoose');
+const bodyParser = require('./node_modules/body-parser');
+const express = require('./node_modules/express');
+const passport = require('./node_modules/passport/lib');
 
-require('../node_modules/dotenv').config();
+require('./node_modules/dotenv').config();
 
-const cors = require('../node_modules/cors');
+const cors = require('./node_modules/cors');
 
 const app = express();
 
-const UserAuth = require('./config/validation');
+const UserAuth = require('./backend/config/validation');
 
 // routes
-const indexRoute = require('./routes/index');
-const userRoute = require('./routes/user');
+const indexRoute = require('./backend/routes/index');
+const userRoute = require('./backend/routes/user');
 
 // cloudinary
-const cloudinary = require('../node_modules/cloudinary');
+const cloudinary = require('./node_modules/cloudinary');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 
 // passport
 app.use(passport.initialize());
-require('./config/passport');
+require('./backend/config/passport');
 
 // express static
 if (process.env.NODE_ENV === 'production') {
@@ -46,13 +46,13 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Cookies and sessions
-const cookieParser = require('../node_modules/cookie-parser');
-const cookieSession = require('../node_modules/cookie-session');
+const cookieParser = require('./node_modules/cookie-parser');
+const cookieSession = require('./node_modules/cookie-session');
 
 // Socket IO
 // eslint-disable-next-line import/order
 const server = require('http').createServer(app);
-const io = require('../node_modules/socket.io')(server, {
+const io = require('./node_modules/socket.io')(server, {
   cors: {
     origin: 'https://lasell-sharp.herokuapp.com',
     methods: ['GET', 'POST'],
