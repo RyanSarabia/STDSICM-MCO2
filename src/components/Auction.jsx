@@ -69,7 +69,7 @@ export default function Auction() {
   const [firstLoad, setFirstLoad] = useState(true);
 
   function fetch() {
-    axios.get(`/auction/getAuction/${auctionId}`).then((res) => {
+    axios.get(`/auction/api/getAuction/${auctionId}`).then((res) => {
       const tempdata = res.data;
 
       document.title = `${tempdata.title} | Lasell++`;
@@ -189,7 +189,7 @@ export default function Auction() {
   }
 
   const handleBid = () => {
-    axios.post(`/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
+    axios.post(`/auction/api/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
       console.log(res);
       // setTrigger(!loadTrigger);
       if (res.data === 'Auction Updated!') {
@@ -206,19 +206,21 @@ export default function Auction() {
 
   const handleSteal = () => {
     setDisable(true);
-    axios.post(`/auction/postAuction/${auctionId}/steal?bid=${auction.stealPrice}`).then((res) => {
-      console.log(res);
-      // setTrigger(!loadTrigger);
-      if (res.data === 'Auction Updated!') {
-        setSuccess('Steal successful! You are the winner of this auction.');
-        setSnackSeverity('success');
-        setSnackbar(true);
-      } else {
-        setSuccess('Steal denied!');
-        setSnackSeverity('error');
-        setSnackbar(true);
-      }
-    });
+    axios
+      .post(`/auction/api/postAuction/${auctionId}/steal?bid=${auction.stealPrice}`)
+      .then((res) => {
+        console.log(res);
+        // setTrigger(!loadTrigger);
+        if (res.data === 'Auction Updated!') {
+          setSuccess('Steal successful! You are the winner of this auction.');
+          setSnackSeverity('success');
+          setSnackbar(true);
+        } else {
+          setSuccess('Steal denied!');
+          setSnackSeverity('error');
+          setSnackbar(true);
+        }
+      });
   };
 
   return (
