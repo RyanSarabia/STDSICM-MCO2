@@ -39,19 +39,19 @@ require('./backend/config/passport');
 // app.use(express.static('/build'));
 
 // eslint-disable-next-line import/order
-const https = require('https').Server(app);
+const http = require('http').Server(app);
 // const server = app.listen(port, function () {
 //   console.log('server listening at', server.address());
 // });
 
-const io = require('./node_modules/socket.io')(https, {
+const io = require('./node_modules/socket.io')(http, {
   cors: {
     origin: 'https://lasell-sharp.herokuapp.com/',
     methods: ['GET', 'POST'],
   },
 });
 
-https.listen(port, () => {
+http.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
 
