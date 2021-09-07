@@ -39,17 +39,18 @@ require('./backend/config/passport');
 // app.use(express.static('/build'));
 
 // eslint-disable-next-line import/order
-const server = app.listen(port, () => {
+//const http = require('http').createServer(app);
+
+const server = app.listen(port, function () {
   console.log('server listening at', server.address());
 });
-const io = require('./node_modules/socket.io')(server);
-// const server = require('https').createServer(app);
-// const io = require('./node_modules/socket.io')(server, {
-//   cors: {
-//     origin: 'https://lasell-sharp.herokuapp.com/',
-//     methods: ['GET', 'POST'],
-//   },
-// });
+
+const io = require('./node_modules/socket.io')(server, {
+  cors: {
+    origin: 'https://lasell-sharp.herokuapp.com/',
+    methods: ['GET', 'POST'],
+  },
+});
 
 // server.listen(process.env.PORT);
 
