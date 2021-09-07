@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import { useLocation } from 'react-router-dom';
+import URLs from '../URLs';
 import ExploreCard from './ExploreCard';
 import Loading from './Loading';
 import Search from './Search';
@@ -14,7 +16,7 @@ export default function Explore() {
   const location = useLocation();
   const [isLoading, setLoading] = useState(true);
 
-  useEffect(() => {
+  function fetch() {
     document.title = 'Explore | Lasell++';
     axios.get(`/explore/api/getAllAuction${location.search}`).then((res) => {
       const tempdata = res.data.auctions;
@@ -28,6 +30,15 @@ export default function Explore() {
       setCount(res.data.count);
       window.scrollTo(0, 0);
       setLoading(false);
+    });
+  }
+
+  useEffect(() => {
+    console.log('running useEffect');
+    fetch();
+    const socket = io(`${URLs.socketURL}/socket`);
+    socket.on('newAuction', () => {
+      fetch();
     });
   }, [location]);
 

@@ -6,11 +6,14 @@ const path = require('path');
 const cookieParser = require('./node_modules/cookie-parser');
 const cookieSession = require('./node_modules/cookie-session');
 
-// const mongoose = require('./node_modules/mongoose');
+const mongoose = require('./node_modules/mongoose');
 const dotenv = require('./node_modules/dotenv');
 const express = require('./node_modules/express');
 const passport = require('./node_modules/passport/lib');
 const bodyParser = require('./node_modules/body-parser');
+
+// Cors
+const cors = require('./node_modules/cors');
 
 dotenv.config();
 
@@ -23,6 +26,7 @@ const UserAuth = require('./backend/config/validation');
 const indexRoute = require('./backend/routes/index');
 const userRoute = require('./backend/routes/user');
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -32,6 +36,25 @@ require('./backend/config/passport');
 
 // express static
 // app.use(express.static('/build'));
+
+// eslint-disable-next-line import/order
+const server = require('http').createServer(app);
+const io = require('./node_modules/socket.io')(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+  },
+});
+
+server.listen(process.env.SOCKET_PORT);
+
+io.of('/socket').on('connection', (socket) => {
+  console.log('user connected:', socket.id);
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected:', socket.id);
+  });
+});
 
 app.use(
   cookieSession({
@@ -64,6 +87,50 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(`${__dirname}/build/index.html`));
   });
 }
+
+const { connection } = mongoose;
+connection.once('open', () => {
+  console.log('MongoDB database connection established successfully');
+
+  // socket io stuff
+  const auctionChangeStream = connection
+    .collection('auctions')
+    .watch([], { fullDocument: 'updateLookup' });
+
+  auctionChangeStream.on('change', (change) => {
+    switch (change.operationType) {
+      case 'insert':
+        console.log('saw insert');
+        const auction = {
+          title: change.fullDocument.title,
+          description: change.fullDocument.description,
+          cutoffdate: change.fullDocument.cutoffdate,
+          postdate: change.fullDocument.postdate,
+          startPrice: change.fullDocument.startPrice,
+          incPrice: change.fullDocument.incPrice,
+          currentPrice: change.fullDocument.currentPrice,
+          stealPrice: change.fullDocument.stealPrice,
+          photo: change.fullDocument.photo,
+          highestbidder: change.fullDocument.highestbidder,
+        };
+        io.of('/socket').emit('newAuction', auction);
+        break;
+      case 'update':
+        console.log('saw update');
+        const highestBidderId = change.fullDocument.highestbidder;
+        const auctionId = change.documentKey._id;
+        const updateData = {
+          highestBidderId,
+          auctionId,
+        };
+
+        io.of('/socket').emit('updateAuction', updateData);
+        break;
+      default:
+        break;
+    }
+  });
+});
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
