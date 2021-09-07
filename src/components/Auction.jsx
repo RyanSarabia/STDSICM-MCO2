@@ -72,7 +72,7 @@ export default function Auction() {
     axios.get(`/auction/getAuction/${auctionId}`).then((res) => {
       const tempdata = res.data;
 
-      document.title = `${tempdata.title} | Lasell#`;
+      document.title = `${tempdata.title} | Lasell++`;
 
       const curDate = new Date();
       const cutoffDate = new Date(tempdata.cutoff);
@@ -123,7 +123,7 @@ export default function Auction() {
     fetch();
     axios.get(`/auction/getOwner/${auctionId}`).then((res) => {
       console.log(res.data);
-      const ownerData = res.data.owner;
+      const ownerData = res.data.user;
       const curUserId = res.data.userId;
       // `${ownerData.firstName} ${ownerData.lastName}`
       setOwner(ownerData);
