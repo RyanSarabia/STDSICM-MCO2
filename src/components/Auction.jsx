@@ -121,7 +121,7 @@ export default function Auction() {
     console.log('running useEffect');
 
     fetch();
-    axios.get(`/auction/getOwner/${auctionId}`).then((res) => {
+    axios.get(`/auction/api/getOwner/${auctionId}`).then((res) => {
       console.log(res.data);
       const ownerData = res.data.user;
       const curUserId = res.data.userId;
