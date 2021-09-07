@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import io from 'socket.io-client';
 import IconButton from '@material-ui/core/IconButton';
 import MuiAlert from '@material-ui/lab/Alert';
 import FaceIcon from '@material-ui/icons/Face';
@@ -18,6 +19,7 @@ import TextField from '@material-ui/core/TextField';
 import { useParams } from 'react-router-dom';
 import { Typography, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import URLs from '../URLs';
 import ImagePopup from './ImagePopup';
 import { formatDate, diffMinutes } from '../myFunctions';
 import DialogButton from './DialogButton';
@@ -56,18 +58,21 @@ export default function Auction() {
   const [statusIcon, setStatusIcon] = useState(greenCircle);
   const [hasBid, setHasBid] = useState(false);
   const [owner, setOwner] = useState('Johnny Doe');
+  // const [userId, setUserId] = useState('');
   const auctionId = useParams().auction;
   const [isModalOpen, setModal] = useState(false);
-  const [loadTrigger, setTrigger] = useState(false);
+  // const [loadTrigger, setTrigger] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [successMessage, setSuccess] = useState('');
+  const [snackSeverity, setSnackSeverity] = useState('success');
   const [showSnackbar, setSnackbar] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(true);
 
-  useEffect(() => {
-    axios.get(`/auction/api/getAuction/${auctionId}`).then((res) => {
+  function fetch() {
+    axios.get(`/auction/getAuction/${auctionId}`).then((res) => {
       const tempdata = res.data;
 
-      document.title = `${tempdata.title} | Lasell++`;
+      document.title = `${tempdata.title} | Lasell#`;
 
       const curDate = new Date();
       const cutoffDate = new Date(tempdata.cutoff);
@@ -75,16 +80,16 @@ export default function Auction() {
         setStatus('CLOSED');
         setStatusIcon(grayCircle);
         setDisable(true);
-        setLoading(false);
+        // setLoading(false);
       }
 
-      axios.get(`/auction/api/getOwner/${auctionId}`).then((res2) => {
-        if (res2.data.isCurrUser) {
-          setDisable(true);
-          setCurrUser(true);
-        }
-        setLoading(false);
-      });
+      // axios.get(`/auction/getOwner/${auctionId}`).then((res2) => {
+      //   if (res2.data.isCurrUser) {
+      //     setDisable(true);
+      //     setCurrUser(true);
+      //   }
+      //   setLoading(false);
+      // });
 
       if (tempdata.currentPrice >= tempdata.startPrice) {
         setHasBid(true);
@@ -110,13 +115,50 @@ export default function Auction() {
 
       setAuction(tempdata);
     });
+  }
 
-    axios.get(`/auction/api/getOwner/${auctionId}`).then((res) => {
-      const ownerData = res.data.user;
+  useEffect(() => {
+    console.log('running useEffect');
+
+    fetch();
+    axios.get(`/auction/getOwner/${auctionId}`).then((res) => {
+      console.log(res.data);
+      const ownerData = res.data.owner;
+      const curUserId = res.data.userId;
       // `${ownerData.firstName} ${ownerData.lastName}`
       setOwner(ownerData);
+      // setUserId(curUserId);
+      if (res.data.isCurrUser) {
+        setDisable(true);
+        setCurrUser(true);
+      }
+
+      if (firstLoad) {
+        console.log('supposedly first load');
+        setFirstLoad(false);
+        const socket = io(`${URLs.socketURL}/socket`);
+        socket.on('updateAuction', (emitData) => {
+          const emitAuctionId = emitData.auctionId;
+          const emitHighestBidderId = emitData.highestBidderId;
+
+          console.log(`auctionId:${auctionId}`);
+          console.log(`emit:${emitAuctionId}`);
+          console.log(`userId:${curUserId}`);
+          console.log(`emitHighestBidderId:${emitHighestBidderId}`);
+          if (emitAuctionId === auctionId) {
+            // setTrigger(!loadTrigger);
+            fetch();
+            if (curUserId !== emitHighestBidderId) {
+              setSuccess('Auction updated');
+              setSnackSeverity('info');
+              setSnackbar(true);
+            }
+          }
+        });
+      }
+      setLoading(false);
     });
-  }, [loadTrigger]);
+  }, []);
 
   const handleImageClick = () => {
     setModal(true);
@@ -147,19 +189,35 @@ export default function Auction() {
   }
 
   const handleBid = () => {
-    axios.post(`/auction/api/postAuction/${auctionId}/bid?bid=${bidAmount}`).then(() => {
-      setTrigger(!loadTrigger);
-      setSuccess('Bid successful! You are now the highest bidder.');
-      setSnackbar(true);
+    axios.post(`/auction/postAuction/${auctionId}/bid?bid=${bidAmount}`).then((res) => {
+      console.log(res);
+      // setTrigger(!loadTrigger);
+      if (res.data === 'Auction Updated!') {
+        setSuccess('Bid successful! You are now the highest bidder.');
+        setSnackSeverity('success');
+        setSnackbar(true);
+      } else {
+        setSuccess('Bid denied!');
+        setSnackSeverity('error');
+        setSnackbar(true);
+      }
     });
   };
 
   const handleSteal = () => {
     setDisable(true);
-    axios.post(`/auction/api/postAuction/${auctionId}/steal`).then(() => {
-      setTrigger(!loadTrigger);
-      setSuccess('Steal successful! You are the winner of this auction.');
-      setSnackbar(true);
+    axios.post(`/auction/postAuction/${auctionId}/steal?bid=${auction.stealPrice}`).then((res) => {
+      console.log(res);
+      // setTrigger(!loadTrigger);
+      if (res.data === 'Auction Updated!') {
+        setSuccess('Steal successful! You are the winner of this auction.');
+        setSnackSeverity('success');
+        setSnackbar(true);
+      } else {
+        setSuccess('Steal denied!');
+        setSnackSeverity('error');
+        setSnackbar(true);
+      }
     });
   };
 
@@ -412,7 +470,7 @@ export default function Auction() {
                   onClose={handleSnackbarClose}
                   // anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 >
-                  <MuiAlert variant="filled" onClose={handleSnackbarClose} severity="success">
+                  <MuiAlert variant="filled" onClose={handleSnackbarClose} severity={snackSeverity}>
                     {successMessage}
                   </MuiAlert>
                 </Snackbar>
