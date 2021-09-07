@@ -4,7 +4,7 @@ let URLs = {};
 if (process.env.NODE_ENV === 'production') {
   URLs = {
     baseURL: '',
-    socketURL: 'http://lasell-sharp.herokuapp.com',
+    socketURL: 'https://lasell-sharp.herokuapp.com',
   };
 } else {
   URLs = {

@@ -38,10 +38,10 @@ require('./backend/config/passport');
 // app.use(express.static('/build'));
 
 // eslint-disable-next-line import/order
-const server = require('http').createServer(app);
+const server = require('https').createServer(app);
 const io = require('./node_modules/socket.io')(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'https://lasell-sharp.herokuapp.com/',
     methods: ['GET', 'POST'],
   },
 });
