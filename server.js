@@ -1,6 +1,7 @@
 /* eslint-disable func-names */
 const path = require('path');
 
+const port = process.env.PORT || 5000;
 // Cookies and sessions
 
 const cookieParser = require('./node_modules/cookie-parser');
@@ -38,15 +39,19 @@ require('./backend/config/passport');
 // app.use(express.static('/build'));
 
 // eslint-disable-next-line import/order
-const server = require('https').createServer(app);
-const io = require('./node_modules/socket.io')(server, {
-  cors: {
-    origin: 'https://lasell-sharp.herokuapp.com/',
-    methods: ['GET', 'POST'],
-  },
+const server = app.listen(port, () => {
+  console.log('server listening at', server.address());
 });
+const io = require('./node_modules/socket.io')(server);
+// const server = require('https').createServer(app);
+// const io = require('./node_modules/socket.io')(server, {
+//   cors: {
+//     origin: 'https://lasell-sharp.herokuapp.com/',
+//     methods: ['GET', 'POST'],
+//   },
+// });
 
-server.listen(process.env.PORT);
+// server.listen(process.env.PORT);
 
 io.of('/socket').on('connection', (socket) => {
   console.log('user connected:', socket.id);
@@ -134,7 +139,6 @@ connection.once('open', () => {
   });
 });
 
-const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
