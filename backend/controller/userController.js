@@ -151,7 +151,7 @@ exports.postAuctionAction = async function postAuctionAction(req, res) {
             .then(() => res.json('Auction Updated!'))
             .catch((err1) => res.status(400).json(`Error: ${err1}`));
         } else {
-          res.send('No action');
+          res.send('deny bid');
         }
       }
     } catch (e) {
