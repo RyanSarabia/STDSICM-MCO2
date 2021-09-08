@@ -123,7 +123,7 @@ export default function Auction() {
     fetch();
     axios.get(`/auction/api/getOwner/${auctionId}`).then((res) => {
       console.log(res.data);
-      const ownerData = res.data.user;
+      const ownerData = res.data.owner;
       const curUserId = res.data.userId;
       // `${ownerData.firstName} ${ownerData.lastName}`
       setOwner(ownerData);
