@@ -7,27 +7,31 @@ const lock = new AsyncLock();
 
 exports.getOwner = async function getOwner(req, res) {
   try {
+    const userEmail = req.session.passport.user.profile.emails[0].value;
     const auction = req.params.auctionid;
-    const user = await User.findOne({ auctions: auction });
+    const owner = await User.findOne({ auctions: auction });
     const currUser = await User.findOne({
-      email: req.session.passport.user.profile.emails[0].value,
+      email: userEmail,
     });
     let isCurrUser = 0;
 
-    if (user) {
-      if (user.email === currUser.email) {
+    if (owner) {
+      if (owner.email === currUser.email) {
         isCurrUser = 1;
       }
       const userInfo = {
-        user,
+        owner,
+        // eslint-disable-next-line no-underscore-dangle
+        userId: currUser._id,
         isCurrUser,
       };
       res.send(userInfo);
-    } else res.redirect('/explore');
+    } else res.redirect('/auction/auction');
   } catch (e) {
     console.log(e);
   }
 };
+
 exports.getAuction = async function getAuction(req, res) {
   try {
     const user = await User.findOne({ email: req.session.passport.user.profile.emails[0].value });
