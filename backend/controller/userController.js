@@ -138,7 +138,11 @@ exports.postAuctionAction = function postAuctionAction(req, res) {
         if (user) {
           const auction = await Auction.findOne({ _id: postid });
 
-          if (auction) {
+          if (
+            auction &&
+            bidPrice > auction.currentPrice &&
+            auction.currentPrice !== auction.stealPrice
+          ) {
             if (postaction === 'bid') {
               if (bidPrice % auction.incPrice === 0) {
                 const tempCurrPrice = bidPrice;
