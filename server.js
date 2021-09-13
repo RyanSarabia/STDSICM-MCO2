@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable func-names */
 const path = require('path');
 
@@ -133,6 +134,7 @@ connection.once('open', () => {
       case 'update':
         console.log('saw update');
         const highestBidderId = change.fullDocument.highestbidder;
+        // eslint-disable-next-line no-underscore-dangle
         const auctionId = change.documentKey._id;
         const updateData = {
           highestBidderId,

@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 import axios from 'axios';
 import { useParams, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -17,6 +18,7 @@ import { formatDate } from '../myFunctions';
 import PaginationBar from './PaginationBar';
 import Loading from './Loading';
 import Search from './Search';
+import URLs from '../URLs';
 
 export default function Profile() {
   const profileId = useParams().userID;
@@ -29,7 +31,7 @@ export default function Profile() {
 
   const location = useLocation();
 
-  useEffect(() => {
+  function fetch() {
     axios.get(`/profile/api/getUser/${profileId}${location.search}`).then((res) => {
       window.scrollTo(0, 0);
       setCurrUser(res.data.isCurrUser);
@@ -51,6 +53,17 @@ export default function Profile() {
       setAuctions(tempauctions);
       setCount(res.data.count);
       setLoading(false);
+    });
+  }
+
+  useEffect(() => {
+    fetch();
+    const socket = io(`${URLs.socketURL}/socket`);
+    socket.on('newAuction', () => {
+      fetch();
+    });
+    socket.on('updateAuction', () => {
+      fetch();
     });
   }, [location]);
 
