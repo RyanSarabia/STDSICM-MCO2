@@ -40,6 +40,9 @@ export default function Explore() {
     socket.on('newAuction', () => {
       fetch();
     });
+    socket.on('updateAuction', () => {
+      fetch();
+    });
   }, [location]);
 
   return (
