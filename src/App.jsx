@@ -32,7 +32,7 @@ require('./App.css');
 
 export default function App() {
   useEffect(() => {
-    document.title = 'Lasell++';
+    document.title = 'Lasell#';
   });
   return (
     <ThemeProvider theme={theme}>

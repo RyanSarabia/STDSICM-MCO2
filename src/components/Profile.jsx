@@ -39,9 +39,9 @@ export default function Profile() {
       const tempauctions = res.data.user.auctions;
 
       if (res.data.isCurrUser) {
-        document.title = 'My Profile | Lasell++';
+        document.title = 'My Profile | Lasell#';
       } else {
-        document.title = `${res.data.user.firstName} ${res.data.user.lastName}'s Profile | Lasell++`;
+        document.title = `${res.data.user.firstName} ${res.data.user.lastName}'s Profile | Lasell#`;
       }
       console.log(res);
 

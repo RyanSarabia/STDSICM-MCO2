@@ -40,7 +40,7 @@ export default function NavigationBar({ logout, userID }) {
                 style={{ fontWeight: 'bold', letterSpacing: '1.2px' }}
                 id="id-navbar-title"
               >
-                LaSell++
+                LaSell#
               </Typography>
             </a>
           </Grid>

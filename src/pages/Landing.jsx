@@ -33,7 +33,7 @@ export default function Landing() {
           style={{ textAlign: 'center' }}
         >
           <h1 style={{ margin: 0, fontSize: 90, color: '#173D36' }} id="id-lasell-title">
-            LaSell++
+            LaSell#
           </h1>
           <h5 style={{ margin: 0 }} id="id-lasell-tagline">
             Made by Lasallians, for Lasallians. Sell and bid within the Lasallian community.

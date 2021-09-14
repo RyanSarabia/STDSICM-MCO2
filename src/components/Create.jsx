@@ -5,7 +5,7 @@ import CreateForm from './CreateForm';
 
 export default function Create() {
   useEffect(() => {
-    document.title = 'New Auction | Lasell++';
+    document.title = 'New Auction | Lasell#';
   });
 
   return (

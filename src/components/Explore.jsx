@@ -17,7 +17,7 @@ export default function Explore() {
   const [isLoading, setLoading] = useState(true);
 
   function fetch() {
-    document.title = 'Explore | Lasell++';
+    document.title = 'Explore | Lasell#';
     axios.get(`/explore/api/getAllAuction${location.search}`).then((res) => {
       const tempdata = res.data.auctions;
 

@@ -17,7 +17,7 @@ export default class Registration extends Component {
   }
 
   componentDidMount() {
-    document.title = 'Registration | Lasell++';
+    document.title = 'Registration | Lasell#';
     axios.get('/register').then((res) => {
       this.setState({ user: res.data });
     });

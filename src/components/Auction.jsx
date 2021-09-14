@@ -72,7 +72,7 @@ export default function Auction() {
     axios.get(`/auction/api/getAuction/${auctionId}`).then((res) => {
       const tempdata = res.data;
 
-      document.title = `${tempdata.title} | Lasell++`;
+      document.title = `${tempdata.title} | Lasell#`;
 
       const curDate = new Date();
       const cutoffDate = new Date(tempdata.cutoff);
