@@ -14,7 +14,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
       clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_AUTH_CALLBACK_URL,
+      callbackURL: 'https://lasell-sharp.herokuapp.com/api/auth/google/callback',
     },
     (accessToken, refreshToken, profile, done) => {
       const userData = {
