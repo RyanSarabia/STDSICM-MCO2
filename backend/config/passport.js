@@ -12,9 +12,9 @@ passport.deserializeUser((user, done) => {
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
-      callbackURL: 'https://lasell-sharp.herokuapp.com/api/auth/google/callback',
+      clientID: process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID,
+      clientSecret: process.env.REACT_APP_GOOGLE_AUTH_CLIENT_SECRET,
+      callbackURL: process.env.REACT_APP_GOOGLE_AUTH_CALLBACK_URL,
     },
     (accessToken, refreshToken, profile, done) => {
       const userData = {
